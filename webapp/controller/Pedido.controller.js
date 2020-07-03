@@ -187,7 +187,7 @@ sap.ui.define([
 				template: tablePedido.getBindingInfo("items").template
 			});
 			tablePedido.getBinding("items").refresh();
-			this.reiniciaIconesSort();
+			// this.reiniciaIconesSort();
 		},
 		_getDialog: function () {
 			// create a fragment with dialog, and pass the selected data

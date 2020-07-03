@@ -285,13 +285,13 @@
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'QtppendForn', formatter: '.formatter.toIntegerStr' }" emphasized="false"
 									tooltip="{path: 'QtppendForn', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
 								<ObjectNumber class="textoLinhaPedido"
-									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaMm', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaMm', formatter: '.formatter.toInteger'} }"
+									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaMm', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaMm', formatter: '.formatter.toIntegerStr'} }"
 									emphasized="false" textAlign="Right"/>
 								<ObjectNumber class="textoLinhaPedido"
-									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaM1', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM1', formatter: '.formatter.toInteger'} }"
+									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaM1', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM1', formatter: '.formatter.toIntegerStr'} }"
 									emphasized="false" textAlign="Right"/>
 								<ObjectNumber class="textoLinhaPedido"
-									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaM2', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM2', formatter: '.formatter.toInteger'} }"
+									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaM2', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM2', formatter: '.formatter.toIntegerStr'} }"
 									emphasized="false" textAlign="Right"/>
 							</cells>
 						</ColumnListItem>
@@ -342,7 +342,6 @@
 					</customData>
 				</Table>
 			</ScrollContainer>
-			<!--</ScrollContainer>-->
 		</semantic:content>
 		<semantic:positiveAction>
 			<semantic:PositiveAction text="{i18n>xped.finalizapedido}" press="onCriaPedido"/>
