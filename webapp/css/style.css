@@ -1,0 +1,109 @@
+/* CSS */
+
+.flexBoxConfig {
+    padding: 0 10px 0 10px;
+}
+
+.tableTelaPedido tr:nth-child(even) {
+    background: #acbcde30;
+}
+
+.tableTelaPedido th {
+    background: #acbcde;
+}
+
+.sapUiTableColHdrCnt {
+    background: #acbcde;
+}
+
+.sapMListTbl .sapMLIBSelectD>.sapUiIcon {
+    font-size: 1rem;
+    padding: 0.3rem 0;
+}
+
+.sapMListTblCell {
+    vertical-align: middle;
+    padding: 0.4em;
+}
+
+
+/*
+*** valores para diminuir os campos input  de filtro
+.filtroTelaPedido {
+	padding-top: 0.5em;
+	height: 2.5em;
+}  */
+
+.requisicao {
+    background: #f0808040;
+    /*border: 2px solid black;*/
+}
+
+
+/*
+.sugestao {
+	background: #c4c4c4;
+	border: 2px solid black;
+	border-right-width: 0px;
+}
+*/
+
+.textoLinhaPedido {
+    font-size: 0.700rem;
+}
+
+.sapMListTbl .sapMText,
+.sapMListTbl .sapMLabel {
+    font-size: 0.700rem;
+}
+
+.sapMObjectNumberText {
+    font-size: 0.700rem
+}
+
+.sapMObjectIdentifierTitle .sapMLnk,
+.sapMObjectIdentifierTitle .sapMText {
+    font-size: 0.700rem
+}
+
+.inputCompras {
+    text-align: right;
+    height: 0em
+}
+
+
+/* .sapMSLIIconThumb, .sapMSLIDescNoIcon, .sapMSLIDescIcon { */
+
+.sapMSLITitleOnly {
+    font-size: 0.875rem;
+}
+
+._cl_idProdutos {
+    height: 2.5rem;
+}
+
+.inputCompras .sapMInputBaseInner {
+    font-size: 0.70em;
+    font-family: Arial, Helvetica, sans-serif;
+    line-height: normal;
+    margin-top: -0.5em;
+    height: 1.2rem;
+    padding: 0 0.55rem;
+    text-align: right;
+}
+
+
+/*
+.sapMText { font-size: 0.700rem }
+.sapMLabel  { font-size: 0.700rem }
+*/
+
+.HBoxStyle {
+    margin-top: 5%;
+    margin-left: 5%;
+    margin-bottom: 5%;
+}
+
+.columnLabelStyle {
+    cursor: pointer !important;
+}

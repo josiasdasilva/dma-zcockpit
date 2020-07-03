@@ -1,0 +1,166 @@
+{
+	"_version": "1.8.0",
+	"sap.app": {
+		"id": "dma.zcockpit",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"sourceTemplate": {
+			"id": "servicecatalog.connectivityComponentForManifest",
+			"version": "0.0.0"
+		},
+		"dataSources": {
+			"ZCOCKPIT_COMERCIAL_SRV": {
+				"uri": "/sap/opu/odata/sap/ZCOCKPIT_COMERCIAL_SRV/",
+				"type": "OData",
+				"settings": {
+					"localUri": "localService/metadata.xml"
+				}
+			}
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "sap-icon://detail-view", 
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": false,
+			"phone": false
+		},
+		"supportedThemes": [
+			"sap_hcb",
+			"sap_bluecrystal"
+		]
+	},
+	"sap.ui5": {
+		"rootView": {
+			"viewName": "dma.zcockpit.view.Home",
+			"type": "XML"
+		},
+		"dependencies": {
+			"minUI5Version": "1.38.0",
+			"libs": {
+				"sap.ui.layout": {},
+				"sap.ui.core": {},
+				"sap.m": {}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": true
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "dma.zcockpit.i18n.i18n"
+				}
+			},
+			"": {
+				"type": "sap.ui.model.odata.v2.ODataModel",
+				"settings": {
+					"defaultOperationMode": "Server",
+					"defaultBindingMode": "OneWay",
+					"defaultCountMode": "Request",
+					"defaultUpdateMethod": "PUT"
+				},
+				"dataSource": "ZCOCKPIT_COMERCIAL_SRV",
+				"preload": true
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"viewPath": "dma.zcockpit.view",
+				"controlId": "homeId",
+				"controlAggregation": "pages",
+				"async": true,
+				"clearControlAggregation": false,
+				"transition": "slide"
+			},
+			"routes": [
+				{
+					"pattern": "",
+					"name": "home",
+					"target": "home"
+				},
+				{
+					"pattern": "Comprador/{Ekgrp}/{Uname}",
+					"name": "busca",
+					"target": "busca"
+				},
+				{
+					"pattern": "Fornecedor/{Ekgrp}/{Lifnr}",
+					"name": "fornecedor",
+					"target": "fornecedor"
+				},
+				{
+					"pattern": "PO/{Ekgrp}/{Lifnr}",
+					"name": "pedido",
+					"target": "pedido",
+					"subroutes": [
+						{
+							"name": "detail",
+							"pattern": "PO/{Ekgrp}/{Lifnr}/{Matnr}",
+							"target": "detail"
+						}
+					]
+				}
+			],
+			"targets": {
+				"home": {
+					"viewName": "Home",
+					"viewLevel": 1
+				},
+				"busca": {
+					"viewName": "Busca",
+					"viewLevel": 2
+				},
+				"pedido": {
+					"viewName": "Pedido",
+					"viewLevel": 3
+				},
+				"detail": {
+					"viewName": "Detail",
+					"viewLevel": 4
+				},
+				"fornecedor": {
+					"viewName": "Fornecedor",
+					"viewLevel": 5
+				},
+				"detailObjectNotFound": {
+					"viewName": "DetailObjectNotFound"
+				},
+				"detailNoObjectsAvailable": {
+					"viewName": "DetailNoObjectsAvailable"
+				},
+				"notFound": {
+					"viewName": "NotFound"
+				}
+			}
+		}
+	},
+	"sap.platform.abap": {
+		"uri": "/sap/bc/ui5_ui5/sap/zcockpit/webapp",
+		"_version": "1.1.0"
+	}
+}

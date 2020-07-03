@@ -1,0 +1,112 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:html="http://www.w3.org/1999/xhtml" controllerName="dma.zcockpit.controller.Fornecedor">
+	<App id="fornecedorId">
+		<pages>
+			<Page title="Title">
+				<content>
+				<Table noDataText="Drop column list items here and columns in the area above" id="tableFornecedor" items="{/Fornecedor}">
+				    <items>
+				        <ColumnListItem id="columnListItem" vAlign="Middle" type="Navigation" press="onPedidoPressed">
+				            <cells>
+				                <!-- Favorite -->
+				                <core:Icon xmlns:core="sap.ui.core" id="favoriteIcon" src="sap-icon://favorite" class="sapThemeHighlight-asColor sapMTableContentMargin" visible="{IsFavoriteOfCurrentUser}"/>
+				                <!-- Picture -->
+				                <!-- <Image id="imageImage" src="" densityAware="false" width="3rem" height="3rem" alt="{i18n>xfld.productImage}" decorative="false" class="sapUiSmallMarginTopBottom"/> -->
+				                <!-- Nome Fornecedor -->
+				                <Text id="nomeForn" text="{Mcod1}" maxLines="2" class="sapMTableContentMargin"/>
+				                <!-- Telefone1 -->
+				                <Text id="telf1Txt" text="{Telf1}" maxLines="2" class="sapMTableContentMargin"/>
+				                <!-- Telefone2 -->
+				                <Text id="Telf2Txt" text="{Telf2}" maxLines="2" class="sapMTableContentMargin"/>
+				                <!-- Telefone3 -->
+				                <!--<Text id="Telf3Txt" text="{Telfx}" maxLines="2" class="sapMTableContentMargin"/>-->
+				                <!-- CNPJ -->
+				                <Text id="CNPJTxt" text="{ parts: [ { path: 'Stcd1' }  ] , formatter: '.format.cnpj' }" maxLines="1" class="sapMTableContentMargin"/>
+				                <!-- Cidade/Estado -->
+				                <Text id="CidadeTxt" text="{ parts: [ {path: 'Ort01'}, {path: 'Regio'} ], formatter: '.format.cidadeUf' }" maxLines="1" class="sapMTableContentMargin"/>
+				                <!-- Dt.Ult. Compra -->
+				                <Text id="dtultcompra" text="{Dtultcp}" maxLines="2" class="sapMTableContentMargin"/>
+				                <!-- Faz Pedido Button -->
+				                <Button id="btnFazPedido" text="{i18n>xbut.fazPedido}" press="onPedidoPressed" class="sapMTableContentMargin"/>
+				                </cells>
+				        </ColumnListItem>
+				    </items>
+				    <columns>
+			            <!-- Favorite -->
+			            <Column id="favoriteColumn" width="4%" minScreenWidth="Tablet" hAlign="Left" visible="false">
+			                <header>
+			                    <!-- even though the column title is invisible on the table it needs to be set because it is used by the personalization-->
+			                    <Label id="favoriteLbl" text="{/#Product/IsFavoriteOfCurrentUser/@sap:label}" visible="false"/>
+			                </header>
+			            </Column>
+			            <!-- Picture -->
+			            <!--<Column id="pictureColumn" width="{= !${device>/system/phone}? '9%' : '5rem'}" hAlign="Left">-->
+			            <!--    <header>-->
+			            <!--        <Label id="imageLbl" text="{/#Product/ImageUrl/@sap:label}" visible="{= !${device>/system/phone}}"/>-->
+			            <!--    </header>-->
+			            <!--</Column>-->
+			            <!-- Nome Fornecedor -->
+			            <Column id="nomeFornColumn" width="21%" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" hAlign="Left">
+			                <header>
+			                    <Label id="nomeFornLbl" text="{i18n>xfld.nomeForn}"/>
+			                </header>
+			            </Column>
+			            <!-- Telefone1 -->
+			            <Column id="telfn1Column" width="10%" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" hAlign="Left">
+			                <header>
+			                    <Label id="telfn1Lbl" text="{i18n>xfld.telfn1}"/>
+			                </header>
+			            </Column>
+			            <!-- Telefone2 -->
+			            <Column id="telfn2Column" width="10%" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" hAlign="Left">
+			                <header>
+			                    <Label id="telfn2Lbl" text="{i18n>xfld.telfn2}"/>
+			                </header>
+			            </Column>
+			            <!-- Telefone3 -->
+			            <!--<Column id="telfn3Column" width="10%" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" hAlign="Left">-->
+			            <!--    <header>-->
+			            <!--        <Label id="telfn3Lbl" text="{i18n>xfld.telfnx}"/>-->
+			            <!--    </header>-->
+			            <!--</Column>-->
+			            <!-- CNPJ -->
+			            <Column id="cnpjColumn" width="14%" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" hAlign="Left">
+			                <header>
+			                    <Label id="cnpjLbl" text="{i18n>xfld.cnpj}"/>
+			                </header>
+			            </Column>
+			            <!-- Cidade/Estado -->
+			            <Column id="cidadeColumn" width="23%" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" hAlign="Left">
+			                <header>
+			                    <Label id="cidadeLbl" text="{i18n>xfld.cidade}"/>
+			                </header>
+			            </Column>
+			            <!-- Data Última Compra -->
+			            <Column id="dtUltCpColumn" width="10%" minScreenWidth="Tablet" demandPopin="true" popinDisplay="Inline" hAlign="Left">
+			                <header>
+			                    <Label id="dtUltCpLbl" text="{i18n>xfld.dtUltCp}"/>
+			                </header>
+			            </Column>
+			            <!-- Faz Pedido Button -->
+			            <Column id="buttonColumn" width="8%" minScreenWidth="Tablet" demandPopin="true" popinDisplay="WithoutHeader" hAlign="Right">
+			                <header>
+			                    <Label id="fazPedido" text="{i18n>xfld.fazPedido}"/>
+			                </header>
+			            </Column>
+					</columns>
+				        <headerToolbar>
+				            <OverflowToolbar id="tableToolbar">
+				                <Title id="catalogTitle" text="{productListView>/catalogTitle}" visible="{= !${device>/system/phone}}"/>
+				                <ToolbarSpacer id="toolbarSpacer" visible="{= !${device>/system/phone}}"/>
+				                <SearchField id="searchField" showRefreshButton="false" search="onSearchPressed" width="{= !${device>/system/phone}? '30%' : 'auto'}"/>
+				                </OverflowToolbar>
+				            
+				        </headerToolbar>
+				    </Table>
+				</content>
+			<footer>
+			    <Bar xmlns:core="sap.ui.core" xmlns:shop="nw.epm.refapps.ext.shop.control" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:table="sap.ui.table" xmlns="sap.m" id="__bar0"/>
+			</footer>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

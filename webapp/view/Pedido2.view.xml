@@ -1,0 +1,134 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:m="sap.m" xmlns="sap.ui.table"
+	controllerName="dma.zcockpit.controller.Pedido2" height="100%">
+	<semantic:FullscreenPage id="fullPage" navButtonPress="onNavBack" title="{pedidoView>/Mcod1}" showNavButton="true" enableScrolling="false">
+		<semantic:content>
+			<m:ObjectHeader title="Pedido" number="{ path: 'globalModel>/Total', formatter: '.format.fullNumberStr' }" numberUnit="R$"
+				intro="Detalhes" titleActive="true" id="headerCabecalho" fullScreenOptimized="true" condensed="true"></m:ObjectHeader>
+			<Table id="tablePedido" class="textoLinhaPedido tableTelaPedido sapUiResponsiveMargin sapUiNoMarginTop" rows="{/PO}" visibleRowCount="19" selectionMode="None"
+			       cellClick="toDetail">
+				<columns>
+					<Column id="__column_matnr" class="textoLinhaPedido" width="4rem" filterProperty="Código" defaultFilterOperator="StartsWith">
+						<m:Label text="{i18n>xped.codigo}" class="textoLinhaPedido" />
+						<template>
+							<m:ObjectIdentifier title="{Matnr}" class="textoLinhaPedido" id="_column_matnr"/>
+						</template>
+					</Column>
+					<Column id="__column_materialCT" class="textoLinhaPedido" width="16em">
+						<m:Text text="{i18n>xped.material}" class="textoLinhaPedido" id="materialCT" wrapping="false" maxLines="1"/>
+						<template>
+							<m:Text text="{Maktx}" class="textoLinhaPedido" id="_column_maktx" wrapping="false"/>
+						</template>
+					</Column>
+					<Column id="__column_estoqueteoricoCT" class="textoLinhaPedido" width="4rem">
+						<m:Text id="estoqueteoricoCT" text="{i18n>xped.estoque_teorico}" class="textoLinhaPedido" textAlign="End" textDirection="RTL"/>
+						<template>
+							<m:ObjectNumber id="_column_est_teor" class="textoLinhaPedido" number="{path: 'EstTeor', formatter: '.format.toIntegerStr' }" emphasized="false" tooltip="{path: 'EstTeor', formatter: '.format.toIntegerStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_mdvCT" width="3.5rem" class="textoLinhaPedido" >
+				        <m:Text text="{i18n>xped.mdv}" id="mdvCT" class="textoLinhaPedido" tooltip="Média de Venda"/>
+						<template>
+							<m:ObjectNumber id="_column_mdv_loja" class="textoLinhaPedido" number="{path: 'Mvd', formatter: '.format.toIntegerStr' }" emphasized="false" tooltip="{path: 'Mvd', formatter: '.format.toIntegerStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_precocompraCT" width="3.5rem">
+				        <m:Text id="precocompraCT" text="{i18n>xped.preco_compra}" tooltip="Preço de Compra"/>
+						<template>
+							<m:ObjectNumber id="_column_pr_ult_cp" number="{ path: 'PrUltCp', formatter: '.format.fullNumberStr' }" emphasized="false" tooltip="{path: 'PrUltCp', formatter: '.format.fullNumberStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_requisicaoCT" width="4rem">
+				        <m:Text id="requisicaoCT" text="{i18n>xped.requis}" tooltip="Requisição"/>
+						<template>
+							<m:ObjectNumber id="_column_req_copy" number="{path: 'Sugestao', formatter: '.format.toIntReqSugStr' }" emphasized="false" textAlign="End" visible="{= ${Sugestao} &gt; 0 }"/>
+						</template>
+					</Column>
+					<Column id="__column_" width="4rem">
+				        <m:Text id="ajusteCT" text="{i18n>xped.ajuste}" tooltip="Ajuste"/>
+						<template>
+							<m:ObjectNumber id="_column_ajuste_copy" number="{path: 'Requisicao', formatter: '.format.toIntReqSugStr' }" state="{Suggstate}" emphasized="false" textAlign="Right" visible="{= ${Requisicao} &gt;0}"/>
+						</template>
+					</Column>
+					<Column id="__column_valor" width="6rem">
+				        <m:Text id="valor" text="{i18n>xped.valor}" tooltip="Valor  Total do Material"/>
+						<template>
+							<m:ObjectNumber id="_column_valor" number="{path: 'ValorTotal', formatter: '.format.fullNumberStr' }" state="{Suggstate}" emphasized="false" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_precovendaCT" width="3.5rem">
+				        <m:Text id="precovendaCT" text="{i18n>xped.preco_venda}" tooltip="Preço de Venda"/>
+						<template>
+							<m:ObjectNumber id="_column_pr_purch" number="{ path: 'PrUltVd', formatter: '.format.fullNumberStr' }" emphasized="false" tooltip="{PrUltVd}" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_margematacadoCT" width="3.5rem">
+				        <m:Text id="margematacadoCT" text="{i18n>xped.margem_ata}" tooltip="Margem Atacado"/>
+						<template>
+							<m:ObjectNumber id="_column_margem_atac" number="{ path: 'MargemAta', formatter: '.format.percentage1dig' }" emphasized="false" tooltip="{path: 'MargemAta', formatter: '.format.fullNumberStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_margemvarejoCT" width="3.5rem">
+				        <m:Text id="margemvarejoCT" text="{i18n>xped.margem_var}" tooltip="Margem Varejo"/>
+						<template>
+							<m:ObjectNumber id="_column_margem" number="{ path: 'MargemVar', formatter: '.format.percentage1dig' }" emphasized="false" tooltip="{path: 'MargemVar', formatter: '.format.fullNumberStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_estoquecdCT" width="5rem">
+				        <m:Text id="estoquecdCT" text="{i18n>xped.estoque_cd}" tooltip="Estoque no CD"/>
+						<template>
+							<m:ObjectNumber id="_column_est_cd" number="{path: 'EstCd', formatter: '.format.toIntegerStr' }" emphasized="false" tooltip="{path: 'EstCd', formatter: '.format.toIntegerStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_estoquelojasCT" width="5rem">
+				        <m:Text id="estoquelojasCT" text="{i18n>xped.estoque_loj}" tooltip="Estoque na Loja"/>
+						<template>
+							<m:ObjectNumber id="_column_est_loja" number="{path: 'EstLoja', formatter: '.format.toIntegerStr' }" emphasized="false" tooltip="{path: 'EstLoja', formatter: '.format.toIntegerStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_estoquetrocaCT" width="4rem">
+				        <m:Text id="estoquetransitoCT" text="{i18n>xped.estoque_tra}" tooltip="Estoque de Troca"/>
+						<template>
+							<m:ObjectNumber id="_column_est_transito" number="{path: 'EstTroca', formatter: '.format.toIntegerStr' }" emphasized="false" tooltip="{path: 'EstTroca', formatter: '.format.toIntegerStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_ped_pend_centralCT" width="4rem">
+				        <m:Text id="ped_pend_centralCT" text="{i18n>xped.estoque_ppc}"/>
+						<template>
+							<m:ObjectNumber id="_column_ped_pend_central" number="{path: 'PPCentral', formatter: '.format.toIntegerStr' }" emphasized="false" tooltip="{path: 'PPCentral', formatter: '.format.toIntegerStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_ped_pend_fornCT" width="4rem">
+				        <m:Text id="ped_pend_fornCT" text="{i18n>xped.estoque_ppf}"/>
+						<template>
+							<m:ObjectNumber id="_column_ped_pend_forn" number="{path: 'PPForn', formatter: '.format.toIntegerStr' }" emphasized="false" tooltip="{path: 'PPForn', formatter: '.format.toIntegerStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_venda_atualCT" width="5rem">
+				        <m:Text id="venda_atualCT" text="{i18n>xped.Venda_Atual}" tooltip="Venda (R$) - Mês Atual"/>
+						<template>
+							<m:ObjectNumber id="_column_venda_atual" number="{path: 'VendaMM', formatter: '.format.fullNumberStr' }" emphasized="false" tooltip="{path: 'VendaMM', formatter: '.format.fullNumberStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_venda_M1CT" width="5rem">
+				        <m:Text id="venda_M1CT" text="{i18n>xped.Venda_M1}" tooltip="Venda (R$) - Mês Atual -1"/>
+						<template>
+							<m:ObjectNumber id="_column_venda_m1" number="{path: 'VendaM1', formatter: '.format.fullNumberStr' }" emphasized="false" tooltip="{path: 'VendaM1', formatter: '.format.fullNumberStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+					<Column id="__column_venda_M2CT" width="5rem">
+				        <m:Text id="venda_M2CT" text="{i18n>xped.Venda_M2}" tooltip="Venda (R$) - Mês Atual -2"/>
+						<template>
+							<m:ObjectNumber id="_column_vendam2" number="{path: 'VendaM2', formatter: '.format.fullNumberStr' }" emphasized="false" tooltip="{path: 'VendaM2', formatter: '.format.fullNumberStr' }" textAlign="Right"/>
+						</template>
+					</Column>
+				</columns>
+			</Table>
+		</semantic:content>
+		<semantic:positiveAction>
+			<semantic:PositiveAction text="{i18n>xped.finalizapedido}" press="onCriaPedido"/>
+		</semantic:positiveAction>
+		<semantic:negativeAction>
+			<semantic:NegativeAction text="{i18n>xped.limpasugestao}" press="onResetPedido"/>
+		</semantic:negativeAction>
+	</semantic:FullscreenPage>
+</mvc:View>

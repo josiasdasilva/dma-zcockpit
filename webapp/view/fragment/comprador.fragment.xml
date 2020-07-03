@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="Comprador"
+		class="sapUiPopupWithPadding"
+		items="{/Comprador}"
+		liveChange="_handleF4compradorSearch"
+		confirm="_handleF4compradorClose"
+		cancel="_handleF4compradorClose">
+		<StandardListItem
+			icon=""
+			iconDensityAware="false"
+			iconInset="false"
+			title="{Ekgrp}"
+			description="{Nome}"
+			info="{Uname}" />
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,687 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" controllerName="dma.zcockpit.controller.Detail2"
+	height="100%">
+	<semantic:DetailPage showNavButton="true" showSubHeader="false" enableScrolling="false"
+		title="{globalModel>/Lifnr} - {globalModel>/Fornecedor}" id="pgDetail" showFooter="false">
+		<semantic:content>
+			<VBox width="100%" direction="Column" id="__vbox3" justifyContent="SpaceBetween" alignContent="Start" height="100%">
+				<items>
+					<ObjectHeader xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="headerDetail" title="{Matnr} - {Maktx}"
+						number="{ path: 'globalModel>/Count', formatter: '.format.toInteger' }" numberUnit="{Purchunit}" intro="{Matnr}" backgroundDesign="Solid"
+						titleSelectorPress="onTitleSelectorPress" titleLevel="Auto" condensed="true"/>
+					<VBox xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" width="100%" direction="Column" id="__vbox0" height="100%">
+						<items>
+							<IconTabBar xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="iconTabBar" class="sapUiResponsiveContentPadding"
+								stretchContentHeight="true">
+								<items>
+									<IconTabFilter text="Compra" icon="sap-icon://cart-3" id="__filter1">
+										<content>
+											<ScrollContainer height="95%" horizontal="false" vertical="true" focusable="true" id="__container1">
+												<Table noDataText="Sem dados para exibir" id="compraTable" items="{/POCompra}" class="tableTelaPedido" updateFinished="compraUpdateFinished">
+													<items>
+														<ColumnListItem id="__item3_copy-compraTable-0-compraTable-0" type="Active">
+															<cells>
+																<sap.ui.core:Icon xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:sap.ui.core="sap.ui.core" size="1.5em"
+																	id="_detail_vendas_icon_copy-compraTable-0-compraTable-0" width="1em" src="{path: 'Bloqueada', formatter: '.format.iconBloqueada'}"/>
+																<Text text="{Werks}" id="_detail_vendas_loja_copy-compraTable-0-compraTable-0" width="2.5em"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'M0Venda', formatter: '.format.compress'}" id="_detail_compra_qvdmattot_atual_copy-compraTable-0-compraTable-0"
+																	tooltip="{path: 'M0Venda', formatter: '.format.float3dig'}" emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'M1Venda', formatter: '.format.compress'}" id="_detail_compra_qvdmattot_1_copy-compraTable-0-compraTable-0"
+																	tooltip="{path: 'M1Venda', formatter: '.format.float3dig'}" emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'M2Venda', formatter: '.format.compress'}" id="_detail_compra_qvdmattot_2_copy-compraTable-0-compraTable-0"
+																	tooltip="{path: 'M2Venda', formatter: '.format.float3dig'}" emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'M3Venda', formatter: '.format.compress'}" id="_detail_compra_qvdmattot_3_copy-compraTable-0-compraTable-0"
+																	tooltip="{path: 'M3Venda', formatter: '.format.float3dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Dtultcp', formatter: '.format.date_ddmm'}" id="_detail_compra_dtultcp_copy-compraTable-0-compraTable-0"
+																	tooltip="{path: 'M3Venda', formatter: '.format.float3dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Dtultvd', formatter: '.format.date_ddmm'}" id="_detail_compra_dtultvd_copy-compraTable-0-compraTable-0"
+																	tooltip="{path: 'M3Venda', formatter: '.format.float3dig'}" emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Estloja', formatter: '.format.toInteger'}" id="_detail_compra_estloja_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Esttrf', formatter: '.format.toInteger'}" id="_detail_compra_esttroca_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Estind', formatter: '.format.toInteger'}" id="_detail_compra_estindip_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Qtpedpend', formatter: '.format.toInteger'}" id="_detail_compra_pedpendcentral_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'QtdpedpendForn', formatter: '.format.toInteger'}" id="_detail_compra_pedpendfornec_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Mvdloja', formatter: '.format.float2dig'}" id="_detail_compra_mdvloja_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Estdia', formatter: '.format.toInteger'}" id="_detail_compra_diasestoque_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'PrVarej', formatter: '.format.fullNumberStr'}" id="_detail_compra_prcompvarejo_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'PrAtaca', formatter: '.format.fullNumberStr'}" id="_detail_compra_prcompatacado_copy-compraTable-0-compraTable-0"
+																	emphasized="false"/>
+																<ObjectNumber xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic"
+																	number="{path: 'Sugestao', formatter: '.format.toIntReqSugStr'}" id="_detail_compra_sugestao_copy-compraTable-0-compraTable-0"
+																	emphasized="false" visible="{= ${Sugestao} &gt; 0}"/>
+																<Input width="5em" id="_detail_compra_pedido_copy-compraTable-0-compraTable-0"
+																	value="{path: 'Requisicao', formatter:'.format.toInteger'}" fieldWidth="100%" type="Number" liveChange="_onLiveChangeInput"
+																	change="_onChangeInput" showTableSuggestionValueHelp="false" startSuggestion="0" valueLiveUpdate="true"/>
+																<core:Icon xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:l="sap.ui.layout" xmlns:form="sap.ui.layout.form"
+																	xmlns:core="sap.ui.core" src="sap-icon://save" size="1.5em" id="icon_refresh_copy-compraTable-0-compraTable-0" visible="false"
+																	press="_onSavePress"/>
+															</cells>
+														</ColumnListItem>
+													</items>
+													<columns>
+														<Column id="__column25" tooltip="tooltip">
+															<header>
+																<Label id="__label12"/>
+															</header>
+														</Column>
+														<Column id="__column26">
+															<header>
+																<Text text="Loja" id="_dtcp_text1"/>
+															</header>
+														</Column>
+														<Column id="__column27" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.venda_atual}" id="_dtcp_text2"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy2">
+															<header>
+																<Text text="{i18n>tbl_compra.venda_m1}" id="_dtcp_text3"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy3">
+															<header>
+																<Text text="{i18n>tbl_compra.venda_m2}" id="_dtcp_text4"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy4">
+															<header>
+																<Text text="{i18n>tbl_compra.venda_m3}" id="_dtcp_text5"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy5" width="4rem" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.dt_ultima_compra}" id="_dtcp_text6"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy17" width="4rem" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.dt_ultima_venda}" id="_dtcp_text7"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy6" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.estoque_loja}" id="_dtcp_text8"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy7" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.estoque_troca}" id="_dtcp_text9"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy8" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.estoque_indisp}" id="_dtcp_text10"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy9" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.ped_pend_central}" id="_dtcp_text11"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy10" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.ped_pend_forn}" id="_dtcp_text12"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy11" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.mdv_loja}" id="_dtcp_text13"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy12" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.dias_estoque}" id="_dtcp_text14"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy13" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.preco_compra_var}" id="_dtcp_text15"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy14" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.preco_compra_ata}" id="_dtcp_text16"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy15" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.sugestao_ultima}" id="_dtcp_text17"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column27_copy16" hAlign="Center">
+															<header>
+																<Text text="{i18n>tbl_compra.sugestao_compra}" id="_dtcp_text18"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column25_copy" hAlign="Center">
+															<header>
+																<Label id="__label12_copy"/>
+															</header>
+														</Column>
+													</columns>
+													<headerToolbar>
+														<Toolbar width="100%" id="__toolbar1">
+															<content>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="AC"
+																	width="auto" id="_filterBtn_AC" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="AL"
+																	width="auto" id="_filterBtn_AL" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="AM"
+																	width="auto" id="_filterBtn_AM" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="AP"
+																	width="auto" id="_filterBtn_AP" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="BA"
+																	width="auto" id="_filterBtn_BA" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="CE"
+																	width="auto" id="_filterBtn_CE" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="DF"
+																	width="auto" id="_filterBtn_DF" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="ES"
+																	width="auto" id="_filterBtn_ES" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="GO"
+																	width="auto" id="_filterBtn_GO" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="MA"
+																	width="auto" id="_filterBtn_MA" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="MG"
+																	width="auto" id="_filterBtn_MG" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="MT"
+																	width="auto" id="_filterBtn_MT" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="PA"
+																	width="auto" id="_filterBtn_PA" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="PB"
+																	width="auto" id="_filterBtn_PB" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="PE"
+																	width="auto" id="_filterBtn_PE" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="PI"
+																	width="auto" id="_filterBtn_PI" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="PR"
+																	width="auto" id="_filterBtn_PR" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="RJ"
+																	width="auto" id="_filterBtn_RJ" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="RN"
+																	width="auto" id="_filterBtn_RN" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="RO"
+																	width="auto" id="_filterBtn_RO" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="RR"
+																	width="auto" id="_filterBtn_RR" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="RS"
+																	width="auto" id="_filterBtn_RS" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="SC"
+																	width="auto" id="_filterBtn_SC" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="SE"
+																	width="auto" id="_filterBtn_SE" press="onFilterPress" visible="false"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="SP"
+																	width="auto" id="_filterBtn_SP" press="onFilterPress"/>
+																<ToggleButton xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m" text="TO"
+																	width="auto" id="_filterBtn_TO" press="onFilterPress" visible="false"/>
+															</content>
+														</Toolbar>
+													</headerToolbar>
+												</Table>
+											</ScrollContainer>
+										</content>
+									</IconTabFilter>
+									<IconTabFilter text="Venda" icon="sap-icon://cart-2" id="__filter2">
+										<content>
+											<ScrollContainer height="95%" horizontal="false" vertical="true" focusable="true" id="__container2">
+												<Table noDataText="Sem dados para exibir" id="vendaTable" items="{/POVenda}" class="tableTelaPedido">
+													<items>
+														<ColumnListItem id="__item5_copy-vendaTable-0-vendaTable-0">
+															<cells>
+																<sap.ui.core:Icon xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:sap.ui.core="sap.ui.core"
+																	src="{path: 'Bloqueio', formatter: '.format.iconBloqueada'}" size="1.5em" id="_detail_venda_bloq_copy-vendaTable-0-vendaTable-0"
+																	width="1em"/>
+																<Text xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" text="{Werks}"
+																	id="_detail_venda_loja_copy-vendaTable-0-vendaTable-0" width="2.5em"/>
+																<ObjectNumber id="_detail_venda_cmm_copy-vendaTable-0-vendaTable-0" number="{path: 'Cmm', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_pmz_copy-vendaTable-0-vendaTable-0" number="{path: 'Pmz', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_mkp_copy-vendaTable-0-vendaTable-0" number="{path: 'Mkp', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_prvarej_copy-vendaTable-0-vendaTable-0" number="{path: 'PrVarej', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_prataca_copy-vendaTable-0-vendaTable-0" number="{path: 'PrAtaca', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_mgvarej_copy-vendaTable-0-vendaTable-0" number="{path: 'MgVarej', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_mgataca_copy-vendaTable-0-vendaTable-0" number="{path: 'MgAtaca', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_qtrmat_copy-vendaTable-0-vendaTable-0" number="{path: 'QtrMat', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_qvdmattot_copy-vendaTable-0-vendaTable-0" number="{path: 'QvdMatTot', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_vlvendatot_copy-vendaTable-0-vendaTable-0" number="{path: 'VlrVendaTot', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_mrg_copy-vendaTable-0-vendaTable-0" number="{path: 'Margem', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_qtrmat1_copy-vendaTable-0-vendaTable-0" number="{path: 'M0QtrMat', formatter: '.format.float2dig'}" emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_qvdmattot1_copy-vendaTable-0-vendaTable-0" number="{path: 'M0QvdMatTot', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_vlvendatot1_copy-vendaTable-0-vendaTable-0" number="{path: 'M0VlrVendaTot', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_venda_mrg1_copy-vendaTable-0-vendaTable-0" number="{path: 'M0Margem', formatter: '.format.float2dig'}" emphasized="false"/>
+															</cells>
+														</ColumnListItem>
+													</items>
+													<columns>
+														<Column id="__column28">
+															<header>
+																<Text text="" id="_dtvd_text1"/>
+															</header>
+														</Column>
+														<Column id="__column29">
+															<header>
+																<Text text="{i18n>tbl_venda.loja}" id="_dtvd_text2"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy">
+															<header>
+																<Text text="{i18n>tbl_venda.cmm}" id="_dtvd_text3"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy2">
+															<header>
+																<Text text="{i18n>tbl_venda.pmz}" id="_dtvd_text4"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy3">
+															<header>
+																<Text text="{i18n>tbl_venda.mkp}" id="_dtvd_text5"/>
+															</header>
+														</Column>
+														<Column id="__column30">
+															<header>
+																<Text text="{i18n>tbl_venda.preco_var}" id="_dtvd_text6"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy5">
+															<header>
+																<Text text="{i18n>tbl_venda.preco_ata}" id="_dtvd_text7"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy6">
+															<header>
+																<Text text="{i18n>tbl_venda.mg_var}" id="_dtvd_text8"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy7">
+															<header>
+																<Text text="{i18n>tbl_venda.mg_ata}" id="_dtvd_text9"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy8">
+															<header>
+																<Text text="{i18n>tbl_venda.qtr_mat}" id="_dtvd_text10"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy10">
+															<header>
+																<Text text="{i18n>tbl_venda.qvd_mat_tot}" id="_dtvd_text11"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy12">
+															<header>
+																<Text text="{i18n>tbl_venda.vlr_venda_tot}" id="_dtvd_text12"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy11">
+															<header>
+																<Text text="{i18n>tbl_venda.mrg}" id="_dtvd_text13"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy9">
+															<header>
+																<Text text="{i18n>tbl_venda.1_qtr_mat}" id="_dtvd_text14"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy13">
+															<header>
+																<Text text="{i18n>tbl_venda.1_qvd_mat_tot}" id="_dtvd_text15"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy14">
+															<header>
+																<Text text="{i18n>tbl_venda.1_vlr_venda_tot}" id="_dtvd_text16"/>
+															</header>
+														</Column>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column30_copy15">
+															<header>
+																<Text text="{i18n>tbl_venda.1_mrg}" id="_dtvd_text17"/>
+															</header>
+														</Column>
+													</columns>
+												</Table>
+											</ScrollContainer>
+										</content>
+									</IconTabFilter>
+									<IconTabFilter text="Histórico" icon="sap-icon://history" id="__filter3" visible="false">
+										<content>
+											<ScrollContainer height="95%" horizontal="false" vertical="true" focusable="true" id="__container3">
+												<Table noDataText="Sem dados para exibir" id="historicoTable" items="{/POHistorico}" class="tableTelaPedido">
+													<items>
+														<ColumnListItem id="__item6_copy-historicoTable-0-historicoTable-0">
+															<cells>
+																<sap.ui.core:Icon xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:sap.ui.core="sap.ui.core"
+																	src="{path: 'Bloqueio', formatter: '.format.iconBloqueada'}" size="1.5em" id="_detail_hist_bloq_copy-historicoTable-0-historicoTable-0"
+																	width="1em"/>
+																<Text xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" text="{Werks}"
+																	id="_detail_hist_loja_copy-historicoTable-0-historicoTable-0" width="2.5em"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s1qtetransf_copy-historicoTable-0-historicoTable-0" number="{path: 'S1QteTransf', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s1qtevenda_copy-historicoTable-0-historicoTable-0" number="{path: 'S1QteVenda', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s1vlrvdtotal_copy-historicoTable-0-historicoTable-0" number="{path: 'S1VlrVdTotal', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s1qtemedvdloja_copy-historicoTable-0-historicoTable-0" number="{path: 'S1QteMdvLoja', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s2qtetransf_copy-historicoTable-0-historicoTable-0" number="{path: 'S2QteTransf', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s2qtevenda_copy-historicoTable-0-historicoTable-0" number="{path: 'S2QteVenda', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s2vlrvdtotal_copy-historicoTable-0-historicoTable-0" number="{path: 'S2VlrVdTotal', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s2qtemedvdloja_copy-historicoTable-0-historicoTable-0" number="{path: 'S2QteMdvLoja', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s3qtetransf_copy-historicoTable-0-historicoTable-0" number="{path: 'S3QteTransf', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s3qtevenda_copy-historicoTable-0-historicoTable-0" number="{path: 'S3QteVenda', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s3vlrvdtotal_copy-historicoTable-0-historicoTable-0" number="{path: 'S3VlrVdTotal', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s3qtemedvdloja_copy-historicoTable-0-historicoTable-0" number="{path: 'S3QteMdvLoja', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s4qtetransf_copy-historicoTable-0-historicoTable-0" number="{path: 'S4QteTransf', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s4qtevenda_copy-historicoTable-0-historicoTable-0" number="{path: 'S4QteVenda', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s4qlrvdtotal_copy-historicoTable-0-historicoTable-0" number="{path: 'S4VlrVdTotal', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s4qtemedvdloja_copy-historicoTable-0-historicoTable-0" number="{path: 'S4QteMdvLoja', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s5qtetransf_copy-historicoTable-0-historicoTable-0" number="{path: 'S5QteTransf', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s5qtevenda_copy-historicoTable-0-historicoTable-0" number="{path: 'S5QteVenda', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s5vlrvdtotal_copy-historicoTable-0-historicoTable-0" number="{path: 'S5VlrVdTotal', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																	id="_detail_hist_s5qtemedvdloja_copy-historicoTable-0-historicoTable-0" number="{path: 'S5QteMdvLoja', formatter: '.format.float2dig'}"
+																	emphasized="false"/>
+															</cells>
+														</ColumnListItem>
+													</items>
+													<columns>
+														<Column id="__column_hist_icon">
+															<header>
+																<Label id="_det_hist_icon"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_loja">
+															<header>
+																<Text text="Loja" id="_det_hist_loja"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S1Qtetransf">
+															<header>
+																<Text text="{i18n>tbl_hist.s1qtdtransf}" id="_det_hist_s1qtetransf"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S1Qtevenda">
+															<header>
+																<Text text="{i18n>tbl_hist.s1qtevenda}" id="_det_hist_s1qtevenda"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S1Vlrvdtotal">
+															<header>
+																<Text text="{i18n>tbl_hist.s1vlrvdtotal}" id="_det_hist_s1vlrvdtotal"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S1Qtemedvdloja">
+															<header>
+																<Text text="{i18n>tbl_hist.s1qtemdvloja}" id="_det_hist_s1qtemdvloja"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S2Qtetransf">
+															<header>
+																<Text text="{i18n>tbl_hist.s2qtdtransf}" id="_det_hist_s2qtetransf"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S2Qtevenda">
+															<header>
+																<Text text="{i18n>tbl_hist.s2qtevenda}" id="_det_hist_s2qtevenda"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S2Vlrvdtotal">
+															<header>
+																<Text text="{i18n>tbl_hist.s2vlrvdtotal}" id="_det_hist_s2vlrvdtotal"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S2Qtemedvdloja">
+															<header>
+																<Text text="{i18n>tbl_hist.s2qtemdvloja}" id="_det_hist_s2qtemdvloja"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S3Qtetransf">
+															<header>
+																<Text text="{i18n>tbl_hist.s3qtdtransf}" id="_det_hist_s3qtetransf"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S3Qtevenda">
+															<header>
+																<Text text="{i18n>tbl_hist.s3qtevenda}" id="_det_hist_s3qtevenda"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S3Vlrvdtotal">
+															<header>
+																<Text text="{i18n>tbl_hist.s3vlrvdtotal}" id="_det_hist_s3vlrvdtotal"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S3Qtemedvdloja">
+															<header>
+																<Text text="{i18n>tbl_hist.s3qtemdvloja}" id="_det_hist_s3qtemdvloja"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S4Qtetransf">
+															<header>
+																<Text text="{i18n>tbl_hist.s4qtdtransf}" id="_det_hist_s4qtetransf"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S4Qtevenda">
+															<header>
+																<Text text="{i18n>tbl_hist.s4qtevenda}" id="_det_hist_s4qtevenda"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S4Vlrvdtotal">
+															<header>
+																<Text text="{i18n>tbl_hist.s4vlrvdtotal}" id="_det_hist_s4vlrvdtotal"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S4Qtemedvdloja">
+															<header>
+																<Text text="{i18n>tbl_hist.s4qtemdvloja}" id="_det_hist_s4qtemdvloja"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S5Qtetransf">
+															<header>
+																<Text text="{i18n>tbl_hist.s5qtdtransf}" id="_det_hist_s5qtetransf"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S5Qtevenda">
+															<header>
+																<Text text="{i18n>tbl_hist.s5qtevenda}" id="_det_hist_s5qtevenda"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S5Vlrvdtotal">
+															<header>
+																<Text text="{i18n>tbl_hist.s5vlrvdtotal}" id="_det_hist_s5vlrvdtotal"/>
+															</header>
+														</Column>
+														<Column id="__column_hist_S5Qtemedvdloja">
+															<header>
+																<Text text="{i18n>tbl_hist.s5qtemdvloja}" id="_det_hist_s5qtemdvloja"/>
+															</header>
+														</Column>
+													</columns>
+												</Table>
+											</ScrollContainer>
+										</content>
+									</IconTabFilter>
+									<IconTabFilter text="Faceamento" icon="sap-icon://retail-store" id="__filter4">
+										<content>
+											<Table xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m" xmlns="sap.m"
+												showNoData="false" class="tableTelaPedido" id="__table1">
+												<columns>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_loja" hAlign="Center">
+														<header>
+															<Text text="{i18n>tbl_faceamento.loja}" id="_text_faceamento_loja"/>
+														</header>
+													</Column>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_uf" hAlign="Center">
+														<header>
+															<Text text="{i18n>tbl_faceamento.uf}" id="_text_faceamento_uf"/>
+														</header>
+													</Column>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_bandeira" hAlign="Center">
+														<header>
+															<Text text="{i18n>tbl_faceamento.bandeira}" id="_text_faceamento_bandeira"/>
+														</header>
+													</Column>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_estloja" hAlign="End">
+														<header>
+															<Text text="{i18n>tbl_faceamento.estloja}" id="_text_faceamento_estloja"/>
+														</header>
+													</Column>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_minbe" hAlign="End">
+														<header>
+															<Text text="{i18n>tbl_faceamento.minbe}" id="_text_faceamento_minbe"/>
+														</header>
+													</Column>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_eisbe" hAlign="End">
+														<header>
+															<Text text="{i18n>tbl_faceamento.eisbe}" id="_text_faceamento_eisbe"/>
+														</header>
+													</Column>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_mabst" hAlign="End">
+														<header>
+															<Text text="{i18n>tbl_faceamento.mabst}" id="_text_faceamento_mabst"/>
+														</header>
+													</Column>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_bstrf" hAlign="End">
+														<header>
+															<Text text="{i18n>tbl_faceamento.bstrf}" id="_text_faceamento_bstrf"/>
+														</header>
+													</Column>
+													<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__header_faceamento_gwert" hAlign="End">
+														<header>
+															<Text text="{i18n>tbl_faceamento.gwert}" id="_text_faceamento_gwert"/>
+														</header>
+													</Column>
+												</columns>
+											</Table>
+											<ScrollContainer height="95%" horizontal="false" vertical="true" focusable="true" id="__container4">
+												<!-- Table somente o cabeçalho -->
+												<Table noDataText="Sem dados para exibir" id="faceamentoTable" items="{/POFaceamento}" class="tableTelaPedido">
+													<items>
+														<ColumnListItem id="__item5_copy-vendaTable_copy-0-faceamentoTable-0">
+															<cells>
+																<Text xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" text="{Werks}" id="_detail_loja_faceamentoTable_copy5"
+																	textAlign="Center"/>
+																<Text xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" text="{Uf}" id="_detail_uf_faceamentoTable_copy5"
+																	textAlign="Center"/>
+																<Text xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" text="{Bandeira}"
+																	id="_detail_bandeira_faceamentoTable_copy5" textAlign="Center"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="_detail_estloja_faceamentoTable_copy5"
+																	number="{path: 'Estloja', formatter: '.format.fullNumberStr'}" emphasized="false" textAlign="End"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="_detail_minbe_faceamentoTable_copy5"
+																	number="{path: 'Minbe', formatter: '.format.fullNumberStr'}" emphasized="false" textAlign="End"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="_detail_eisbe_faceamentoTable_copy5"
+																	number="{path: 'Eisbe', formatter: '.format.fullNumberStr'}" emphasized="false" textAlign="End"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="_detail_mabst_faceamentoTable_copy5"
+																	number="{path: 'Mabst', formatter: '.format.fullNumberStr'}" emphasized="false" textAlign="End"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="_detail_bstrf_faceamentoTable_copy5"
+																	number="{path: 'Bstrf', formatter: '.format.fullNumberStr'}" emphasized="false" textAlign="End"/>
+																<ObjectNumber xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="_detail_gwetr_faceamentoTable_copy5"
+																	number="{path: 'Gwert', formatter: '.format.fullNumberStr'}" emphasized="false" textAlign="End"/>
+															</cells>
+														</ColumnListItem>
+													</items>
+													<columns>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_loja" hAlign="Center"/>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_uf" hAlign="Center"/>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_bandeira" hAlign="Center"/>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_estloja" hAlign="End"/>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_minbe" hAlign="End"/>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_eisbe" hAlign="End"/>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_mabst" hAlign="End"/>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_bstrf" hAlign="End"/>
+														<Column xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__column_faceamento_gwert" hAlign="End"/>
+													</columns>
+												</Table>
+											</ScrollContainer>
+										</content>
+									</IconTabFilter>
+								</items>
+							</IconTabBar>
+						</items>
+					</VBox>
+					<Toolbar xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" class="sapContrast sapMIBar sapMFooter-CTX"
+						id="__toolbar2" width="100%" height="48px">
+						<content>
+							<ToolbarSpacer id="__spacer1"/>
+							<Button class="sapMBtnAccept" text="Gravar Sugestão" width="auto" id="botaoGravarSugestao"/>
+						</content>
+					</Toolbar>
+				</items>
+			</VBox>
+		</semantic:content>
+	</semantic:DetailPage>
+</mvc:View>

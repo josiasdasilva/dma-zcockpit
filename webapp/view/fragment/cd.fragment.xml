@@ -1,0 +1,20 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="Lojas"
+		class="sapUiPopupWithPadding"
+		items="{/CD}"
+		liveChange="_handleF4cdSearch"
+		search="_handleF4cdSearch"
+		confirm="_handleF4cdClose"
+		cancel="_handleF4cdCancel"
+		multiSelect="true">
+		<StandardListItem
+			icon=""
+			iconDensityAware="false"
+			iconInset="false"
+			title="{Werks}"
+			description="{Nome}" />
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,31 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" controllerName="dma.zcockpit.controller.Home">
+	<App id="homeId">
+		<pages>
+			<Page title="Cockpit Comercial" id="__page0" enableScrolling="false">
+				<FlexBox width="100%" id="__box0" direction="Column" fitContainer="true">
+					<items>
+						<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" width="auto" id="__box3" alignContent="Center"
+							alignItems="Center" justifyContent="End" height="auto">
+							<items>
+								<Toolbar xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns="sap.m" width="100%" id="__toolbar1_copy" height="auto">
+									<content>
+										<ToolbarSpacer id="__spacer0_copy" width="auto"/>
+										<Button xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns="sap.m" id="myCartButton" icon="sap-icon://cart" type="Accept"
+											press="onBtnPedidoPress" width="auto"/>
+									</content>
+								</Toolbar>
+							</items>
+						</FlexBox>
+						<FlexBox width="100%" id="__box1" justifyContent="Center" height="auto" fitContainer="true" alignContent="Center">
+							<items>
+								<Image xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns="sap.m" width="auto" height="470px" id="img_epa"
+									src="img/background_cockpit.png" densityAware="false"/>
+							</items>
+						</FlexBox>
+					</items>
+				</FlexBox>
+				<content/>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

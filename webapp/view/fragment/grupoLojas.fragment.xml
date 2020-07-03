@@ -1,0 +1,21 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="Grupo de Lojas"
+		class="sapUiPopupWithPadding"
+		items="{/GrupoLojas}"
+		liveChange="_handleF4grupoLojasSearch"
+		search="_handleF4grupoLojasSearch"
+		confirm="_handleF4grupoLojasClose"
+		cancel="_handleF4grupoLojasCancel"
+		multiSelect="true">
+		<StandardListItem
+			icon=""
+			iconDensityAware="false"
+			iconInset="false"
+			title="{Bandeira}"
+			description="{Descricao}"
+			info="{UF}" />
+	</SelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,19 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		title="Contrato"
+		class="sapUiPopupWithPadding"
+		items="{/Contrato}"
+		liveChange="_handleF4contratoSearch"
+		confirm="_handleF4contratoClose"
+		cancel="_handleF4contratoClose">
+		<StandardListItem
+			icon=""
+			iconDensityAware="false"
+			iconInset="false"
+			title="{Ebeln}"
+			description="{Mcod1}"
+			info="{Lifnr}"/>
+	</SelectDialog>
+</core:FragmentDefinition>

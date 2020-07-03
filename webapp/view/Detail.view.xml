@@ -1,0 +1,941 @@
+<mvc:View xmlns="sap.m" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table" xmlns:m="sap.m"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:sap.ui.core="sap.ui.core"
+	controllerName="dma.zcockpit.controller.Detail">
+	<semantic:DetailPage id="detailId" navButtonPress="onNavBack" showNavButton="true" title="{globalModel>/Lifnr} - {globalModel>/Fornecedor}"
+		busy="{detailView>/busy}" busyIndicatorDelay="{detailView>/delay}" showSubHeader="false">
+		<semantic:content>
+			<ObjectHeader id="headerDetail" title="{Matnr} - {Maktx}" number="{ path: 'globalModel>/Count', formatter: '.formatter.toInteger' }"
+				numberUnit="{Purchunit}" intro="{Matnr}" backgroundDesign="Solid" titleSelectorPress="onTitleSelectorPress" titleLevel="Auto"
+				condensed="true">
+				<attributes>
+					<ObjectAttribute text="{codABC}" id="__attribute4" title="{i18n>xmat.codabc}"/>
+				</attributes>
+			</ObjectHeader>
+			<IconTabBar id="iconTabBar" class="sapUiResponsiveContentPadding">
+				<items>
+					<IconTabFilter text="Compra" icon="sap-icon://cart-3" id="__filter1">
+						<content>
+							<!--FAFN Begin -->
+							<Bar>
+								<contentRight>
+									<SegmentedButton id="_segCompra" selectedKey="embcmp" select="onSelValorCompra">
+										<items>
+											<SegmentedButtonItem icon="sap-icon://product" key="embcmp"/>
+											<SegmentedButtonItem icon="sap-icon://money-bills" key="real"/>
+										</items>
+									</SegmentedButton>
+								</contentRight>
+								<!--<contentLeft>-->
+								<!--	<Input xmlns="sap.m" id="_if_compra_werks" width="3em"/>-->
+								<!--	<Input xmlns="sap.m" id="_if_compra_uf" width="2.2em"/>-->
+								<!--	<Input xmlns="sap.m" id="_if_compra_bandeira" width="3.8em"/>-->
+								<!--	<ToggleButton icon="sap-icon://filter" press="onFilterPress" app:table="compra"/>-->
+								<!--</contentLeft>-->
+							</Bar>
+							<Table noDataText="Sem dados para exibir" id="compraTableHeader" showNoData="false" class="tableTelaPedido">
+								<columns>
+									<Column width="3em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.loja}" app:binding="Werks" width="auto"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_1" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="Center" width="2em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.uf}" app:binding="Uf" width="auto"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_2" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="Center" width="3.8em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.bandeira}" app:binding="Bandeira" width="auto"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_3" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.venda_atual}" app:binding="VlrVendaMm" width="auto"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_4" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.venda_m1}" app:binding="VlrVendaM1" width="auto"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_5" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.venda_m2}" app:binding="VlrVendaM2" width="auto"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_6" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.venda_m3}" app:binding="VlrVendaM3"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_7" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="4.9em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.dt_ultima_compra}" app:binding="Dtultcp"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_8" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="4.7em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.dt_ultima_venda}" app:binding="Dtultvd"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_9" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3.2em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.estoque_loja}" app:binding="Estloja"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_10" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="2.7em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>tbl_compra.estoque_troca}" app:binding="Esttrf"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_11" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="4em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround">
+												<items>
+													<Text text="{i18n>tbl_compra.ped_pend_central}" app:binding="QtdPPCentral"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_12" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3.5em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround">
+												<items>
+													<Text text="{i18n>tbl_compra.ped_pend_forn}" app:binding="QtdPPForn"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_13" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround">
+												<items>
+													<Text text="{i18n>tbl_compra.dias_estoque}" app:binding="Estdia"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_14" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround">
+												<items>
+													<Text text="{i18n>tbl_compra.preco_compra_var}" app:binding="PrVarej"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_15" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3em" hAlign="End">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround">
+												<items>
+													<Text text="{i18n>tbl_compra.preco_compra_ata}" app:binding="PrAtaca"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_16" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround">
+												<items>
+													<Text text="{i18n>tbl_compra.sugestao_ultima}" app:binding="_t_compra_Sugestao"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_17" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4em">
+										<header>
+											<Text text="{i18n>tbl_compra.sugestao_compra}" app:binding="Requisicao"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround">
+												<items>
+													<Label text="{i18n>tbl_compra.unidade}" app:binding="Unidade"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_18" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column hAlign="Center" width="3em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceAround">
+												<items>
+													<Label text="{i18n>tbl_compra.umrez}" app:binding="Umrez"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_19" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+								</columns>
+								<headerToolbar>
+									<Toolbar width="100%" id="__toolbar1" visible="false">
+										<content>
+											<ToggleButton text="AC" width="auto" id="_filterBtn_AC" press="onFilterPress"/>
+											<ToggleButton text="AL" width="auto" id="_filterBtn_AL" press="onFilterPress" visible="false"/>
+											<ToggleButton text="AM" width="auto" id="_filterBtn_AM" press="onFilterPress" visible="false"/>
+											<ToggleButton text="AP" width="auto" id="_filterBtn_AP" press="onFilterPress" visible="false"/>
+											<ToggleButton text="BA" width="auto" id="_filterBtn_BA" press="onFilterPress"/>
+											<ToggleButton text="CE" width="auto" id="_filterBtn_CE" press="onFilterPress" visible="false"/>
+											<ToggleButton text="DF" width="auto" id="_filterBtn_DF" press="onFilterPress" visible="false"/>
+											<ToggleButton text="ES" width="auto" id="_filterBtn_ES" press="onFilterPress"/>
+											<ToggleButton text="GO" width="auto" id="_filterBtn_GO" press="onFilterPress" visible="false"/>
+											<ToggleButton text="MA" width="auto" id="_filterBtn_MA" press="onFilterPress"/>
+											<ToggleButton text="MG" width="auto" id="_filterBtn_MG" press="onFilterPress"/>
+											<ToggleButton text="MT" width="auto" id="_filterBtn_MT" press="onFilterPress" visible="false"/>
+											<ToggleButton text="PA" width="auto" id="_filterBtn_PA" press="onFilterPress" visible="false"/>
+											<ToggleButton text="PB" width="auto" id="_filterBtn_PB" press="onFilterPress" visible="false"/>
+											<ToggleButton text="PE" width="auto" id="_filterBtn_PE" press="onFilterPress"/>
+											<ToggleButton text="PI" width="auto" id="_filterBtn_PI" press="onFilterPress" visible="false"/>
+											<ToggleButton text="PR" width="auto" id="_filterBtn_PR" press="onFilterPress" visible="false"/>
+											<ToggleButton text="RJ" width="auto" id="_filterBtn_RJ" press="onFilterPress" visible="false"/>
+											<ToggleButton text="RN" width="auto" id="_filterBtn_RN" press="onFilterPress"/>
+											<ToggleButton text="RO" width="auto" id="_filterBtn_RO" press="onFilterPress"/>
+											<ToggleButton text="RR" width="auto" id="_filterBtn_RR" press="onFilterPress" visible="false"/>
+											<ToggleButton text="RS" width="auto" id="_filterBtn_RS" press="onFilterPress" visible="false"/>
+											<ToggleButton text="SC" width="auto" id="_filterBtn_SC" press="onFilterPress" visible="false"/>
+											<ToggleButton text="SE" width="auto" id="_filterBtn_SE" press="onFilterPress" visible="false"/>
+											<ToggleButton text="SP" width="auto" id="_filterBtn_SP" press="onFilterPress"/>
+											<ToggleButton text="TO" width="auto" id="_filterBtn_TO" press="onFilterPress" visible="false"/>
+										</content>
+									</Toolbar>
+								</headerToolbar>
+							</Table>
+							<ScrollContainer id="scrollCont1" vertical="true" focusable="true" height="32em">
+								<Table noDataText="Sem dados para exibir" id="compraTable" items="{path:'/POCompra', sorter: {path:'Werks'}}" class="tableTelaPedido"
+									updateFinished="compraUpdateFinished">
+									<items>
+										<ColumnListItem type="Active">
+											<cells>
+												<Text text="{Werks}"/>
+												<Text text="{Uf}"/>
+												<Text text="{Bandeira}"/>
+												<ObjectNumber
+													number="{= ${globalModel>/colVlrCompra} ? ${path: 'VlrVendaMm', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaMm', formatter: '.formatter.toInteger'} }"
+													emphasized="false"/>
+												<ObjectNumber
+													number="{= ${globalModel>/colVlrCompra} ? ${path: 'VlrVendaM1', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM1', formatter: '.formatter.toInteger'} }"
+													emphasized="false"/>
+												<ObjectNumber
+													number="{= ${globalModel>/colVlrCompra} ? ${path: 'VlrVendaM2', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM2', formatter: '.formatter.toInteger'} }"
+													emphasized="false"/>
+												<ObjectNumber
+													number="{= ${globalModel>/colVlrCompra} ? ${path: 'VlrVendaM3', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM3', formatter: '.formatter.toInteger'} }"
+													emphasized="false"/>
+												<ObjectNumber number="{path: 'Dtultcp', formatter: '.formatter.dateFormatDdMm'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Dtultvd', formatter: '.formatter.formatter: '.format'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Estloja', formatter: '.formatter.toInteger'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Esttrf', formatter: '.formatter.toInteger'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'QtppendCent', formatter: '.formatter.toInteger'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'QtppendForn', formatter: '.formatter.toInteger'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Estdia', formatter: '.formatter.toInteger'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'PrVarej', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'PrAtaca', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Sugestao', formatter: '.formatter.toIntReqSugStr'}" emphasized="false" visible="{= ${Sugestao} &gt; 0}"/>
+												<Input id="inputSugestao" class="inputCompras" width="4em" value="{path: 'Requisicao', type: 'sap.ui.model.type.Integer' }"
+													fieldWidth="100%" type="Number" liveChange="_onLiveChangeInput" change="_onChangeInput" showTableSuggestionValueHelp="false"
+													startSuggestion="0" valueLiveUpdate="true"/>
+												<Text text="{Unidade}"/>
+												<ObjectNumber number="{path: 'Umrez', formatter: '.formatter.toInteger'}" emphasized="false"/>
+											</cells>
+										</ColumnListItem>
+									</items>
+									<columns>
+										<Column width="3em" hAlign="Center"/>
+										<!-- Loja     -->
+										<Column width="2em" hAlign="Center"/>
+										<!-- UF       -->
+										<Column width="3.8em" hAlign="Center"/>
+										<!-- Bandeira -->
+										<Column width="4em" hAlign="End"/>
+										<!-- VlrVendaMm -->
+										<Column width="4em" hAlign="End"/>
+										<!-- VlrVendaM1 -->
+										<Column width="4em" hAlign="End"/>
+										<!-- VlrVendaM2 -->
+										<Column width="4em" hAlign="End"/>
+										<!-- VlrVendaM3 -->
+										<Column width="4.9em" hAlign="Center"/>
+										<!-- Dtultcp    -->
+										<Column width="4.7em" hAlign="Center"/>
+										<!-- Dtultvd    -->
+										<Column width="3.2em" hAlign="End"/>
+										<!-- Estloja    -->
+										<Column width="2.7em" hAlign="End"/>
+										<!-- Esttrf    -->
+										<Column width="4em" hAlign="End"/>
+										<!-- QtppendCent    -->
+										<Column width="3.5em" hAlign="End"/>
+										<!-- QtppendForn    -->
+										<Column width="3em" hAlign="End"/>
+										<!-- Estdia    -->
+										<Column width="3em" hAlign="End"/>
+										<!-- PrVarej    -->
+										<Column width="3em" hAlign="End"/>
+										<!-- PrAtaca    -->
+										<Column width="4em" hAlign="End"/>
+										<!-- Sugestao    -->
+										<Column width="4em" hAlign="Center"/>
+										<!-- Requisicao    -->
+										<Column width="4em" hAlign="Center"/>
+										<!-- Unidade    -->
+										<Column width="3em" hAlign="Center"/>
+										<!-- Umrez    -->
+									</columns>
+								</Table>
+							</ScrollContainer>
+							<!--FAFN End-->
+						</content>
+					</IconTabFilter>
+					<IconTabFilter text="Venda" icon="sap-icon://cart-2" id="__filter2">
+						<content>
+							<!--FAFN Beg-->
+							<Table id="vendaTableHeader" showNoData="false" class="tableTelaPedido">
+								<columns>
+									<Column width="3em" hAlign="Center">
+										<header>
+											<Text app:binding="Werks" text="{i18n>tbl_venda.loja}"/>
+										</header>
+									</Column>
+									<Column hAlign="Center" width="2em">
+										<header>
+											<Text app:binding="UF" text="{i18n>tbl_venda.uf}"/>
+										</header>
+									</Column>
+									<Column hAlign="Center" width="4em">
+										<header>
+											<Text app:binding="Bandeira" text="{i18n>tbl_venda.bandeira}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text app:binding="Cmm" text="{i18n>tbl_venda.cmm}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text app:binding="Pmz" text="{i18n>tbl_venda.pmz}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text app:binding="Mkp" text="{i18n>tbl_venda.mkp}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text app:binding="PrVarej" text="{i18n>tbl_venda.preco_var}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text app:binding="PrAtaca" text="{i18n>tbl_venda.preco_ata}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text app:binding="MgVarej" text="{i18n>tbl_venda.mg_var}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text app:binding="MgAtaca" text="{i18n>tbl_venda.mg_ata}"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4.2em">
+										<header>
+											<Text app:binding="QtrMat" text="{i18n>tbl_venda.qtr_mat}"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4.2em">
+										<header>
+											<Text app:binding="QvdMatTot" text="{i18n>tbl_venda.qvd_mat_tot}"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4.2em">
+										<header>
+											<Text app:binding="VlrVendaTot" text="{i18n>tbl_venda.vlr_venda_tot}"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4.2em">
+										<header>
+											<Text app:binding="Margem" text="{i18n>tbl_venda.mrg}"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4.2em">
+										<header>
+											<Text app:binding="M0QtrMat" text="{i18n>tbl_venda.1_qtr_mat}"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4.2em">
+										<header>
+											<Text app:binding="M0QvdMatTot" text="{i18n>tbl_venda.1_qvd_mat_tot}"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4.2em">
+										<header>
+											<Text app:binding="M0VlrVendaTot" text="{i18n>tbl_venda.1_vlr_venda_tot}"/>
+										</header>
+									</Column>
+									<Column hAlign="End" width="4.2em">
+										<header>
+											<Text app:binding="M0Margem" text="{i18n>tbl_venda.1_mrg}"/>
+										</header>
+									</Column>
+								</columns>
+							</Table>
+							<ScrollContainer vertical="true" focusable="true" height="32em">
+								<Table noDataText="Sem dados para exibir" id="vendaTable" items="{/POVenda}" class="tableTelaPedido" growing="true" growingThreshold="200"
+									growingScrollToLoad="true">
+									<items>
+										<ColumnListItem>
+											<cells>
+												<Text text="{Werks}"/>
+												<Text text="{Uf}"/>
+												<Text text="{Bandeira}"/>
+												<ObjectNumber number="{path: 'Cmm', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Pmz', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Mkp', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'PrultvdVar', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'PrultvdAta', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'MrgVar', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'MrgAta', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'QtdTransMm', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'QtdVendaMm', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'VlrVendaMm', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'MrgVendaMm', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'QtdTransM1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'QtdVendaM1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'VlrVendaM1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'MrgVendaM1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											</cells>
+										</ColumnListItem>
+									</items>
+									<columns>
+										<Column width="3em" hAlign="Center"/>
+										<Column width="2em" hAlign="Center"/>
+										<Column width="4em" hAlign="Center"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End" width="4.2em"/>
+										<Column hAlign="End" width="4.2em"/>
+										<Column hAlign="End" width="4.2em"/>
+										<Column hAlign="End" width="4.2em"/>
+										<Column hAlign="End" width="4.2em"/>
+										<Column hAlign="End" width="4.2em"/>
+										<Column hAlign="End" width="4.2em"/>
+										<Column hAlign="End" width="4.2em"/>
+									</columns>
+								</Table>
+							</ScrollContainer>
+							<!--FAFN End-->
+							<!--	<Table noDataText="Sem dados para exibir" id="vendaTable" items="{/POVenda}" class="tableTelaPedido" growing="true" growingThreshold="200"
+								growingScrollToLoad="true">
+								<items>
+									<ColumnListItem id="__item5_copy-vendaTable-0">
+										<cells>
+											<Text text="{Werks}" width="2.5em"/>
+											<ObjectNumber number="{path: 'Cmm', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'Pmz', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'Mkp', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'PrVarej', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'PrAtaca', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'MgVarej', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'MgAtaca', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtrMat', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QvdMatTot', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'VlrVendaTot', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'Margem', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'M0QtrMat', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'M0QvdMatTot', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'M0VlrVendaTot', formatter: '.formatter.float2dig'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'M0Margem', formatter: '.formatter.float2dig'}" emphasized="false"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+								<columns>
+									<Column  hAlign="Begin">
+										<header>
+											<Text text="{i18n>tbl_venda.loja}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.cmm}"/>
+										</header>
+									</Column>
+									<Column  hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.pmz}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.mkp}"/>
+										</header>
+									</Column>
+									<Column  hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.preco_var}" id="_dtvd_text6"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.preco_ata}" id="_dtvd_text7"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.mg_var}" id="_dtvd_text8"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.mg_ata}" id="_dtvd_text9"/>
+										</header>
+									</Column>
+									<Column  hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.qtr_mat}" id="_dtvd_text10"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.qvd_mat_tot}" id="_dtvd_text11"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.vlr_venda_tot}" id="_dtvd_text12"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.mrg}" id="_dtvd_text13"/>
+										</header>
+									</Column>
+									<Column  hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.1_qtr_mat}" id="_dtvd_text14"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.1_qvd_mat_tot}" id="_dtvd_text15"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.1_vlr_venda_tot}" id="_dtvd_text16"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_venda.1_mrg}" id="_dtvd_text17"/>
+										</header>
+									</Column>
+								</columns>
+							</Table>-->
+						</content>
+					</IconTabFilter>
+					<IconTabFilter text="Histórico" icon="sap-icon://history" id="__filter3" visible="false">
+						<content>
+							<Table noDataText="Sem dados para exibir" id="historicoTable" items="{/POHistorico}" class="tableTelaPedido" growingThreshold="200"
+								growingScrollToLoad="true" growing="true">
+								<items>
+									<ColumnListItem>
+										<cells>
+											<Text text="{Werks}" width="2.5em"/>
+											<ObjectNumber number="{path: 'QtdTransS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'VlrVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'MrgVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdTransS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'VlrVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'MrgVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdTransS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'VlrVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'MrgVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdTransS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'VlrVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'MrgVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdTransS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'QtdVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'VlrVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+											<ObjectNumber number="{path: 'MrgVendaS1', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+								<columns>
+									<Column>
+										<header>
+											<Text text="Loja" id="_det_hist_loja"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s1qtdtransf}" id="_det_hist_s1qtetransf"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s1qtevenda}" id="_det_hist_s1qtevenda"/>
+										</header>
+									</Column>
+									<Column id="__column_hist_S1Vlrvdtotal">
+										<header>
+											<Text text="{i18n>tbl_hist.s1vlrvdtotal}" id="_det_hist_s1vlrvdtotal"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s1qtemdvloja}" id="_det_hist_s1qtemdvloja"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s2qtdtransf}" id="_det_hist_s2qtetransf"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s2qtevenda}" id="_det_hist_s2qtevenda"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s2vlrvdtotal}" id="_det_hist_s2vlrvdtotal"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s2qtemdvloja}" id="_det_hist_s2qtemdvloja"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s3qtdtransf}" id="_det_hist_s3qtetransf"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s3qtevenda}" id="_det_hist_s3qtevenda"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s3vlrvdtotal}"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s3qtemdvloja}"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s4qtdtransf}"/>
+										</header>
+									</Column>
+									<Column id="__column_hist_S4Qtevenda">
+										<header>
+											<Text text="{i18n>tbl_hist.s4qtevenda}" id="_det_hist_s4qtevenda"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s4vlrvdtotal}"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s4qtemdvloja}"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s5qtdtransf}"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s5qtevenda}"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s5vlrvdtotal}"/>
+										</header>
+									</Column>
+									<Column>
+										<header>
+											<Text text="{i18n>tbl_hist.s5qtemdvloja}"/>
+										</header>
+									</Column>
+								</columns>
+							</Table>
+						</content>
+					</IconTabFilter>
+					<IconTabFilter text="Faceamento" icon="sap-icon://retail-store" id="__filter4">
+						<content>
+							<!--FAFN Beg-->
+							<Table id="faceamentoTableHeader" showNoData="false" class="tableTelaPedido">
+								<columns>
+									<Column hAlign="Center">
+										<header>
+											<Text text="{i18n>tbl_faceamento.loja}" app:binding="Werks"/>
+										</header>
+									</Column>
+									<Column hAlign="Center">
+										<header>
+											<Text text="{i18n>tbl_faceamento.uf}" app:binding="Uf"/>
+										</header>
+									</Column>
+									<Column hAlign="Center">
+										<header>
+											<Text text="{i18n>tbl_faceamento.bandeira}" app:binding="Bandeira"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.estloja}" app:binding="Estloja"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.minbe}" app:binding="Minbe"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.eisbe}" app:binding="Eisbe"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.mabst}" app:binding="Mabst"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.bstrf}" app:binding="Bstrf"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.gwert}" app:binding="Gwert"/>
+										</header>
+									</Column>
+								</columns>
+							</Table>
+							<ScrollContainer vertical="true" focusable="true" height="32em">
+								<Table noDataText="Sem dados para exibir" id="faceamentoTable" items="{/POFaceamento}" class="tableTelaPedido" growingThreshold="200"
+									growingScrollToLoad="true" growing="true">
+									<items>
+										<ColumnListItem id="__item5_copy-vendaTable_copy-0-faceamentoTable-0">
+											<cells>
+												<Text text="{Werks}" id="_detail_loja_faceamentoTable" textAlign="Center"/>
+												<Text text="{Uf}" id="_detail_uf_faceamentoTable" textAlign="Center"/>
+												<Text text="{Bandeira}" id="_detail_bandeira_faceamentoTable" textAlign="Center"/>
+												<ObjectNumber id="_detail_estloja_faceamentoTable" number="{path: 'Estloja', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+													textAlign="End"/>
+												<ObjectNumber id="_detail_minbe_faceamentoTable" number="{path: 'Minbe', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+													textAlign="End"/>
+												<ObjectNumber id="_detail_eisbe_faceamentoTable" number="{path: 'Eisbe', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+													textAlign="End"/>
+												<ObjectNumber id="_detail_mabst_faceamentoTable" number="{path: 'Mabst', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+													textAlign="End"/>
+												<ObjectNumber id="_detail_bstrf_faceamentoTable" number="{path: 'Bstrf', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+													textAlign="End"/>
+												<ObjectNumber id="_detail_gwetr_faceamentoTable" number="{path: 'Gwert', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+													textAlign="End"/>
+											</cells>
+										</ColumnListItem>
+									</items>
+									<columns>
+										<Column hAlign="Center"/>
+										<Column hAlign="Center"/>
+										<Column hAlign="Center"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+										<Column hAlign="End"/>
+									</columns>
+								</Table>
+							</ScrollContainer>
+							<!--FAFN End-->
+							<!--	<Table noDataText="Sem dados para exibir" id="faceamentoTable" items="{/POFaceamento}" class="tableTelaPedido" growingThreshold="200"
+								growingScrollToLoad="true" growing="true">
+								<items>
+									<ColumnListItem id="__item5_copy-vendaTable_copy-0-faceamentoTable-0">
+										<cells>
+											<Text text="{Werks}" id="_detail_loja_faceamentoTable" textAlign="Center"/>
+											<Text text="{Uf}" id="_detail_uf_faceamentoTable" textAlign="Center"/>
+											<Text text="{Bandeira}" id="_detail_bandeira_faceamentoTable" textAlign="Center"/>
+											<ObjectNumber id="_detail_estloja_faceamentoTable" number="{path: 'Estloja', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+												textAlign="End"/>
+											<ObjectNumber id="_detail_minbe_faceamentoTable" number="{path: 'Minbe', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+												textAlign="End"/>
+											<ObjectNumber id="_detail_eisbe_faceamentoTable" number="{path: 'Eisbe', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+												textAlign="End"/>
+											<ObjectNumber id="_detail_mabst_faceamentoTable" number="{path: 'Mabst', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+												textAlign="End"/>
+											<ObjectNumber id="_detail_bstrf_faceamentoTable" number="{path: 'Bstrf', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+												textAlign="End"/>
+											<ObjectNumber id="_detail_gwetr_faceamentoTable" number="{path: 'Gwert', formatter: '.formatter.fullNumberStr'}" emphasized="false"
+												textAlign="End"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+								<columns>
+									<Column hAlign="Center">
+										<header>
+											<Text text="{i18n>tbl_faceamento.loja}"/>
+										</header>
+									</Column>
+									<Column hAlign="Center">
+										<header>
+											<Text text="{i18n>tbl_faceamento.uf}"/>
+										</header>
+									</Column>
+									<Column hAlign="Center">
+										<header>
+											<Text text="{i18n>tbl_faceamento.bandeira}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.estloja}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.minbe}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.eisbe}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.mabst}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.bstrf}"/>
+										</header>
+									</Column>
+									<Column hAlign="End">
+										<header>
+											<Text text="{i18n>tbl_faceamento.gwert}"/>
+										</header>
+									</Column>
+								</columns>
+							</Table>-->
+						</content>
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</semantic:content>
+		<semantic:positiveAction>
+			<semantic:PositiveAction text="Gravar Sugestão" id="botaoGravarSugestao" press="gravaValores"/>
+		</semantic:positiveAction>
+		<semantic:negativeAction>
+			<semantic:NegativeAction text="Reiniciar" id="negativeButton" press="reiniciaValores" visible="false"/>
+		</semantic:negativeAction>
+	</semantic:DetailPage>
+</mvc:View>
