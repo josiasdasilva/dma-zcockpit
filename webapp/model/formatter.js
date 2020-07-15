@@ -60,16 +60,16 @@ sap.ui.define([], function () {
 			}
 			return number.format(sValue).toString();
 		},
-		// toInteger: function (sValue) {
-		// 	var number = new Intl.NumberFormat("pt-BR", {
-		// 		minimumFractionDigits: 0,
-		// 		maximumFractionDigits: 0
-		// 	});
-		// 	if (!sValue) {
-		// 		return "0";
-		// 	}
-		// 	return number.format(sValue);
-		// },
+		toInteger: function (sValue) {
+			var number = new Intl.NumberFormat("pt-BR", {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			});
+			if (!sValue) {
+				return "0";
+			}
+			return number.format(sValue);
+		},
 		toIntegerStr: function (sValue) {
 			var number = new Intl.NumberFormat("pt-BR", {
 				minimumFractionDigits: 0,
@@ -111,16 +111,16 @@ sap.ui.define([], function () {
 		// 	});
 		// 	return compact.format(number);
 		// },
-		// float2dig: function (a) {
-		// 	var oCalculation = 0;
-		// 	if (a === null) {
-		// 		oCalculation = 0;
-		// 	} else {
-		// 		var oValue = a.replace(",", "");
-		// 		oCalculation = parseFloat(oValue);
-		// 	}
-		// 	return oCalculation.toFixed(2);
-		// },
+		float2digStr: function (sValue) {
+			var number = new Intl.NumberFormat("pt-BR", {
+				minimumFractionDigits: 2,
+				maximumFractionDigits: 2
+			});
+			if ((!sValue) || (sValue === 0)) {
+				return "";
+			}
+			return number.format(sValue).toString();
+		},
 		// float3dig: function (a) {
 		// 	var oCalculation = 0;
 		// 	if (a === null) {
@@ -214,18 +214,18 @@ sap.ui.define([], function () {
 		// 		return "None";
 		// 	}
 		// },
-		// dateFormatDdMm: function (a) {
-		// 	if (a !== null) {
-		// 		var b = new Date(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate());
-		// 		a = b.toLocaleString("pt-BR", {
-		// 			month: "2-digit",
-		// 			day: "2-digit"
-		// 		});
-		// 	} else {
-		// 		a = "";
-		// 	}
-		// 	return a;
-		// },
+		dateFormatDdMm: function (a) {
+			if (a !== null) {
+				var b = new Date(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate());
+				a = b.toLocaleString("pt-BR", {
+					month: "2-digit",
+					day: "2-digit"
+				});
+			} else {
+				a = "";
+			}
+			return a;
+		},
 		// dateFormatDdMmYy: function (a) {
 		// 	if (a !== null) {
 		// 		var b = new Date(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate());

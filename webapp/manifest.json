@@ -109,6 +109,11 @@
 					"target": "busca"
 				},
 				{
+					"pattern": "Comprador/{Ekgrp}/{Uname}",
+					"name": "historico",
+					"target": "historico"
+				},
+				{
 					"pattern": "Fornecedor/{Ekgrp}/{Lifnr}",
 					"name": "fornecedor",
 					"target": "fornecedor"
@@ -124,6 +129,27 @@
 							"target": "detail"
 						}
 					]
+				},
+				{
+					"name": "Home",
+					"pattern": "Home",
+					"target": [
+						"home"
+					]
+				},
+				{
+					"name": "Historico",
+					"pattern": "Historico",
+					"target": [
+						"historico"
+					]
+				},
+				{
+					"name": "Busca",
+					"pattern": "Busca",
+					"target": [
+						"busca"
+					]
 				}
 			],
 			"targets": {
@@ -133,6 +159,10 @@
 				},
 				"busca": {
 					"viewName": "Busca",
+					"viewLevel": 2
+				},
+				"historico": {
+					"viewName": "Historico",
 					"viewLevel": 2
 				},
 				"pedido": {

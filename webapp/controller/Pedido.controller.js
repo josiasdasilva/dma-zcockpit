@@ -78,7 +78,7 @@ sap.ui.define([
 			let oColor = oIcon.getColor();
 			let oSrc = oIcon.getSrc();
 
-			this.reiniciaIconesSort();
+			this.reiniciaIconesSort(false);
 			if (oColor === "#808080") {
 				oIcon.setColor("#f00000");
 				oIcon.setSrc("sap-icon://sort-ascending");
@@ -90,10 +90,9 @@ sap.ui.define([
 					oSorter.bDescending = true;
 					oItems.sort(oSorter, true);
 				} else {
-					oIcon.setColor("#808080");
-					oIcon.setSrc("sap-icon://sort-ascending");
-					oItems.sort(null);
-					this.reiniciaIconesSort();
+					this.reiniciaIconesSort(true);
+					let oSortInitial = new Sorter("Matnr");
+					oItems.sort(oSortInitial);
 				}
 			}
 		},
@@ -118,16 +117,16 @@ sap.ui.define([
 			var oItems = this._oTablePedido.getBinding("items");
 			oItems.filter(aFilters);
 		},
-		reiniciaIconesSort: function () {
-			var oQtde = this._oTablePedido.getAggregation("columns").length;
-			for (var i = 1; i < oQtde; i++) {
+		reiniciaIconesSort: function (oFirst) {
+			var oQtde = 19; //this._oTablePedido.getAggregation("columns").length;
+			for (var i = 0; i < oQtde; i++) {
 				let zIcon = this.byId("_i_pedido_" + i.toString());
-				if (i = 1) {
-					// primeira coluna - indice inicial
-					zIcon.setColor("#f00000");
-				} else {
-					zIcon.setColor("#808080");
-				}
+				zIcon.setColor("#808080");
+				zIcon.setSrc("sap-icon://sort-ascending");
+			}
+			if (oFirst) {
+				let zIcon = this.byId("_i_pedido_0");
+				zIcon.setColor("#f00000");
 				zIcon.setSrc("sap-icon://sort-ascending");
 			}
 		},
@@ -244,6 +243,8 @@ sap.ui.define([
 			var globalModel = this.getModel("globalModel");
 			var sMatnr = oEvent.getSource().getAggregation("cells")[0].getTitle();
 			globalModel.setProperty("/Matnr", sMatnr);
+			var sMaabc = oEvent.getSource().getAggregation("cells")[19].getText();
+			globalModel.setProperty("/codABC", sMaabc);
 			this.getRouter().navTo("detail", {
 				Ekgrp: globalModel.getProperty("/Ekgrp"),
 				Lifnr: globalModel.getProperty("/Lifnr"),

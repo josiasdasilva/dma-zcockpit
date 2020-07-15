@@ -17,6 +17,7 @@ sap.ui.define([
 		_vendaTableHeader: null,
 		_faceamentoTableHeader: null,
 		_segCompra: null,
+		_colInput: null,
 		onInit: function () {
 			//var oViewModel = new JSONModel({ busy: false, delay: 0 });
 			//var globalModel = this.getModel("globalModel");
@@ -87,30 +88,34 @@ sap.ui.define([
 			});
 			var sHeader = this.byId("headerDetail");
 			sHeader.bindElement(sObjectPath);
-			var tableCompras = this.byId("compraTable");
-			tableCompras.bindItems({
+			this._compraTable.bindItems({
 				path: sObjectPath + "/POCompra",
-				template: tableCompras.getBindingInfo("items").template
+				template: this._compraTable.getBindingInfo("items").template
 			});
-			var tableVendas = this.byId("vendaTable");
-			tableVendas.bindItems({
+			this._vendaTable.bindItems({
 				path: sObjectPath + "/POVenda",
-				template: tableVendas.getBindingInfo("items").template
+				template: this._vendaTable.getBindingInfo("items").template
 			});
-			var tableHistorico = this.byId("historicoTable");
-			tableHistorico.bindItems({
-				path: sObjectPath + "/POHistorico",
-				template: tableHistorico.getBindingInfo("items").template
-			});
-			var tableFaceamento = this.byId("faceamentoTable");
-			tableFaceamento.bindItems({
+			// var tableHistorico = this.byId("historicoTable");
+			// tableHistorico.bindItems({
+			// 	path: sObjectPath + "/POHistorico",
+			// 	template: tableHistorico.getBindingInfo("items").template
+			// });
+			this._faceamentoTable.bindItems({
 				path: sObjectPath + "/POFaceamento",
-				template: tableFaceamento.getBindingInfo("items").template
+				template: this._faceamentoTable.getBindingInfo("items").template
 			});
 			globalModel.setProperty("/Alterado", false);
 			this.byId('botaoGravarSugestao').setEnabled(false);
 			this.updateTotalTelaLocal();
-			this.resetFilters(oEvent);
+			// this.resetFilters(oEvent);
+			// Busca número da coluna de input
+			for (var i = 0; i < this._compraTable.mAggregations.columns.length; i++) {
+				if (this._compraTable.mAggregations.columns[i].sId.includes("colinputSugestao")) {
+					this._colInput = i;
+					break;
+				}
+			}
 		},
 		//FAFN - Begin
 		onClickColumnHeader: function (oID, oTable) {
@@ -118,48 +123,64 @@ sap.ui.define([
 			let oTabela = oTable;
 			$('#' + oID).click((oEvent) => { //Attach Table Header Element Event
 				let sBinding = sap.ui.getCore().byId(oEvent.currentTarget.childNodes[0].childNodes[0].childNodes[0].id).data('binding');
-				this.onClickOrder(oEvent, oTable, sBinding);
+				this.onClickSort(oEvent, oTable, sBinding);
 			});
 		},
-		onClickOrder: function (oEvent, oTable, oBinding) {
-			// let oIcon = sap.ui.getCore().byId(oEvent.currentTarget.childNodes[0].childNodes[1].childNodes[0].id);
-			// let oItems = oTable.getBinding("items");
-			// let oSorter = new Sorter(oBinding);
-			// let oColor = oIcon.getColor();
-			// let oSrc = oIcon.getSrc();
+		onClickSort: function (oEvent, oTable, oBinding) {
+			let oIcon = sap.ui.getCore().byId(oEvent.currentTarget.childNodes[0].childNodes[1].childNodes[0].id);
+			let oItems = oTable.getBinding("items");
+			let oSorter = new Sorter(oBinding);
+			let oColor = oIcon.getColor();
+			let oSrc = oIcon.getSrc();
 
-			// this.reiniciaIconesSort(oTable);
-			// if (oColor === "#808080") {
-			// 	oIcon.setColor("#f00000");
-			// 	oIcon.setSrc("sap-icon://sort-ascending");
-			// 	oItems.sort(oSorter);
-			// } else {
-			// 	if (oSrc === "sap-icon://sort-ascending") {
-			// 		oIcon.setColor("#f00000");
-			// 		oIcon.setSrc("sap-icon://sort-descending");
-			// 		oSorter.bDescending = true;
-			// 		oItems.sort(oSorter, true);
-			// 	} else {
-			// 		oIcon.setColor("#808080");
-			// 		oIcon.setSrc("sap-icon://sort-ascending");
-			// 		oItems.sort(null);
-			// 		this.reiniciaIconesSort(oTable);
-			// 	}
-			// }
+			this.resetSortIcons(oTable, false);
+			if (oColor === "#808080") {
+				oIcon.setColor("#f00000");
+				oIcon.setSrc("sap-icon://sort-ascending");
+				oItems.sort(oSorter);
+			} else {
+				if (oSrc === "sap-icon://sort-ascending") {
+					oIcon.setColor("#f00000");
+					oIcon.setSrc("sap-icon://sort-descending");
+					oSorter.bDescending = true;
+					oItems.sort(oSorter, true);
+				} else {
+					this.resetSortIcons(oTable, true);
+					let oSortInitial = new Sorter("Werks");
+					oItems.sort(oSortInitial);
+				}
+			}
 		},
 		onFilterPress: function (oEvent) {
-			// var oTable = this.byId(oEvent.currentTarget.childNodes[0].childNodes[0].childNodes[0].id).data('table');
-			// switch (oTable) {
-			// case "compra":
-			// 	this.onFilter(oEvent, _compraTable, "_compra_");
-			// 	break;
-			// case "venda":
-			// 	this.onFilter(oEvent, _vendaTable, "_venda_");
-			// 	break;
-			// case "faceamento":
-			// 	this.onFilter(oEvent, _faceamentoTable, "_faceamento_");
-			// 	break;
-			// }
+			var aFilters = [];
+			var iWerks = this.byId("_if_compra_werks");
+			var iUf = this.byId("_if_compra_uf");
+			var iBandeira = this.byId("_if_compra_bandeira");
+
+			if (oEvent.getParameters("pressed").pressed) {
+				if (iWerks.getValue() !== "") {
+					var fWerks = new sap.ui.model.Filter("Werks", sap.ui.model.FilterOperator.Contains, iWerks.getValue().toUpperCase());
+					aFilters.push(fWerks);
+				}
+				if (iUf.getValue() !== "") {
+					var fUf = new sap.ui.model.Filter("Uf", sap.ui.model.FilterOperator.Contains, iUf.getValue().toUpperCase());
+					aFilters.push(fUf);
+				}
+				if (iBandeira.getValue() !== "") {
+					var fBandeira = new sap.ui.model.Filter("Bandeira", sap.ui.model.FilterOperator.Contains, iBandeira.getValue().toUpperCase());
+					aFilters.push(fBandeira);
+				}
+			} else {
+				iWerks.setValue("");
+				iUf.setValue("");
+				iBandeira.setValue("");
+			}
+			var oItemsCompra = this._compraTable.getBinding("items");
+			oItemsCompra.filter(aFilters);
+			var oItemsPedido = this._vendaTable.getBinding("items");
+			oItemsPedido.filter(aFilters);
+			var oItemsFaceamento = this._faceamentoTable.getBinding("items");
+			oItemsFaceamento.filter(aFilters);
 		},
 		onFilter: function (oEvent, oTable, oPrefix) {
 			// var aFilters = [];
@@ -189,29 +210,32 @@ sap.ui.define([
 			// var oItems = this.oTable.getBinding("items");
 			// oItems.filter(aFilters);
 		},
-		reiniciaIconesSort: function (oTable) {
-			// // var oQtde = oTable.getAggregation("columns").length;
-			// var oQtde = 19;
-			// var prefIcone = "";
-			// if (oTable === _compraTable) {
-			// 	prefIcone = "_i_compra_"
-			// }
-			// if (oTable === _compraTable) {
-			// 	prefIcone = "_i_venda_"
-			// }
-			// if (oTable === _compraTable) {
-			// 	prefIcone = "_i_faceamento_"
-			// }
-			// for (var i = 1; i < oQtde; i++) {
-			// 	let zIcon = this.byId(prefIcone + i.toString());
-			// 	if (i = 1) {
-			// 		// primeira coluna - indice inicial
-			// 		zIcon.setColor("#f00000");
-			// 	} else {
-			// 		zIcon.setColor("#808080");
-			// 	}
-			// 	zIcon.setSrc("sap-icon://sort-ascending");
-			// }
+		resetSortIcons: function (oTable, oFirst) {
+			// var oQtde = oTable.getAggregation("columns").length;
+			var prefIcone = "";
+			var oQtde = 0;
+			if (oTable === this._compraTable) {
+				oQtde = 19; //this.compraTableHeader.getColCount();
+				prefIcone = "_i_compra_"
+			}
+			if (oTable === this._vendaTable) {
+				oQtde = 18; //this.vendaTableHeader.getColCount();
+				prefIcone = "_i_venda_"
+			}
+			if (oTable === this._faceamentoTable) {
+				oQtde = 9; //this.faceamentoTableHeader.getColCount();
+				prefIcone = "_i_faceamento_"
+			}
+			for (var i = 0; i < oQtde; i++) {
+				let zIcon = this.byId(prefIcone + i.toString());
+				zIcon.setColor("#808080");
+				zIcon.setSrc("sap-icon://sort-ascending");
+			}
+			if (oFirst) {
+				let zIcon = this.byId(prefIcone + "0");
+				zIcon.setColor("#f00000");
+				zIcon.setSrc("sap-icon://sort-ascending");
+			}
 		},
 		// onChangeFilterColumn: function (oEvent) {
 		// 	var oValue = oEvent.getParameter("value");
@@ -266,7 +290,7 @@ sap.ui.define([
 			payLoad.Lifnr = oEvent.getSource().getBindingContext().getProperty("Lifnr");
 			payLoad.Matnr = oEvent.getSource().getBindingContext().getProperty("Matnr");
 			payLoad.Werks = oEvent.getSource().getBindingContext().getProperty("Werks");
-			payLoad.Requisicao = oEvent.getSource().getParent().getAggregation("cells")[19].getProperty("value");
+			payLoad.Requisicao = oEvent.getSource().getParent().getCells()[this._colInput].getValue();
 			oModel.update(sPath, payLoad, {
 				success: function (oData, oResponse) {
 					//sap.m.MessageToast.show(" updated Successfully");
@@ -276,7 +300,7 @@ sap.ui.define([
 					//sap.m.MessageToast.show("  failure");
 				}
 			}); // apaga o refresh desse item
-			//oEvent.getSource().getParent().getAggregation("cells")[19].setVisible(false);
+			//oEvent.getSource().getParent().getAggregation("cells")[this._colInput].setVisible(false);
 		},
 		_onGoToPedido: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
@@ -340,7 +364,7 @@ sap.ui.define([
 				oModel.setUseBatch(true);
 				oModel.setDeferredGroups(["dma1"]);
 				for (var i = 0; i < scompraTable.getItems().length; i++) {
-					qtdeRequisicao = scompraTable.getItems()[i].getAggregation("cells")[19].getProperty("value");
+					qtdeRequisicao = scompraTable.getItems()[i].getCells()[this._colInput].getValue();
 					//////// 	Enviando todos os dados todas as vezes
 					//					qtdeSugestao = scompraTable.getItems()[i].getAggregation("cells")[18].getProperty("number");
 					//					if (qtdeRequisicao !== qtdeSugestao) {
@@ -412,7 +436,7 @@ sap.ui.define([
 			var valorItem = 0;
 			var scompraTable = this.byId("compraTable");
 			for (var i = 0; i < scompraTable.getItems().length; i++) {
-				valorItem = scompraTable.getItems()[i].getAggregation("cells")[19].getProperty("value");
+				valorItem = scompraTable.getItems()[i].getCells()[this._colInput].getValue();
 				if (valorItem > 0) {
 					qtdeTotal += parseInt(valorItem, 10);
 				}
@@ -422,68 +446,6 @@ sap.ui.define([
 		onTitleSelectorPress: function (oEvent) {
 			var cabec = this.byId("headerDetail");
 			cabec.setCondensed(!cabec.getCondensed());
-		},
-		resetFilters: function (oEvent) {
-			this.byId("_filterBtn_AC").setPressed(false);
-			this.byId("_filterBtn_BA").setPressed(false);
-			this.byId("_filterBtn_ES").setPressed(false);
-			this.byId("_filterBtn_MA").setPressed(false);
-			this.byId("_filterBtn_MG").setPressed(false);
-			this.byId("_filterBtn_PE").setPressed(false);
-			this.byId("_filterBtn_RN").setPressed(false);
-			this.byId("_filterBtn_RO").setPressed(false);
-			this.byId("_filterBtn_SP").setPressed(false);
-
-			var tableCompras = this.byId("compraTable");
-			var aFilters = [];
-			tableCompras.getBinding("items").filter(aFilters);
-		},
-		onFilterPress: function (oEvent) {
-			var aFilters = [];
-			var orArray = [];
-			var pushAC = this.byId("_filterBtn_AC");
-			if (pushAC.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "AC"));
-			}
-			var pushBA = this.byId("_filterBtn_BA");
-			if (pushBA.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "BA"));
-			}
-			var pushES = this.byId("_filterBtn_ES");
-			if (pushES.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "ES"));
-			}
-			var pushMA = this.byId("_filterBtn_MA");
-			if (pushMA.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "MA"));
-			}
-			var pushMG = this.byId("_filterBtn_MG");
-			if (pushMG.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "MG"));
-			}
-			var pushPE = this.byId("_filterBtn_PE");
-			if (pushPE.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "PE"));
-			}
-			var pushRN = this.byId("_filterBtn_RN");
-			if (pushRN.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "RN"));
-			}
-			var pushRO = this.byId("_filterBtn_RO");
-			if (pushRO.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "RO"));
-			}
-			var pushSP = this.byId("_filterBtn_SP");
-			if (pushSP.getPressed()) {
-				orArray.push(new sap.ui.model.Filter("UF", sap.ui.model.FilterOperator.EQ, "SP"));
-			}
-			var orFilter = new sap.ui.model.Filter({
-				filters: orArray,
-				and: false
-			});
-			aFilters.push(orFilter);
-			var tableCompras = this.byId("compraTable");
-			tableCompras.getBinding("items").filter(aFilters);
 		},
 		compraUpdateFinished: function (oEvent) {
 			this.updateTotalTela();

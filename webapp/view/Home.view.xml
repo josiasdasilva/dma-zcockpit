@@ -1,30 +1,59 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" controllerName="dma.zcockpit.controller.Home">
 	<App id="homeId">
 		<pages>
-			<Page title="Cockpit Comercial" id="__page0" enableScrolling="false">
-				<FlexBox width="100%" id="__box0" direction="Column" fitContainer="true">
+			<Page title="Cockpit Comercial" enableScrolling="false">
+				<FlexBox width="100%" direction="Column" fitContainer="true">
 					<items>
-						<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:unified="sap.ui.unified" width="auto" id="__box3" alignContent="Center"
-							alignItems="Center" justifyContent="End" height="auto">
+						<FlexBox width="100%" direction="Column" fitContainer="true">
 							<items>
-								<Toolbar xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns="sap.m" width="100%" id="__toolbar1_copy" height="auto">
-									<content>
-										<ToolbarSpacer id="__spacer0_copy" width="auto"/>
-										<Button xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns="sap.m" id="myCartButton" icon="sap-icon://cart" type="Accept"
-											press="onBtnPedidoPress" width="auto"/>
-									</content>
-								</Toolbar>
+								<FlexBox width="100%" justifyContent="Center" height="auto" fitContainer="true" alignContent="Center">
+									<items>
+										<Image width="auto" height="470px" id="img_epa" src="img/background_cockpit.png" densityAware="false"/>
+									</items>
+								</FlexBox>
 							</items>
 						</FlexBox>
-						<FlexBox width="100%" id="__box1" justifyContent="Center" height="auto" fitContainer="true" alignContent="Center">
+						<FlexBox width="100%" fitContainer="true" justifyContent="End" height="15em">
 							<items>
-								<Image xmlns:mvc="sap.ui.core.mvc" xmlns:unified="sap.ui.unified" xmlns="sap.m" width="auto" height="470px" id="img_epa"
-									src="img/background_cockpit.png" densityAware="false"/>
+								<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/people'}" appointmentsVisualization="Filled" appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext">
+									<toolbarContent>
+										<Toolbar width="100%" id="__toolbar1">
+											<content>
+												<Title text="Agenda" titleStyle="H4" id="__title1"/>
+												<Button id="addButton" icon="sap-icon://add" press="handleAppointmentCreate" tooltip="Add"/>
+												<ToolbarSpacer id="__spacer0"/>
+											</content>
+										</Toolbar>
+									</toolbarContent>
+									<rows>
+										<PlanningCalendarRow icon="{pic}" title="{name}" text="{role}" appointments="{path : 'appointments', templateShareable: true}" intervalHeaders="{path: 'headers', templateShareable: true}">
+											<appointments>
+												<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" text="{info}" type="{type}" tentative="{tentative}"/>
+											</appointments>
+											<intervalHeaders>
+												<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" type="{type}"/>
+											</intervalHeaders>
+										</PlanningCalendarRow>
+									</rows>
+								</PlanningCalendar>
 							</items>
 						</FlexBox>
 					</items>
 				</FlexBox>
 				<content/>
+				<customHeader>
+					<Bar>
+						<contentRight>
+							<Button icon="sap-icon://cart" type="Accept" width="auto" press="onBtnPedidoPress"/>
+						</contentRight>
+						<contentLeft>
+							<Button xmlns:action="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" id="HistoryButton_copy" icon="sap-icon://history" type="Accept" width="auto" press="action" action:wiring="\{'press':\{'navigation':\{'routeName':'Historico'\}\}\}"/>
+						</contentLeft>
+						<contentMiddle>
+							<Text text="Cockpit Comercial" id="text0"/>
+						</contentMiddle>
+					</Bar>
+				</customHeader>
 			</Page>
 		</pages>
 	</App>
