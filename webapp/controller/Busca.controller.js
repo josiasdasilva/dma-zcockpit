@@ -12,7 +12,6 @@ sap.ui.define([
 	return BaseController.extend("dma.zcockpit.controller.Busca", {
 		onInit: function () {
 			this.getRouter().getRoute("busca").attachPatternMatched(this._onMasterMatched, this);
-			this.getRouter().attachBypassed(this.onBypassed, this);
 			//this.habilitaBotaoPedido();
 		},
 		habilitaBotaoPedido: function () {

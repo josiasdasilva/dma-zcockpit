@@ -15,7 +15,8 @@
 						</FlexBox>
 						<FlexBox width="100%" fitContainer="true" justifyContent="End" height="15em">
 							<items>
-								<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/people'}" appointmentsVisualization="Filled" appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext">
+								<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/people'}" appointmentsVisualization="Filled"
+									appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext">
 									<toolbarContent>
 										<Toolbar width="100%" id="__toolbar1">
 											<content>
@@ -26,9 +27,11 @@
 										</Toolbar>
 									</toolbarContent>
 									<rows>
-										<PlanningCalendarRow icon="{pic}" title="{name}" text="{role}" appointments="{path : 'appointments', templateShareable: true}" intervalHeaders="{path: 'headers', templateShareable: true}">
+										<PlanningCalendarRow icon="{pic}" title="{name}" text="{role}" appointments="{path : 'appointments', templateShareable: true}"
+											intervalHeaders="{path: 'headers', templateShareable: true}">
 											<appointments>
-												<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" text="{info}" type="{type}" tentative="{tentative}"/>
+												<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" text="{info}" type="{type}"
+													tentative="{tentative}"/>
 											</appointments>
 											<intervalHeaders>
 												<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" type="{type}"/>
@@ -44,10 +47,11 @@
 				<customHeader>
 					<Bar>
 						<contentRight>
-							<Button icon="sap-icon://cart" type="Accept" width="auto" press="onBtnPedidoPress"/>
+							<Button icon="sap-icon://cart" type="Accept" width="auto" press="onBtnPedidoPress" tooltip="Pedido"/>
 						</contentRight>
 						<contentLeft>
-							<Button xmlns:action="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" id="HistoryButton_copy" icon="sap-icon://history" type="Accept" width="auto" press="action" action:wiring="\{'press':\{'navigation':\{'routeName':'Historico'\}\}\}"/>
+							<Button icon="sap-icon://history" type="Accept" width="auto" press="onBtnHistoricoPress" tooltip="Histórico"/>
+							<!--<Button xmlns:action="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" id="HistoryButton_copy" icon="sap-icon://history" type="Accept" width="auto" press="action" action:wiring="\{'press':\{'navigation':\{'routeName':'Historico'\}\}\}"/>-->
 						</contentLeft>
 						<contentMiddle>
 							<Text text="Cockpit Comercial" id="text0"/>

@@ -24,6 +24,7 @@ sap.ui.define([
 			}, this._histpedidoTable);
 		},
 		_onMasterMatched: function (oEvent) {
+
 			// var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
 			// var sUname = oEvent.getParameter("arguments").Uname;
 			// var sObjectPath = this.getModel().createKey("/Comprador", {
@@ -31,7 +32,8 @@ sap.ui.define([
 			// 	Uname: sUname
 			// });
 			// this.byId("compradorInput").bindElement(sObjectPath);
-			// var globalModel = this.getModel("globalModel");
+			var globalModel = this.getModel("globalModel");
+			// globalModel.
 			// this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
 			// this.byId("idComboPedido").setValue(globalModel.getProperty("/TpPedido"));
 			// this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
@@ -89,42 +91,106 @@ sap.ui.define([
 				zIcon.setSrc("sap-icon://sort-ascending");
 			}
 		},
-		// onNavBack: function (oEvent) {
-		// 	this.getRouter().navTo("home", true); //}
-		// },
-		/**
-		 *@memberOf dma.zcockpit.controller.Historico
-		 */
-		action: function (oEvent) {
-			var that = this;
-			var actionParameters = JSON.parse(oEvent.getSource().data("wiring").replace(/'/g, "\""));
-			var eventType = oEvent.getId();
-			var aTargets = actionParameters[eventType].targets || [];
-			aTargets.forEach(function (oTarget) {
-				var oControl = that.byId(oTarget.id);
-				if (oControl) {
-					var oParams = {};
-					for (var prop in oTarget.parameters) {
-						oParams[prop] = oEvent.getParameter(oTarget.parameters[prop]);
-					}
-					oControl[oTarget.action](oParams);
-				}
-			});
-			var oNavigation = actionParameters[eventType].navigation;
-			if (oNavigation) {
-				var oParams = {};
-				(oNavigation.keys || []).forEach(function (prop) {
-					oParams[prop.name] = encodeURIComponent(JSON.stringify({
-						value: oEvent.getSource().getBindingContext(oNavigation.model).getProperty(prop.name),
-						type: prop.type
-					}));
-				});
-				if (Object.getOwnPropertyNames(oParams).length !== 0) {
-					this.getOwnerComponent().getRouter().navTo(oNavigation.routeName, oParams);
-				} else {
-					this.getOwnerComponent().getRouter().navTo(oNavigation.routeName);
-				}
+		/* Value Help Ekgrp */
+		onF4Comprador: function (oEvent) {
+			var sInputValue = oEvent.getSource().getDescription();
+			this.inputId = oEvent.getSource().getId();
+			// create value help dialog
+			if (!this._F4compradorDialog) {
+				this._F4compradorDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.comprador", this);
+				this.getView().addDependent(this._F4compradorDialog);
 			}
+			// open value help dialog filtered by the input value
+			this._F4compradorDialog.open(sInputValue);
+		},
+		clearComprador: function (oEvent) {
+			var compradorInput = this.byId("compradorInput");
+			compradorInput.setValue("");
+			compradorInput.setDescription("");
+			this.clearFornecedor(oEvent);
+			this.clearContrato(oEvent);
+			this.habilitaBotaoPedido();
+		},
+		_handleF4compradorSearch: function (oEvent) {
+			var sValue = oEvent.getParameter("value");
+			var oFilter = new sap.ui.model.Filter("Nome", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
+			oEvent.getSource().getBinding("items").filter([oFilter]);
+		},
+		_handleF4compradorClose: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem");
+			if (oSelectedItem) {
+				var compradorInput = this.getView().byId(this.inputId);
+				var sEkgrp = oSelectedItem.getTitle();
+				var sUname = oSelectedItem.getInfo();
+				var sObjectPath = this.getModel().createKey("/Comprador", {
+					Ekgrp: sEkgrp,
+					Uname: sUname
+				});
+				compradorInput.bindElement(sObjectPath);
+				this.clearFornecedor(oEvent);
+				this.clearContrato(oEvent);
+				this.filtraProdutos();
+			}
+			oEvent.getSource().getBinding("items").filter([]);
+			this.habilitaBotaoPedido();
+		},
+		/* Value Help Fornecedor */
+		onF4Fornecedor: function (oEvent) {
+			var sInputValue = oEvent.getSource().getDescription();
+			var sEkgrp = this.byId("compradorInput").getValue();
+			this.inputId = oEvent.getSource().getId();
+			// create value help dialog
+			if (!this._F4fornecedorDialog) {
+				this._F4fornecedorDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.fornecedor", this);
+				this.getView().addDependent(this._F4fornecedorDialog);
+			}
+			// set previous filter - if comprador is filled
+			var oFilter = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+			// open value help dialog filtered by the input value
+			this._F4fornecedorDialog.getBinding("items").filter([oFilter]);
+			this._F4fornecedorDialog.open(sInputValue);
+		},
+		clearFornecedor: function (oEvent) {
+			var fornecedorInput = this.byId("fornecedorInput");
+			fornecedorInput.setValue("");
+			fornecedorInput.setDescription("");
+			this.clearContrato(oEvent);
+			this.habilitaBotaoPedido();
+		},
+		_handleF4fornecedorSearch: function (oEvent) {
+			var aFilters = [];
+			var sValue = oEvent.getParameter("value");
+			// Filtro Fornecedor - Nome
+			var oForn = new sap.ui.model.Filter("Mcod1", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
+			aFilters.push(oForn);
+			// Filtro Comprador
+			var sEkgrp = this.byId("compradorInput").getValue();
+			var oCompr = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+			aFilters.push(oCompr);
+			oEvent.getSource().getBinding("items").filter(aFilters);
+		},
+		_handleF4fornecedorClose: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem");
+			if (oSelectedItem) {
+				var fornecedorInput = this.getView().byId(this.inputId);
+				fornecedorInput.setValue(oSelectedItem.getTitle());
+				fornecedorInput.setDescription(oSelectedItem.getDescription());
+				this.clearContrato(oEvent);
+			}
+			oEvent.getSource().getBinding("items").filter([]);
+			this.habilitaBotaoPedido();
+		},
+		onNavBack: function (oEvent) {
+			this.getRouter().navTo("home", true); //}
+		},
+		toPrint: function (oEvent) {
+			var globalModel = this.getModel("globalModel");
+			var sEbeln = oEvent.getSource().getAggregation("cells")[1].getText();
+			globalModel.setProperty("/Ebeln", sEbeln);
+			this.getRouter().navTo("pedidoprint", {
+				Ebeln: sEbeln
+			}, true);
 		}
+
 	});
 });
