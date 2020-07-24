@@ -10,6 +10,10 @@ sap.ui.define([
 	//var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
 	return BaseController.extend("dma.zcockpit.controller.Home", {
 		onInit: function () {
+
+			this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container
+				.getUser().getId();
+
 			this.getRouter().getRoute("home").attachPatternMatched(this._onMasterMatched, this);
 			/* busca imagem */
 			var sRootPath = jQuery.sap.getModulePath("dma.zcockpit");
@@ -110,77 +114,148 @@ sap.ui.define([
 			title: "Edit Appointment",
 			type: "edit_appointment"
 		}],
+		getMonday: function () {
+			let d = new Date();
+			var day = d.getDay(),
+				diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+			return new Date(d.setDate(diff));
+		},
 		populateAppointments: function () {
 			var oModel = new JSONModel();
 			var sRootPath = jQuery.sap.getModulePath("zcockpit");
-			oModel.setData({
-				startDate: new Date("2020", "06", "15", "07", "00"),
-				people: [{
-					pic: sRootPath + "/img/mike_wazowsky.png",
-					name: "Ederson Menezes",
-					role: "comprador",
-					appointments: [{
-							start: new Date("2020", "06", "15", "08", "30"),
-							end: new Date("2020", "06", "15", "09", "30"),
-							title: "SADIA S/A",
+
+			let aFilters = [];
+			aFilters.push(new sap.ui.model.Filter({
+				path: "Uname",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: this.sUname
+			}));
+
+			this.getOwnerComponent().getModel().read("/AgendaItem", {
+				filters: aFilters,
+				success: (res) => {
+					
+				
+					if (res.results.length === 0) {
+						return;
+					}
+
+					let plannData = {
+						startDate: new Date(new Date().setHours(7,0,0)),//new Date("2020", "07", "23", "07", "00"),//this.getMonday(),
+						people: []
+					}
+
+					plannData.people.push({
+						appointments: []
+					});
+					//plannData.people[0].pic = sRootPath + "xxx.png";
+					plannData.people[0].name = res.results[0].Nome;
+
+					for (let item of res.results) {
+						let dDataBeg = new Date(item.HoraInicio.ms);
+						let dDataEnd = new Date(item.HoraFim.ms);
+
+						dDataBeg.setDate(item.Data.getDate());
+						dDataBeg.setMonth(item.Data.getMonth());
+						dDataBeg.setYear(item.Data.getYear());
+
+						dDataEnd.setDate(item.Data.getDate());
+						dDataEnd.setMonth(item.Data.getMonth());
+						dDataEnd.setYear(item.Data.getYear());
+	debugger;
+	let dDateBeg = new Date(new Date(item.Data.toISOString()).setHours(new Date(item.HoraInicio.ms).getHours()));
+	let dDateEnd = new Date(new Date(item.Data.toISOString()).setHours(new Date(item.HoraFim.ms).getHours()));
+						plannData.people[0].appointments.push({
+							start: dDateBeg,
+							end: dDateEnd,
+							title: item.Name1,
+							info: item.Comentario,
 							type: "Type02",
 							tentative: false
-						}, {
-							start: new Date("2020", "06", "15", "10", "00"),
-							end: new Date("2020", "06", "15", "11", "00"),
-							title: "BRF S/A",
-							//info: "mensal",
-							type: "Type01",
-							//pic: "sap-icon://sap-ui5",
-							tentative: false
-						}, {
-							start: new Date("2020", "06", "15", "12", "30"),
-							end: new Date("2020", "06", "15", "13", "30"),
-							title: "Almo\xE7o",
-							info: "amigos",
-							type: "Type03",
-							tentative: true
-						}, {
-							start: new Date("2020", "06", "15", "14", "00"),
-							end: new Date("2020", "06", "15", "15", "00"),
-							title: "Saudali S/A",
-							type: "Type02",
-							tentative: false
-						}, {
-							start: new Date("2020", "06", "15", "15", "00"),
-							end: new Date("2020", "06", "15", "16", "00"),
-							title: "Nestl\xE9 S/A",
-							//info: "linha nova",
-							type: "Type01",
-							//pic: "sap-icon://sap-ui5",
-							tentative: false
-						}, {
-							start: new Date("2020", "06", "15", "16", "30"),
-							end: new Date("2020", "06", "15", "17", "30"),
-							title: "Caf\xE9 3Cora\xE7\xF5es",
-							//info: "canteen",
-							type: "Type03",
-							tentative: true
-						}, {
-							start: new Date("2020", "06", "15", "17", "45"),
-							end: new Date("2020", "06", "15", "18", "00"),
-							title: "Caf\xE9 Dom Pedro",
-							type: "Type02",
-							//pic: "sap-icon://sap-ui5",
-							tentative: false
-						}] // headers: [{
-						// 	start: new Date("2020", "00", "23", "8", "00"),
-						// 	end: new Date("2020", "00", "23", "10", "00"),
-						// 	title: "Relatório de Despesas",
-						// 	type: "Type06"
-						// }, {
-						// 	start: new Date("2020", "00", "23", "15", "00"),
-						// 	end: new Date("2020", "00", "23", "18", "00"),
-						// 	title: "Ligar Café do Sítio",
-						// 	type: "Type06"
-						// }]
-				}]
+						});
+					}
+					oModel.setData(plannData);
+					console.log(plannData);
+					this.byId("MyCalendar").setModel(oModel); //this.getView().setModel(oModel);
+				},
+				error: (err) => {
+					sap.m.MessageBox.error(err, {
+						title: "Erro"
+					});
+					Ï
+				}
 			});
+
+
+				oModel.setData({
+					startDate: new Date("2020", "06", "15", "07", "00"),
+					people: [{
+						pic: sRootPath + "/img/mike_wazowsky.png",
+						name: "Ederson Menezes",
+						role: "comprador",
+						appointments: [{
+								start: new Date("2020", "06", "15", "08", "30"),
+								end: new Date("2020", "06", "15", "09", "30"),
+								title: "SADIA S/A",
+								type: "Type02",
+								tentative: false
+							}, {
+								start: new Date("2020", "06", "15", "10", "00"),
+								end: new Date("2020", "06", "15", "11", "00"),
+								title: "BRF S/A",
+								//info: "mensal",
+								type: "Type01",
+								//pic: "sap-icon://sap-ui5",
+								tentative: false
+							}, {
+								start: new Date("2020", "06", "15", "12", "30"),
+								end: new Date("2020", "06", "15", "13", "30"),
+								title: "Almo\xE7o",
+								info: "amigos",
+								type: "Type03",
+								tentative: true
+							}, {
+								start: new Date("2020", "06", "15", "14", "00"),
+								end: new Date("2020", "06", "15", "15", "00"),
+								title: "Saudali S/A",
+								type: "Type02",
+								tentative: false
+							}, {
+								start: new Date("2020", "06", "15", "15", "00"),
+								end: new Date("2020", "06", "15", "16", "00"),
+								title: "Nestl\xE9 S/A",
+								//info: "linha nova",
+								type: "Type01",
+								//pic: "sap-icon://sap-ui5",
+								tentative: false
+							}, {
+								start: new Date("2020", "06", "15", "16", "30"),
+								end: new Date("2020", "06", "15", "17", "30"),
+								title: "Caf\xE9 3Cora\xE7\xF5es",
+								//info: "canteen",
+								type: "Type03",
+								tentative: true
+							}, {
+								start: new Date("2020", "06", "15", "17", "45"),
+								end: new Date("2020", "06", "15", "18", "00"),
+								title: "Caf\xE9 Dom Pedro",
+								type: "Type02",
+								//pic: "sap-icon://sap-ui5",
+								tentative: false
+							}] // headers: [{
+							// 	start: new Date("2020", "00", "23", "8", "00"),
+							// 	end: new Date("2020", "00", "23", "10", "00"),
+							// 	title: "Relatório de Despesas",
+							// 	type: "Type06"
+							// }, {
+							// 	start: new Date("2020", "00", "23", "15", "00"),
+							// 	end: new Date("2020", "00", "23", "18", "00"),
+							// 	title: "Ligar Café do Sítio",
+							// 	type: "Type06"
+							// }]
+					}]
+				});
+			
 			this.byId("MyCalendar").setModel(oModel); //this.getView().setModel(oModel);
 		},
 		handleAppointmentSelect: function (oEvent) {
