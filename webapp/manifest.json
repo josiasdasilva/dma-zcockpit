@@ -104,19 +104,24 @@
 					"target": "home"
 				},
 				{
+					"pattern": "Comprador/{Ekgrp}",
+					"name": "historico",
+					"target": "historico"
+				},
+				{
 					"pattern": "Comprador/{Ekgrp}/{Uname}",
 					"name": "busca",
 					"target": "busca"
 				},
 				{
-					"pattern": "Comprador/{Ekgrp}/{Uname}",
-					"name": "historico",
-					"target": "historico"
-				},
-				{
 					"pattern": "Fornecedor/{Ekgrp}/{Lifnr}",
 					"name": "fornecedor",
 					"target": "fornecedor"
+				},
+				{
+					"pattern": "PedidoPrint/{Ebeln}",
+					"name": "pedidoprint",
+					"target": "pedidoprint"
 				},
 				{
 					"pattern": "PO/{Ekgrp}/{Lifnr}",
@@ -129,27 +134,6 @@
 							"target": "detail"
 						}
 					]
-				},
-				{
-					"name": "Home",
-					"pattern": "Home",
-					"target": [
-						"home"
-					]
-				},
-				{
-					"name": "Historico",
-					"pattern": "Historico",
-					"target": [
-						"historico"
-					]
-				},
-				{
-					"name": "Busca",
-					"pattern": "Busca",
-					"target": [
-						"busca"
-					]
 				}
 			],
 			"targets": {
@@ -157,16 +141,20 @@
 					"viewName": "Home",
 					"viewLevel": 1
 				},
-				"busca": {
-					"viewName": "Busca",
-					"viewLevel": 2
-				},
 				"historico": {
 					"viewName": "Historico",
 					"viewLevel": 2
 				},
+				"busca": {
+					"viewName": "Busca",
+					"viewLevel": 2
+				},
 				"pedido": {
 					"viewName": "Pedido",
+					"viewLevel": 3
+				},
+				"pedidoprint": {
+					"viewName": "PedidoPrint",
 					"viewLevel": 3
 				},
 				"detail": {
