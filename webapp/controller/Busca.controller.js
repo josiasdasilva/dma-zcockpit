@@ -173,7 +173,7 @@ sap.ui.define([
 								success: (res) => {
 									this.byId("fornecedorInput").setDescription(res.Mcod1);
 									this.byId("fornecedorInput").setValue(res.Lifnr);
-									this.filtraProdutos();
+									this.filtraProdutos(true);
 								},
 								error: (err) => {
 									sap.m.MessageBox.error(err.responseText, {
@@ -512,7 +512,6 @@ sap.ui.define([
 			this._F4compradorDialog.open(sInputValue);
 		},
 		clearComprador: function (oEvent) {
-			debugger;
 			var compradorInput = this.byId("compradorInput");
 			compradorInput.setValue("");
 			compradorInput.setDescription("");
@@ -535,7 +534,7 @@ sap.ui.define([
 					Ekgrp: sEkgrp,
 					Uname: sUname
 				});
-				debugger;
+
 				compradorInput.bindElement(sObjectPath);
 				this.clearFornecedor(oEvent);
 				this.clearContrato(oEvent);
@@ -646,7 +645,7 @@ sap.ui.define([
 			this.habilitaBotaoPedido();
 		},
 		/* Busca de Produtos */
-		filtraProdutos: function () {
+		filtraProdutos: function (bNoRefresh) {
 			// add filter for search
 			var aFilters = [];
 			// Filtro Comprador
@@ -721,7 +720,9 @@ sap.ui.define([
 				// update list binding
 				oBinding.filter(aFilters);
 			}
-			oList.getModel().updateBindings(true);
+			if (!bNoRefresh) {
+				oList.getModel().updateBindings(true);
+			}
 		},
 		clearSelectedProduto: function (oEvent) {
 			var oList = this.byId("idProdutos");
