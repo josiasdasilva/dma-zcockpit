@@ -14,7 +14,7 @@ sap.ui.define([
 			this.getRouter().getRoute("busca").attachPatternMatched(this._onMasterMatched, this);
 			//this.habilitaBotaoPedido();
 		},
-		habilitaBotaoPedido: function () {
+		habilitaBotaoPedido: function (bCleanFields) {
 			this.filtraProdutos();
 
 			var globalModel = this.getModel("globalModel");
@@ -140,13 +140,57 @@ sap.ui.define([
 			// 	Uname: sUname
 			// });
 			//this.byId("compradorInput").bindElement(sObjectPath);
+
 			var globalModel = this.getModel("globalModel");
 			this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
 			this.byId("idComboPedido").setValue(globalModel.getProperty("/TpPedido"));
 			this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
 
 			this.clearSelectedProduto();
+
+			//globalModel.setProperty("/Uname", sLifnr);
+
 			this.habilitaBotaoPedido();
+
+			//FAFN Receb as informaçoes vindas do appointment se o mesmo foi clicado
+			this.setDataFromAppointment(oEvent);
+			//FAFN End
+
+		},
+		setDataFromAppointment: async function (oEvent) {
+			debugger;
+			var sLifnr = oEvent.getParameter("arguments").Lifnr;
+			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
+			var sUname = oEvent.getParameter("arguments").Uname;
+			if (sEkgrp && sEkgrp.length > 0) {
+				this.getOwnerComponent().getModel().read(`/Comprador(Ekgrp='${sEkgrp}',Uname='${sUname}')`, {
+					success: (res) => {
+						this.byId("compradorInput").setDescription(res.Nome);
+						this.byId("compradorInput").setValue(res.Ekgrp);
+						if (sLifnr && sLifnr.length > 0) {
+							debugger;
+							this.getOwnerComponent().getModel().read(`/Fornecedor(Ekgrp='${sEkgrp}',Lifnr='${sLifnr}')`, {
+								success: (res) => {
+									this.byId("fornecedorInput").setDescription(res.Mcod1);
+									this.byId("fornecedorInput").setValue(res.Lifnr);
+									this.filtraProdutos();
+								},
+								error: (err) => {
+									sap.m.MessageBox.error(err.responseText, {
+										title: "Erro",
+									});
+								}
+							});
+						}
+					},
+					error: (err) => {
+						sap.m.MessageBox.error(err.responseText, {
+							title: "Erro",
+						});
+					}
+				});
+			}
+
 		},
 		/* Configurações */
 		onExpand: function (oEvent) {
@@ -468,6 +512,7 @@ sap.ui.define([
 			this._F4compradorDialog.open(sInputValue);
 		},
 		clearComprador: function (oEvent) {
+			debugger;
 			var compradorInput = this.byId("compradorInput");
 			compradorInput.setValue("");
 			compradorInput.setDescription("");
@@ -490,6 +535,7 @@ sap.ui.define([
 					Ekgrp: sEkgrp,
 					Uname: sUname
 				});
+				debugger;
 				compradorInput.bindElement(sObjectPath);
 				this.clearFornecedor(oEvent);
 				this.clearContrato(oEvent);

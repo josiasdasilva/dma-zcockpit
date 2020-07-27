@@ -19,10 +19,14 @@ sap.ui.define([
 			var sRootPath = jQuery.sap.getModulePath("dma.zcockpit");
 			var sImagePath = sRootPath + "/img/background_cockpit.png";
 			this.byId("img_epa").setSrc(sImagePath); /* popula dados da Agenda */
-			this.populateAppointments();
+			//this.populateAppointments();
 		},
 		_onMasterMatched: function (oEvent) {
 			this._buscaLogado();
+			this.populateAppointments();
+		},
+		handleNavDate: function (oEvt) {
+			console.log(oEvt.getSource().getStartDate());
 		},
 		_buscaLogado: function () {
 			var globalModel = this.getModel("globalModel");
@@ -41,6 +45,31 @@ sap.ui.define([
 				error: function (oError) {}
 			});
 		},
+		_buscaLogadoSync: function () {
+			sap.ui.core.BusyIndicator.show(0);
+			return new Promise((resolve, reject) => {
+				var globalModel = this.getModel("globalModel");
+				var localModel = this.getModel();
+				var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container
+					.getUser().getId();
+				var sObjectPath = localModel.createKey("/Usuario", {
+					Uname: sUname
+				});
+				localModel.read(sObjectPath, {
+					method: "GET",
+					success: function (oData2, oResponse) {
+						globalModel.setProperty("/Ekgrp", oData2.Ekgrp);
+						globalModel.setProperty("/Uname", oData2.Uname);
+						sap.ui.core.BusyIndicator.hide();
+						resolve([oData2.Ekgrp,oData2.Uname]);
+					},
+					error: function (oError) {
+						sap.ui.core.BusyIndicator.hide();
+						reject(oError);
+					}
+				});
+			});
+		},
 		onBtnHistoricoPress: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
 			var sEkgrp = globalModel.getProperty("/Ekgrp");
@@ -51,6 +80,33 @@ sap.ui.define([
 			this.getRouter().navTo("historico", {
 				Ekgrp: sEkgrp
 			}, true);
+		},
+		goToPedidos: function (oEvt) {
+		
+			var oAppnt = this.byId("MyCalendar").getModel().oData.people[0].appointments.find((appont) => {
+				return appont.start === this._oDetailsPopover.oAppointment.mProperties.startDate && appont.end === this._oDetailsPopover
+					.oAppointment.mProperties.endDate
+			});
+
+			var globalModel = this.getModel("globalModel");
+			var sEkgrp = globalModel.getProperty("/Ekgrp");
+			var sUname = globalModel.getProperty("/Uname");
+			globalModel.setProperty("/Lifnr", oAppnt.lifnr);
+			if (sEkgrp === undefined || sUname === undefined) {
+				this._buscaLogadoSync().then((res) => {
+					this.getRouter().navTo("busca", {
+						Ekgrp: res[0],
+						Uname: res[0],
+						Lifnr: oAppnt.lifnr
+					}, true);
+				})
+			} else {
+				this.getRouter().navTo("busca", {
+					Ekgrp: sEkgrp,
+					Uname: sUname,
+					Lifnr: oAppnt.lifnr
+				}, true);
+			}
 		},
 		onBtnPedidoPress: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
@@ -170,14 +226,12 @@ sap.ui.define([
 			this.getOwnerComponent().getModel().read("/AgendaItem", {
 				filters: aFilters,
 				success: (res) => {
-					
-				
 					if (res.results.length === 0) {
 						return;
 					}
 
 					let plannData = {
-						startDate: new Date(new Date().setHours(7,0,0)),//new Date("2020", "07", "23", "07", "00"),//this.getMonday(),
+						startDate: new Date(new Date().setHours(7, 0, 0)),
 						people: []
 					}
 
@@ -188,111 +242,29 @@ sap.ui.define([
 					plannData.people[0].name = res.results[0].Nome;
 
 					for (let item of res.results) {
-						let dDataBeg = new Date(item.HoraInicio.ms);
-						let dDataEnd = new Date(item.HoraFim.ms);
 
-						dDataBeg.setDate(item.Data.getDate());
-						dDataBeg.setMonth(item.Data.getMonth());
-						dDataBeg.setYear(item.Data.getYear());
-
-						dDataEnd.setDate(item.Data.getDate());
-						dDataEnd.setMonth(item.Data.getMonth());
-						dDataEnd.setYear(item.Data.getYear());
-	debugger;
-	let dDateBeg = new Date(new Date(item.Data.toISOString()).setHours(new Date(item.HoraInicio.ms).getHours()));
-	let dDateEnd = new Date(new Date(item.Data.toISOString()).setHours(new Date(item.HoraFim.ms).getHours()));
 						plannData.people[0].appointments.push({
-							start: dDateBeg,
-							end: dDateEnd,
+							start: item.Dthrinicio,
+							end: item.Dthrfim,
 							title: item.Name1,
 							info: item.Comentario,
 							type: "Type02",
+							lifnr: item.Lifnr,
+							ekgrp: item.Ekgrp,
 							tentative: false
 						});
 					}
 					oModel.setData(plannData);
 					console.log(plannData);
-					this.byId("MyCalendar").setModel(oModel); //this.getView().setModel(oModel);
+					this.byId("MyCalendar").setModel(oModel);
 				},
 				error: (err) => {
 					sap.m.MessageBox.error(err, {
 						title: "Erro"
 					});
-					Ï
 				}
 			});
 
-
-				oModel.setData({
-					startDate: new Date("2020", "06", "15", "07", "00"),
-					people: [{
-						pic: sRootPath + "/img/mike_wazowsky.png",
-						name: "Ederson Menezes",
-						role: "comprador",
-						appointments: [{
-								start: new Date("2020", "06", "15", "08", "30"),
-								end: new Date("2020", "06", "15", "09", "30"),
-								title: "SADIA S/A",
-								type: "Type02",
-								tentative: false
-							}, {
-								start: new Date("2020", "06", "15", "10", "00"),
-								end: new Date("2020", "06", "15", "11", "00"),
-								title: "BRF S/A",
-								//info: "mensal",
-								type: "Type01",
-								//pic: "sap-icon://sap-ui5",
-								tentative: false
-							}, {
-								start: new Date("2020", "06", "15", "12", "30"),
-								end: new Date("2020", "06", "15", "13", "30"),
-								title: "Almo\xE7o",
-								info: "amigos",
-								type: "Type03",
-								tentative: true
-							}, {
-								start: new Date("2020", "06", "15", "14", "00"),
-								end: new Date("2020", "06", "15", "15", "00"),
-								title: "Saudali S/A",
-								type: "Type02",
-								tentative: false
-							}, {
-								start: new Date("2020", "06", "15", "15", "00"),
-								end: new Date("2020", "06", "15", "16", "00"),
-								title: "Nestl\xE9 S/A",
-								//info: "linha nova",
-								type: "Type01",
-								//pic: "sap-icon://sap-ui5",
-								tentative: false
-							}, {
-								start: new Date("2020", "06", "15", "16", "30"),
-								end: new Date("2020", "06", "15", "17", "30"),
-								title: "Caf\xE9 3Cora\xE7\xF5es",
-								//info: "canteen",
-								type: "Type03",
-								tentative: true
-							}, {
-								start: new Date("2020", "06", "15", "17", "45"),
-								end: new Date("2020", "06", "15", "18", "00"),
-								title: "Caf\xE9 Dom Pedro",
-								type: "Type02",
-								//pic: "sap-icon://sap-ui5",
-								tentative: false
-							}] // headers: [{
-							// 	start: new Date("2020", "00", "23", "8", "00"),
-							// 	end: new Date("2020", "00", "23", "10", "00"),
-							// 	title: "Relatório de Despesas",
-							// 	type: "Type06"
-							// }, {
-							// 	start: new Date("2020", "00", "23", "15", "00"),
-							// 	end: new Date("2020", "00", "23", "18", "00"),
-							// 	title: "Ligar Café do Sítio",
-							// 	type: "Type06"
-							// }]
-					}]
-				});
-			
-			this.byId("MyCalendar").setModel(oModel); //this.getView().setModel(oModel);
 		},
 		handleAppointmentSelect: function (oEvent) {
 			var oAppointment = oEvent.getParameter("appointment");
@@ -379,6 +351,9 @@ sap.ui.define([
 			this._removeAppointment(oAppointment, iPersonId);
 			this._oDetailsPopover.close();
 		},
+		handleCloseAppointment: function () {
+			this._oDetailsPopover.close();
+		},
 		handleEditButton: function () {
 			this._oDetailsPopover.close();
 			this.sPath = this._oDetailsPopover.getBindingContext().getPath();
@@ -386,22 +361,13 @@ sap.ui.define([
 		},
 		_arrangeDialogFragment: function (iDialogType) {
 			if (!this._oNewAppointmentDialog) {
-				this._oNewAppointmentDialog = new Fragment.createId("dialogFrag", "zcockpit.view.fragment.calendar_create");
+				this._oNewAppointmentDialog = sap.ui.xmlfragment("idCalendCreate", "dma.zcockpit.view.fragment.calendar_create", this);
 				//this._oNewAppointmentDialog = oDialog;
 				this.getView().addDependent(this._oNewAppointmentDialog);
 				this._arrangeDialog(iDialogType);
 			} else {
 				this._arrangeDialog(iDialogType);
 			}
-			/*Fragment.load({
-									id: "dialogFrag",
-									name: "zcockpit.view.fragment.calendar_create",
-									controller: this
-								}).then(function(oDialog) {
-									this._oNewAppointmentDialog = oDialog;
-									this.getView().addDependent(this._oNewAppointmentDialog);
-									this._arrangeDialog(iDialogType);
-								}.bind(this));*/
 		},
 		_arrangeDialog: function (sDialogType) {
 			var sTempTitle = "";
@@ -507,14 +473,14 @@ sap.ui.define([
 			return sTempPath;
 		},
 		_setCreateAppointmentDialogContent: function () {
-			var oAppointmentType = Fragment.byId("dialogFrag", "isIntervalAppointment"),
-				oDateTimePickerStart = Fragment.byId("dialogFrag", "startDate"),
-				oDateTimePickerEnd = Fragment.byId("dialogFrag", "endDate"),
-				oTitleInput = Fragment.byId("dialogFrag", "inputTitle"),
-				oMoreInfoInput = Fragment.byId("dialogFrag", "moreInfo"),
-				oPersonSelected = Fragment.byId("dialogFrag", "selectPerson");
+			var oAppointmentType = Fragment.byId("idCalendCreate", "isIntervalAppointment"),
+				oDateTimePickerStart = Fragment.byId("idCalendCreate", "startDate"),
+				oDateTimePickerEnd = Fragment.byId("idCalendCreate", "endDate"),
+				oTitleInput = Fragment.byId("idCalendCreate", "inputTitle"),
+				oMoreInfoInput = Fragment.byId("idCalendCreate", "moreInfo"),
+				oPersonSelected = Fragment.byId("idCalendCreate", "selectPerson");
 			//Set the person in the first row as selected.
-			oPersonSelected.setSelectedItem(Fragment.byId("dialogFrag", "selectPerson").getItems()[0]);
+			oPersonSelected.setSelectedItem(Fragment.byId("idCalendCreate", "selectPerson").getItems()[0]);
 			oDateTimePickerStart.setValue("");
 			oDateTimePickerEnd.setValue("");
 			oDateTimePickerStart.setValueState("None");
@@ -527,18 +493,18 @@ sap.ui.define([
 		_setCreateWithContextAppointmentDialogContent: function () {
 			var aPeople = this.getView().getModel().getProperty("/people/"),
 				oSelectedIntervalStart = this.oClickEventParameters.startDate,
-				oStartDate = Fragment.byId("dialogFrag", "startDate"),
+				oStartDate = Fragment.byId("idCalendCreate", "startDate"),
 				oSelectedIntervalEnd = this.oClickEventParameters.endDate,
-				oEndDate = Fragment.byId("dialogFrag", "endDate"),
-				oDateTimePickerStart = Fragment.byId("dialogFrag", "startDate"),
-				oDateTimePickerEnd = Fragment.byId("dialogFrag", "endDate"),
-				oAppointmentType = Fragment.byId("dialogFrag", "isIntervalAppointment"),
-				oTitleInput = Fragment.byId("dialogFrag", "inputTitle"),
-				oMoreInfoInput = Fragment.byId("dialogFrag", "moreInfo"),
+				oEndDate = Fragment.byId("idCalendCreate", "endDate"),
+				oDateTimePickerStart = Fragment.byId("idCalendCreate", "startDate"),
+				oDateTimePickerEnd = Fragment.byId("idCalendCreate", "endDate"),
+				oAppointmentType = Fragment.byId("idCalendCreate", "isIntervalAppointment"),
+				oTitleInput = Fragment.byId("idCalendCreate", "inputTitle"),
+				oMoreInfoInput = Fragment.byId("idCalendCreate", "moreInfo"),
 				sPersonName, oPersonSelected;
 			if (this.oClickEventParameters.row) {
 				sPersonName = this.oClickEventParameters.row.getTitle();
-				oPersonSelected = Fragment.byId("dialogFrag", "selectPerson");
+				oPersonSelected = Fragment.byId("idCalendCreate", "selectPerson");
 				oPersonSelected.setSelectedIndex(aPeople.indexOf(aPeople.filter(function (oPerson) {
 					return oPerson.name === sPersonName;
 				})[0]));
@@ -557,17 +523,17 @@ sap.ui.define([
 			var oAppointment = this._oNewAppointmentDialog.getModel().getProperty(this.sPath),
 				oSelectedIntervalStart = oAppointment.start,
 				oSelectedIntervalEnd = oAppointment.end,
-				oDateTimePickerStart = Fragment.byId("dialogFrag", "startDate"),
-				oDateTimePickerEnd = Fragment.byId("dialogFrag", "endDate"),
+				oDateTimePickerStart = Fragment.byId("idCalendDetails", "startDate"),
+				oDateTimePickerEnd = Fragment.byId("idCalendDetails", "endDate"),
 				sSelectedInfo = oAppointment.info,
 				sSelectedTitle = oAppointment.title,
 				iSelectedPersonId = this.sPath[this.sPath.indexOf("/people/") + "/people/".length],
-				oPersonSelected = Fragment.byId("dialogFrag", "selectPerson"),
-				oStartDate = Fragment.byId("dialogFrag", "startDate"),
-				oEndDate = Fragment.byId("dialogFrag", "endDate"),
-				oMoreInfoInput = Fragment.byId("dialogFrag", "moreInfo"),
-				oTitleInput = Fragment.byId("dialogFrag", "inputTitle"),
-				oAppointmentType = Fragment.byId("dialogFrag", "isIntervalAppointment");
+				oPersonSelected = Fragment.byId("idCalendDetails", "selectPerson"),
+				oStartDate = Fragment.byId("idCalendDetails", "startDate"),
+				oEndDate = Fragment.byId("idCalendDetails", "endDate"),
+				oMoreInfoInput = Fragment.byId("idCalendDetails", "moreInfo"),
+				oTitleInput = Fragment.byId("idCalendDetails", "inputTitle"),
+				oAppointmentType = Fragment.byId("idCalendDetails", "isIntervalAppointment");
 			oPersonSelected.setSelectedIndex(iSelectedPersonId);
 			oStartDate.setDateValue(oSelectedIntervalStart);
 			oEndDate.setDateValue(oSelectedIntervalEnd);
@@ -578,6 +544,7 @@ sap.ui.define([
 			oAppointmentType.setSelected(false);
 		},
 		_handleSingleAppointment: function (oAppointment) {
+
 			if (oAppointment === undefined) {
 				return;
 			}
@@ -586,34 +553,27 @@ sap.ui.define([
 				return;
 			}
 			if (!this._oDetailsPopover) {
-				this._oDetailsPopover = Fragment.createId("zcockpit.view.fragment.calendar_details", "myPopoverFrag");
-				this._setDetailsDialogContent(oAppointment);
-				/*
-										this._oDetailsPopover = Fragment.load({
-											id: "myPopoverFrag",
-											name: "zcockpit.view.fragment.calendar_details",
-											controller: this
-										}).then(function(oDialog) {
-											this._oDetailsPopover = oDialog;
-											this._setDetailsDialogContent(oAppointment);
 
-										}.bind(this)); */
+				this._oDetailsPopover = sap.ui.xmlfragment("idCalendDetails", "dma.zcockpit.view.fragment.calendar_details", this);
+				this.getView().addDependent(this._oDetailsPopover);
+				this._setDetailsDialogContent(oAppointment);
 			} else {
 				this._setDetailsDialogContent(oAppointment);
 			}
 		},
 		_setDetailsDialogContent: function (oAppointment) {
-			var oTextStart = Fragment.byId("myPopoverFrag", "startDate"),
-				oTextEnd = Fragment.byId("myPopoverFrag", "endDate"),
+			var oTextStart = Fragment.byId("idCalendDetails", "startDate"),
+				oTextEnd = Fragment.byId("idCalendDetails", "endDate"),
 				oAppBindingContext = oAppointment.getBindingContext(),
-				oMoreInfo = Fragment.byId("myPopoverFrag", "moreInfo"),
-				oDetailsPopover = Fragment.byId("myPopoverFrag", "detailsPopover");
+				oMoreInfo = Fragment.byId("idCalendDetails", "moreInfo"),
+				oDetailsPopover = Fragment.byId("idCalendDetails", "detailsPopover");
 			this._oDetailsPopover.setBindingContext(oAppBindingContext);
 			this._oDetailsPopover.openBy(oAppointment);
 			oTextStart.setText(this.formatDate(oAppointment.getStartDate()));
 			oTextEnd.setText(this.formatDate(oAppointment.getEndDate()));
 			oMoreInfo.setText(oAppointment.getText());
 			oDetailsPopover.setTitle(oAppointment.getTitle());
+			this._oDetailsPopover.oAppointment = oAppointment;
 		},
 		formatDate: function (oDate) {
 			if (oDate) {

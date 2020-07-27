@@ -1,28 +1,20 @@
-<core:FragmentDefinition
-		xmlns="sap.m"
-		xmlns:f="sap.ui.layout.form"
-		xmlns:core="sap.ui.core">
-	<ResponsivePopover
-			id="detailsPopover"
-			title="{title}"
-			class="sapUiPopupWithPadding"
-			placement="Auto">
-		<beginButton>
-			<Button text="Edit" type="Emphasized" press="handleEditButton"/>
+<core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
+	<ResponsivePopover id="detailsPopover" title="{title}" class="sapUiPopupWithPadding" placement="Auto">
+		<beginButton >
+			<Button text="{i18n>go_to_pedido}" type="Emphasized" press="goToPedidos"/>
 		</beginButton>
 		<endButton>
-			<Button text="Delete" press="handleDeleteAppointment"/>
+			<Button text="Fechar" press="handleCloseAppointment"/>
 		</endButton>
-		<f:SimpleForm
-				editable="false"
-				layout="ResponsiveGridLayout"
-				singleContainerFullSize="false">
-			<Label text="Additional information" labelFor="moreInfo"/>
-			<Text id="moreInfo" text="{text}"/>
-			<Label text="From" labelFor="startDate"/>
-			<Text id="startDate" text="{'startDate'}"/>
-			<Label text="To" labelFor="endDate"/>
-			<Text id="endDate" text="{'endDate'}"/>
-		</f:SimpleForm>
+		<content>
+			<f:SimpleForm editable="false" layout="ResponsiveGridLayout" singleContainerFullSize="false">
+				<Label text="{i18n>info_add}" labelFor="moreInfo"/>
+				<Text id="moreInfo" text="{text}"/>
+				<Label text="{i18n>from}" labelFor="startDate"/>
+				<Text id="startDate" text="{'startDate'}"/>
+				<Label text="{i18n>until}" labelFor="endDate"/>
+				<Text id="endDate" text="{'endDate'}"/>
+			</f:SimpleForm>
+		</content>
 	</ResponsivePopover>
 </core:FragmentDefinition>

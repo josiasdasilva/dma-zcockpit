@@ -1,5 +1,11 @@
 /* CSS */
 
+html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
+    width: 100%;
+    left: 0px;
+    margin-left: 0px;
+}
+
 .flexBoxConfig {
     padding: 0 10px 0 10px;
 }
