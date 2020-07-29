@@ -61,7 +61,7 @@ sap.ui.define([
 						globalModel.setProperty("/Ekgrp", oData2.Ekgrp);
 						globalModel.setProperty("/Uname", oData2.Uname);
 						sap.ui.core.BusyIndicator.hide();
-						resolve([oData2.Ekgrp,oData2.Uname]);
+						resolve([oData2.Ekgrp, oData2.Uname]);
 					},
 					error: function (oError) {
 						sap.ui.core.BusyIndicator.hide();
@@ -82,10 +82,11 @@ sap.ui.define([
 			}, true);
 		},
 		goToPedidos: function (oEvt) {
-		
+
 			var oAppnt = this.byId("MyCalendar").getModel().oData.people[0].appointments.find((appont) => {
-				return appont.start === this._oDetailsPopover.oAppointment.mProperties.startDate && appont.end === this._oDetailsPopover
-					.oAppointment.mProperties.endDate
+				return appont.start.toGMTString() === this._oDetailsPopover.oAppointment.mProperties.startDate.toGMTString() && appont.end.toGMTString() ===
+					this._oDetailsPopover
+					.oAppointment.mProperties.endDate.toGMTString()
 			});
 
 			var globalModel = this.getModel("globalModel");

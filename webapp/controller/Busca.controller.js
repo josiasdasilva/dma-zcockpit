@@ -162,6 +162,11 @@ sap.ui.define([
 			var sLifnr = oEvent.getParameter("arguments").Lifnr;
 			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
 			var sUname = oEvent.getParameter("arguments").Uname;
+			if(!sLifnr || sLifnr.length === 0){
+				this.clearComprador();
+				this.clearSelectedProduto();
+				return;
+			}
 			if (sEkgrp && sEkgrp.length > 0) {
 				this.getOwnerComponent().getModel().read(`/Comprador(Ekgrp='${sEkgrp}',Uname='${sUname}')`, {
 					success: (res) => {
