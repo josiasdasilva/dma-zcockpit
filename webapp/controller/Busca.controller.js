@@ -45,39 +45,57 @@ sap.ui.define([
 			globalModel.setProperty("/TpEntrada", this.byId("idTpEntrada").getValue());
 
 			var aFilters = [];
-			// // Filtro UF
+			// Filtro UF
 			var sUF = this.byId("UFInput");
 			if (sUF.getTokens().length > 0) {
+				var orArrayUF = [];
 				for (var iUF = 0; iUF < sUF.getTokens().length; iUF++) {
-					aFilters.push(new sap.ui.model.Filter(
+					orArrayUF.push(new sap.ui.model.Filter(
 						"UF",
 						sap.ui.model.FilterOperator.EQ,
 						sUF.getTokens()[iUF].getText()
 					));
 				}
+				var orFilterUF = new sap.ui.model.Filter({
+					filters: orArrayUF,
+					and: false
+				});
+				aFilters.push(orFilterUF);
 			}
-			// // Filtro Bandeira
+			// Filtro Bandeira
 			var sBandeira = this.byId("grupoLojasInput");
+			var orArrayBand = [];
 			if (sBandeira.getTokens().length > 0) {
 				for (var iBand = 0; iBand < sBandeira.getTokens().length; iBand++) {
-					aFilters.push(new sap.ui.model.Filter(
+					orArrayBand.push(new sap.ui.model.Filter(
 						"Bandeira",
 						sap.ui.model.FilterOperator.EQ,
 						sBandeira.getTokens()[iBand].getText()
 					));
 				}
+				var orFilterBand = new sap.ui.model.Filter({
+					filters: orArrayBand,
+					and: false
+				});
+				aFilters.push(orFilterBand);
 			}
-			// // Filtro Loja
+			// Filtro Loja
 			var sLojas = this.byId("cdInput");
+			var orArrayLoja = [];
 			if (sLojas.getTokens().length > 0) {
 				for (var iLojas = 0; iLojas < sLojas.getTokens().length; iLojas++) {
-					aFilters.push(new sap.ui.model.Filter(
+					orArrayLoja.push(new sap.ui.model.Filter(
 						"Werks",
 						sap.ui.model.FilterOperator.EQ,
 						//						`'${sLojas.getTokens()[iLojas].getText()}'`
-						sLojas.getTokens()[iLojas].getText()
+						sLojas.getTokens()[iLojas].getKey()
 					));
 				}
+				var orFilterLoja = new sap.ui.model.Filter({
+					filters: orArrayLoja,
+					and: false
+				});
+				aFilters.push(orFilterLoja);
 			}
 			// Filtro Comprador
 			var sEkgrp = this.byId("compradorInput").getValue();
@@ -99,7 +117,7 @@ sap.ui.define([
 				var fEbeln = new sap.ui.model.Filter("Ebeln", sap.ui.model.FilterOperator.EQ, sEbeln);
 				aFilters.push(fEbeln);
 			}
-			// 
+			//  produtos
 			var sMatnr = this.byId("idProdutos").getSelectedContexts(true);
 			if (sMatnr && sMatnr.length > 0) {
 				globalModel.setProperty("/Matnr", sMatnr);
@@ -219,38 +237,21 @@ sap.ui.define([
 		},
 		/* Value Help CD */
 		onF4UF: function (oEvent) {
-			// /* recupera tokens anteriores */
-			// var oModel = oEvent.getModel();
-			// var aUF = oModel.getProperty("/UF");
-			// var aInputUF = this.byId("UFInput").getTokens();
-			// for (var i=0; i<aInputUF.length ; i++){
-			// 	for (var type = 0; type < aUF.length; type++) {
-			// 		if (aUF[type].Blart === aInputUF[i].getText()) {
-			// 			aUF[type].selected = true;
-			// 		}
-			// 	}
-			// 	oModel.setProperty("/UF", aUF);
-			// }
-
-			// create value help dialog
 			if (!this._F4UFDialog) {
 				this._F4UFDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.uf", this);
 				this.getView().addDependent(this._F4UFDialog);
 			}
-			this._openF4UFDialog(oEvent);
 
-			//FAFN - Set select tokens - Begin
-			var aTokens = oEvent.getSource().getTokens();
-			this._F4UFDialog._oList.attachUpdateFinished(() => {
-				for (let itemToken of aTokens) {
-					let itemSelected = this._F4UFDialog._oList.getItems().find((item) => {
-						return item.mProperties.title === itemToken.mProperties.text;
-					});
-					itemSelected ? itemSelected.setSelected(true) : null;
+			var aInput = this.byId("UFInput").getTokens();
+			var aUFItems = this._F4UFDialog._oList.getItems();
+			for (var iTk = 0; iTk < aInput.length; iTk++) {
+				for (var type = 0; type < aUFItems.length; type++) {
+					if (aUFItems[type].getTitle() === aInput[iTk].getKey()) {
+						aUFItems[type].setSelected(true);
+					}
 				}
-			});
-			//FAFN - Set select tokens - End			
-
+			}
+			this._F4UFDialog.open();
 		},
 		_openF4UFDialog: function (oEvent) {
 			var sInputValue = oEvent.getSource().getDescription();
@@ -284,7 +285,8 @@ sap.ui.define([
 			if (aSelectedItems && aSelectedItems.length > 0) {
 				aSelectedItems.forEach(function (oItem) {
 					oMultiInput.addToken(new Token({
-						text: oItem.getTitle()
+						key: oItem.getTitle(),
+						text: oItem.getDescription()
 					}));
 				});
 			}
@@ -312,20 +314,17 @@ sap.ui.define([
 				this._F4grupoLojasDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.grupoLojas", this);
 				this.getView().addDependent(this._F4grupoLojasDialog);
 			}
-			this._openF4grupoLojasDialog(oEvent);
 
-			//FAFN - Set select tokens - Begin
-			let aTokens = oEvent.getSource().getTokens();
-			this._F4grupoLojasDialog._oList.attachUpdateFinished(() => {
-				for (let itemToken of aTokens) {
-					let itemSelected = this._F4grupoLojasDialog._oList.getItems().find((item) => {
-						return item.mProperties.title === itemToken.mProperties.text;
-					});
-					itemSelected ? itemSelected.setSelected(true) : null;
+			var aInput = this.byId("grupoLojasInput").getTokens();
+			var aglItems = this._F4grupoLojasDialog._oList.getItems();
+			for (var iTk = 0; iTk < aInput.length; iTk++) {
+				for (var type = 0; type < aglItems.length; type++) {
+					if (aglItems[type].getTitle() === aInput[iTk].getKey()) {
+						aglItems[type].setSelected(true);
+					}
 				}
-			});
-			//FAFN - Set select tokens - End						
-
+			}
+			this._openF4grupoLojasDialog(oEvent);
 		},
 		_openF4grupoLojasDialog: function (oEvent) {
 			var sInputValue = oEvent.getSource().getDescription();
@@ -344,16 +343,22 @@ sap.ui.define([
 			this._F4grupoLojasDialog.open(sInputValue);
 		},
 		_filtroF4grupoLojas: function (aFilters) {
-			// set previous filter - UF
+			// Filtro UF
 			var sUF = this.byId("UFInput");
 			if (sUF.getTokens().length > 0) {
+				var orArrayUF = [];
 				for (var iUF = 0; iUF < sUF.getTokens().length; iUF++) {
-					aFilters.push(new sap.ui.model.Filter(
+					orArrayUF.push(new sap.ui.model.Filter(
 						"UF",
 						sap.ui.model.FilterOperator.EQ,
 						sUF.getTokens()[iUF].getText()
 					));
 				}
+				var orFilterUF = new sap.ui.model.Filter({
+					filters: orArrayUF,
+					and: false
+				});
+				aFilters.push(orFilterUF);
 			}
 			return aFilters;
 		},
@@ -381,6 +386,7 @@ sap.ui.define([
 			if (aSelectedItems && aSelectedItems.length > 0) {
 				aSelectedItems.forEach(function (oItem) {
 					oMultiInput.addToken(new Token({
+						key: oItem.getDescription(),
 						text: oItem.getTitle()
 					}));
 				});
@@ -407,20 +413,17 @@ sap.ui.define([
 				this._F4CDDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.cd", this);
 				this.getView().addDependent(this._F4CDDialog);
 			}
-			this._openF4CDDialog(oEvent);
 
-			//FAFN - Set select tokens - Begin
-			let aTokens = oEvent.getSource().getTokens();
-			this._F4CDDialog._oList.attachUpdateFinished(() => {
-				for (let itemToken of aTokens) {
-					let itemSelected = this._F4CDDialog._oList.getItems().find((item) => {
-						return item.mProperties.title === itemToken.mProperties.text;
-					});
-					itemSelected ? itemSelected.setSelected(true) : null;
+			var aInput = this.byId("cdInput").getTokens();
+			var aCdItems = this._F4CDDialog._oList.getItems();
+			for (var iTk = 0; iTk < aInput.length; iTk++) {
+				for (var type = 0; type < aCdItems.length; type++) {
+					if (aCdItems[type].getTitle() === aInput[iTk].getKey()) {
+						aCdItems[type].setSelected(true);
+					}
 				}
-			});
-			//FAFN - Set select tokens - End	
-
+			}
+			this._openF4CDDialog(oEvent);
 		},
 		_openF4CDDialog: function (oEvent) {
 			var aFilters = [];
@@ -437,27 +440,39 @@ sap.ui.define([
 			this._F4CDDialog.open(sInputValue);
 		},
 		_filtroF4CD: function (aFilters) {
-			// set previous filter - UF
+			// Filtro UF
 			var sUF = this.byId("UFInput");
 			if (sUF.getTokens().length > 0) {
+				var orArrayUF = [];
 				for (var iUF = 0; iUF < sUF.getTokens().length; iUF++) {
-					aFilters.push(new sap.ui.model.Filter(
+					orArrayUF.push(new sap.ui.model.Filter(
 						"UF",
 						sap.ui.model.FilterOperator.EQ,
 						sUF.getTokens()[iUF].getText()
 					));
 				}
+				var orFilterUF = new sap.ui.model.Filter({
+					filters: orArrayUF,
+					and: false
+				});
+				aFilters.push(orFilterUF);
 			}
-			// set previous filter - Bandeira
+			// Filtro Bandeira
 			var sBandeira = this.byId("grupoLojasInput");
+			var orArrayBand = [];
 			if (sBandeira.getTokens().length > 0) {
 				for (var iBand = 0; iBand < sBandeira.getTokens().length; iBand++) {
-					aFilters.push(new sap.ui.model.Filter(
+					orArrayBand.push(new sap.ui.model.Filter(
 						"Bandeira",
-						sap.ui.model.FilterOperator.Contains,
+						sap.ui.model.FilterOperator.EQ,
 						sBandeira.getTokens()[iBand].getText()
 					));
 				}
+				var orFilterBand = new sap.ui.model.Filter({
+					filters: orArrayBand,
+					and: false
+				});
+				aFilters.push(orFilterBand);
 			}
 			return aFilters;
 		},
@@ -487,6 +502,7 @@ sap.ui.define([
 			if (aSelectedItems && aSelectedItems.length > 0) {
 				aSelectedItems.forEach(function (oItem) {
 					oMultiInput.addToken(new Token({
+						key: oItem.getDescription(),
 						text: oItem.getTitle()
 					}));
 				});
@@ -674,35 +690,54 @@ sap.ui.define([
 				// Filtro UF
 				var sUF = this.byId("UFInput");
 				if (sUF.getTokens().length > 0) {
+					var orArrayUF = [];
 					for (var iUF = 0; iUF < sUF.getTokens().length; iUF++) {
-						aFilters.push(new sap.ui.model.Filter(
+						orArrayUF.push(new sap.ui.model.Filter(
 							"UF",
 							sap.ui.model.FilterOperator.EQ,
 							sUF.getTokens()[iUF].getText()
 						));
 					}
+					var orFilterUF = new sap.ui.model.Filter({
+						filters: orArrayUF,
+						and: false
+					});
+					aFilters.push(orFilterUF);
 				}
-				// // Filtro Bandeira
+
+				// Filtro Bandeira
 				var sBandeira = this.byId("grupoLojasInput");
+				var orArrayGL = [];
 				if (sBandeira.getTokens().length > 0) {
 					for (var iBand = 0; iBand < sBandeira.getTokens().length; iBand++) {
-						aFilters.push(new sap.ui.model.Filter(
+						orArrayGL.push(new sap.ui.model.Filter(
 							"Bandeira",
 							sap.ui.model.FilterOperator.EQ,
 							sBandeira.getTokens()[iBand].getText()
 						));
 					}
+					var orFilterBand = new sap.ui.model.Filter({
+						filters: orArrayGL,
+						and: false
+					});
+					aFilters.push(orFilterBand);
 				}
 				// // Filtro Loja
 				var sLojas = this.byId("cdInput");
+				var orArrayLoja = [];
 				if (sLojas.getTokens().length > 0) {
 					for (var iLojas = 0; iLojas < sLojas.getTokens().length; iLojas++) {
-						aFilters.push(new sap.ui.model.Filter(
+						orArrayLoja.push(new sap.ui.model.Filter(
 							"Werks",
 							sap.ui.model.FilterOperator.EQ,
 							sLojas.getTokens()[iLojas].getText()
 						));
 					}
+					var orFilterLoja = new sap.ui.model.Filter({
+						filters: orArrayLoja,
+						and: false
+					});
+					aFilters.push(orFilterLoja);
 				}
 				// Filtro Contrato
 				var sEbeln = this.byId("contratoInput").getValue();

@@ -22,7 +22,7 @@ sap.ui.define([
 			//this.populateAppointments();
 		},
 		_onMasterMatched: function (oEvent) {
-			this._buscaLogado();
+			this._buscaLogadoSync();
 			this.populateAppointments();
 		},
 		handleNavDate: function (oEvt) {
@@ -75,11 +75,16 @@ sap.ui.define([
 			var sEkgrp = globalModel.getProperty("/Ekgrp");
 			var sUname = globalModel.getProperty("/Uname");
 			if (sEkgrp === undefined || sUname === undefined) {
-				this._buscaLogado();
+				this._buscaLogadoSync().then((res) => {
+					this.getRouter().navTo("historico", {
+						Ekgrp: res[0]
+					}, true);
+				})
+			} else {
+				this.getRouter().navTo("historico", {
+					Ekgrp: sEkgrp
+				}, true);
 			}
-			this.getRouter().navTo("historico", {
-				Ekgrp: sEkgrp
-			}, true);
 		},
 		goToPedidos: function (oEvt) {
 
@@ -97,7 +102,7 @@ sap.ui.define([
 				this._buscaLogadoSync().then((res) => {
 					this.getRouter().navTo("busca", {
 						Ekgrp: res[0],
-						Uname: res[0],
+						Uname: res[1],
 						Lifnr: oAppnt.lifnr
 					}, true);
 				})
@@ -114,12 +119,18 @@ sap.ui.define([
 			var sEkgrp = globalModel.getProperty("/Ekgrp");
 			var sUname = globalModel.getProperty("/Uname");
 			if (sEkgrp === undefined || sUname === undefined) {
-				this._buscaLogado();
+				this._buscaLogadoSync().then((res) => {
+					this.getRouter().navTo("busca", {
+						Ekgrp: res[0],
+						Uname: res[1]
+					}, true);
+				})
+			} else {
+				this.getRouter().navTo("busca", {
+					Ekgrp: sEkgrp,
+					Uname: sUname
+				}, true);
 			}
-			this.getRouter().navTo("busca", {
-				Ekgrp: sEkgrp,
-				Uname: sUname
-			}, true);
 
 			// var oView = this.getView();
 			// var localModel = this.getModel();

@@ -27,13 +27,10 @@
 					<PropertyRef Name="Werks"/>
 				</Key>
 				<Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="" sap:creatable="false"
-					sap:updatable="false" sap:sortable="false"/>
-				<Property Name="Nome" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false"/>
-				<Property Name="Bandeira" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="Class" sap:creatable="false"
-					sap:updatable="false" sap:sortable="false"/>
-				<Property Name="UF" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Region" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false"/>
+					sap:updatable="false"/>
+				<Property Name="Nome" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Bandeira" Type="Edm.String" MaxLength="18" sap:unicode="false" sap:label="Class" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="UF" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Region" sap:creatable="false" sap:updatable="false"/>
 			</EntityType>
 			<EntityType Name="POSum" sap:content-version="1">
 				<Key>
@@ -225,6 +222,34 @@
 				<Property Name="Bezei" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Description" sap:creatable="false"
 					sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 			</EntityType>
+			<EntityType Name="AgendaItem" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Uname"/>
+				</Key>
+				<Property Name="Dthrinicio" Type="Edm.DateTime" Precision="0" sap:unicode="false" sap:label="Time Stamp" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="Dthrfim" Type="Edm.DateTime" Precision="0" sap:unicode="false" sap:label="Time Stamp" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="Uname" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="User Name" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="Zuuid" Type="Edm.String" MaxLength="32" sap:unicode="false" sap:label="Universal Unique ID" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="Ekgrp" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Purch. Group" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="Nome" Type="Edm.String" MaxLength="80" sap:unicode="false" sap:label="Complete name" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Name1" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="Name 1" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Comentario" Type="Edm.String" MaxLength="50" sap:unicode="false" sap:label="Header Comm." sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="Data" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Created on" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="HoraInicio" Type="Edm.Time" Precision="0" sap:unicode="false" sap:label="Time valid from" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="HoraFim" Type="Edm.Time" Precision="0" sap:unicode="false" sap:label="Time valid to" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="Recorrente" Type="Edm.String" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+			</EntityType>
 			<EntityType Name="POHistorico" sap:content-version="1">
 				<Key>
 					<PropertyRef Name="Ekgrp"/>
@@ -393,6 +418,15 @@
 				<Property Name="DtRemessa" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false"/>
 			</EntityType>
+			<EntityType Name="PedidoPrint" m:HasStream="true" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Ebeln"/>
+				</Key>
+				<Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
 			<EntityType Name="TipoPedido" sap:content-version="1">
 				<Key>
 					<PropertyRef Name="Bsart"/>
@@ -406,14 +440,10 @@
 				<Key>
 					<PropertyRef Name="Bandeira"/>
 				</Key>
-				<Property Name="Clint" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="Bandeira" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="Descricao" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="UF" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false"/>
+				<Property Name="Clint" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Bandeira" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Descricao" Type="Edm.String" MaxLength="18" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="UF" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 			</EntityType>
 			<EntityType Name="Produto" sap:content-version="1">
 				<Key>
@@ -472,48 +502,17 @@
 				<NavigationProperty Name="POCria" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOCria" FromRole="FromRole_FornecedorPOCria"
 					ToRole="ToRole_FornecedorPOCria"/>
 			</EntityType>
-			<EntityType Name="AgendaItem" sap:content-version="1">
-				<Key>
-					<PropertyRef Name="Zuuid"/>
-				</Key>
-				<Property Name="Zuuid" Type="Edm.String" Nullable="false" MaxLength="32" sap:unicode="false" sap:label="Universal Unique ID"
-					sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Ekgrp" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Purch. Group" sap:creatable="false"
-					sap:updatable="false"/>
-				<Property Name="Nome" Type="Edm.String" MaxLength="80" sap:unicode="false" sap:label="Complete name" sap:creatable="false"
-					sap:updatable="false"/>
-				<Property Name="Lifnr" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Name1" Type="Edm.String" MaxLength="30" sap:unicode="false" sap:label="Name 1" sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Comentario" Type="Edm.String" MaxLength="50" sap:unicode="false" sap:label="Header Comm." sap:creatable="false"
-					sap:updatable="false"/>
-				<Property Name="Data" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Created on" sap:creatable="false"
-					sap:updatable="false"/>
-				<Property Name="HoraInicio" Type="Edm.Time" Precision="0" sap:unicode="false" sap:label="Time valid from" sap:creatable="false"
-					sap:updatable="false"/>
-				<Property Name="HoraFim" Type="Edm.Time" Precision="0" sap:unicode="false" sap:label="Time valid to" sap:creatable="false"
-					sap:updatable="false"/>
-				<Property Name="Recorrente" Type="Edm.String" MaxLength="1" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
-			</EntityType>
-			<EntityType Name="PedidoPrint" m:HasStream="true" sap:content-version="1">
-				<Key>
-					<PropertyRef Name="Ebeln"/>
-				</Key>
-				<Property Name="Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-			</EntityType>
 			<Association Name="FornecedorPOReset" sap:content-version="1">
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.Fornecedor" Multiplicity="1" Role="FromRole_FornecedorPOReset"/>
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.POReset" Multiplicity="1" Role="ToRole_FornecedorPOReset"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_FornecedorPOReset">
-						<PropertyRef Name="Ekgrp"/>
 						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Principal>
 					<Dependent Role="ToRole_FornecedorPOReset">
-						<PropertyRef Name="Ekgrp"/>
 						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -522,12 +521,12 @@
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.POSum" Multiplicity="*" Role="ToRole_FornecedorPOSum"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_FornecedorPOSum">
-						<PropertyRef Name="Ekgrp"/>
 						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Principal>
 					<Dependent Role="ToRole_FornecedorPOSum">
-						<PropertyRef Name="Ekgrp"/>
 						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -536,12 +535,12 @@
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.PO" Multiplicity="*" Role="ToRole_FornecedorPO"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_FornecedorPO">
-						<PropertyRef Name="Lifnr"/>
 						<PropertyRef Name="Ekgrp"/>
+						<PropertyRef Name="Lifnr"/>
 					</Principal>
 					<Dependent Role="ToRole_FornecedorPO">
-						<PropertyRef Name="Lifnr"/>
 						<PropertyRef Name="Ekgrp"/>
+						<PropertyRef Name="Lifnr"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -550,12 +549,12 @@
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.Produto" Multiplicity="*" Role="ToRole_FornecedorProduto"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_FornecedorProduto">
-						<PropertyRef Name="Ekgrp"/>
 						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Principal>
 					<Dependent Role="ToRole_FornecedorProduto">
-						<PropertyRef Name="Ekgrp"/>
 						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -564,12 +563,12 @@
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.POCria" Multiplicity="*" Role="ToRole_FornecedorPOCria"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_FornecedorPOCria">
-						<PropertyRef Name="Lifnr"/>
 						<PropertyRef Name="Ekgrp"/>
+						<PropertyRef Name="Lifnr"/>
 					</Principal>
 					<Dependent Role="ToRole_FornecedorPOCria">
-						<PropertyRef Name="Lifnr"/>
 						<PropertyRef Name="Ekgrp"/>
+						<PropertyRef Name="Lifnr"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -578,14 +577,14 @@
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.POVenda" Multiplicity="*" Role="ToRole_POPOVenda"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_POPOVenda">
-						<PropertyRef Name="Matnr"/>
-						<PropertyRef Name="Lifnr"/>
 						<PropertyRef Name="Ekgrp"/>
+						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Matnr"/>
 					</Principal>
 					<Dependent Role="ToRole_POPOVenda">
-						<PropertyRef Name="Matnr"/>
-						<PropertyRef Name="Lifnr"/>
 						<PropertyRef Name="Ekgrp"/>
+						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Matnr"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -595,13 +594,13 @@
 				<ReferentialConstraint>
 					<Principal Role="FromRole_POPOCompra">
 						<PropertyRef Name="Lifnr"/>
-						<PropertyRef Name="Ekgrp"/>
 						<PropertyRef Name="Matnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Principal>
 					<Dependent Role="ToRole_POPOCompra">
 						<PropertyRef Name="Lifnr"/>
-						<PropertyRef Name="Ekgrp"/>
 						<PropertyRef Name="Matnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -610,14 +609,14 @@
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.POHistorico" Multiplicity="*" Role="ToRole_POPOHistorico"/>
 				<ReferentialConstraint>
 					<Principal Role="FromRole_POPOHistorico">
-						<PropertyRef Name="Ekgrp"/>
-						<PropertyRef Name="Lifnr"/>
 						<PropertyRef Name="Matnr"/>
+						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Principal>
 					<Dependent Role="ToRole_POPOHistorico">
-						<PropertyRef Name="Ekgrp"/>
-						<PropertyRef Name="Lifnr"/>
 						<PropertyRef Name="Matnr"/>
+						<PropertyRef Name="Lifnr"/>
+						<PropertyRef Name="Ekgrp"/>
 					</Dependent>
 				</ReferentialConstraint>
 			</Association>
@@ -662,6 +661,8 @@
 					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="UF" EntityType="ZCOCKPIT_COMERCIAL_SRV.UF" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="AgendaItem" EntityType="ZCOCKPIT_COMERCIAL_SRV.AgendaItem" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="POHistorico" EntityType="ZCOCKPIT_COMERCIAL_SRV.POHistorico" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="POCompra" EntityType="ZCOCKPIT_COMERCIAL_SRV.POCompra" sap:creatable="false" sap:updatable="false" sap:deletable="false"
@@ -670,6 +671,8 @@
 					sap:searchable="true" sap:content-version="1"/>
 				<EntitySet Name="POCria" EntityType="ZCOCKPIT_COMERCIAL_SRV.POCria" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="PedidoPrint" EntityType="ZCOCKPIT_COMERCIAL_SRV.PedidoPrint" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
 				<EntitySet Name="TipoPedido" EntityType="ZCOCKPIT_COMERCIAL_SRV.TipoPedido" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="GrupoLojas" EntityType="ZCOCKPIT_COMERCIAL_SRV.GrupoLojas" sap:creatable="false" sap:updatable="false"
@@ -678,9 +681,6 @@
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Fornecedor" EntityType="ZCOCKPIT_COMERCIAL_SRV.Fornecedor" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-				<EntitySet Name="AgendaItem" EntityType="ZCOCKPIT_COMERCIAL_SRV.AgendaItem" sap:creatable="false" sap:updatable="false"
-					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-				<EntitySet Name="PedidoPrintCollection" EntityType="ZCOCKPIT_COMERCIAL_SRV.PedidoPrint" sap:content-version="1"/>
 				<AssociationSet Name="FornecedorPOCriaSet" Association="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOCria" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:content-version="1">
 					<End EntitySet="Fornecedor" Role="FromRole_FornecedorPOCria"/>

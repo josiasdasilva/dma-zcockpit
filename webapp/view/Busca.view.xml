@@ -1,124 +1,162 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" controllerName="dma.zcockpit.controller.Busca">
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+	controllerName="dma.zcockpit.controller.Busca">
 	<Page title="Cockpit Comercial" id="__page3" showSubHeader="false" showNavButton="true" navButtonPress="onNavBack">
 		<content>
 			<FlexBox width="100%" class="columns" fitContainer="true" direction="Column" alignContent="Start">
 				<items>
-					<Panel xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" id="__panel5" headerText="Configurações do Pedido" expandable="true" expand="onExpand">
+					<Panel xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+						id="__panel5" headerText="Configurações do Pedido" expandable="true" expand="onExpand">
 						<content>
 							<FlexBox width="100%" id="__box5" fitContainer="true" alignContent="SpaceBetween">
 								<items>
 									<FlexBox width="100%" class="flexBoxConfig" id="__box6" direction="Column">
 										<items>
-											<Label xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Data da Remessa" width="100%" required="true" id="__label0"/>
-											<DatePicker xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" id="idDtRemessa" value="17/01/2020" valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy" required="true"/>
+											<Label xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+												text="Data da Remessa" width="100%" required="true" id="__label0"/>
+											<DatePicker xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+												id="idDtRemessa" value="17/01/2020" valueFormat="yyyyMMdd" displayFormat="dd/MM/yyyy" required="true"/>
 										</items>
 									</FlexBox>
 									<FlexBox width="100%" class="flexBoxConfig" id="__box7" direction="Column">
 										<items>
-											<Label xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Tipo do Pedido" width="100%" required="true" id="__label1"/>
-											<ComboBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" showSecondaryValues="true" items="{path: '/TipoPedido', sorter: { path: 'Bsart' } }" width="100%" required="true" id="idComboPedido">
+											<Label xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+												text="Tipo do Pedido" width="100%" required="true" id="__label1"/>
+											<ComboBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+												showSecondaryValues="true" items="{path: '/TipoPedido', sorter: { path: 'Bsart' } }" width="100%" required="true" id="idComboPedido">
 												<items>
-													<core:ListItem xmlns:core="sap.ui.core" key="{Bsart}" text="{Bsart}" additionalText="{Batxt}" id="idListPedido_copy-idComboPedido-0-idComboPedido-0"/>
+													<core:ListItem xmlns:core="sap.ui.core" key="{Bsart}" text="{Bsart}" additionalText="{Batxt}"
+														id="idListPedido_copy-idComboPedido-0-idComboPedido-0"/>
 												</items>
 											</ComboBox>
 										</items>
 									</FlexBox>
 									<FlexBox width="100%" class="flexBoxConfig" id="__box8" justifyContent="SpaceBetween" fitContainer="true" direction="Column">
 										<items>
-											<Label xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Tipo de Entrada" required="true" width="100%" id="__label2"/>
-											<Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" id="idTpEntrada" width="100%"/>
+											<Label xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+												text="Tipo de Entrada" required="true" width="100%" id="__label2"/>
+											<Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+												id="idTpEntrada" width="100%"/>
 										</items>
 									</FlexBox>
 								</items>
 							</FlexBox>
 						</content>
 					</Panel>
-					<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" width="100%" id="__box0" fitContainer="true" height="100%">
+					<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" width="100%" id="__box0"
+						fitContainer="true" height="100%">
 						<items>
-							<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__box1" width="50%" direction="Column" height="100%">
+							<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__box1" width="50%"
+								direction="Column" height="100%">
 								<items>
-									<Panel xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__panel1" width="auto">
+									<Panel xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+										id="__panel1" width="auto">
 										<content>
 											<FlexBox width="auto" id="__box4" fitContainer="true">
 												<items>
 													<FlexBox width="8rem" id="__box9" fitContainer="true" alignItems="Center" alignContent="Start">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Comprador" width="8rem" id="__title0" titleStyle="H3"/>
+															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+																text="Comprador" width="8rem" id="__title0" titleStyle="H3"/>
 														</items>
 													</FlexBox>
 													<FlexBox width="100%" id="__box10" alignItems="Center">
 														<items>
-															<Input xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="100%" id="compradorInput" type="Text" placeholder="Escolha o Comprador ..." showValueHelp="true" valueHelpRequest="onF4Comprador" value="{Ekgrp}" description="{Nome}" fieldWidth="80px" required="true" valueHelpOnly="true" maxLength="40" showTableSuggestionValueHelp="false"/>
+															<Input xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																width="100%" id="compradorInput" type="Text" placeholder="Escolha o Comprador ..." showValueHelp="true" valueHelpRequest="onF4Comprador"
+																value="{Ekgrp}" description="{Nome}" fieldWidth="80px" required="true" valueHelpOnly="true" maxLength="40"
+																showTableSuggestionValueHelp="false"/>
 														</items>
 													</FlexBox>
 													<FlexBox width="3rem" id="__box11" justifyContent="Center" fitContainer="true" alignContent="End" alignItems="Center">
 														<items>
-															<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="auto" id="compradorDelete" icon="sap-icon://delete" press="clearComprador"/>
+															<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																width="auto" id="compradorDelete" icon="sap-icon://delete" press="clearComprador"/>
 														</items>
 													</FlexBox>
 												</items>
 											</FlexBox>
 										</content>
 									</Panel>
-									<Panel xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__panel2" width="auto">
+									<Panel xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+										id="__panel2" width="auto">
 										<content>
 											<FlexBox width="auto" id="__box12" fitContainer="true">
 												<items>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="8rem" id="__box13" alignItems="Center" alignContent="Start">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="8rem" id="__box13" alignItems="Center" alignContent="Start">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Fornecedor" width="8rem" id="__title0_copy" titleStyle="H3"/>
+															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+																text="Fornecedor" width="8rem" id="__title0_copy" titleStyle="H3"/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="100%" id="__box14" alignItems="Center">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="100%" id="__box14" alignItems="Center">
 														<items>
-															<Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" width="100%" id="fornecedorInput" type="Text" placeholder="Escolha o Fornecedor ..." showSuggestion="true" showValueHelp="true" valueHelpRequest="onF4Fornecedor" valueHelpOnly="true"/>
+															<Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+																width="100%" id="fornecedorInput" type="Text" placeholder="Escolha o Fornecedor ..." showSuggestion="true" showValueHelp="true"
+																valueHelpRequest="onF4Fornecedor" valueHelpOnly="true"/>
 														</items>
 													</FlexBox>
 													<FlexBox width="3rem" id="__box15" alignContent="End" alignItems="Center">
 														<items>
-															<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="3rem" id="fornecedorDelete" icon="sap-icon://delete" press="clearFornecedor"/>
+															<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																width="3rem" id="fornecedorDelete" icon="sap-icon://delete" press="clearFornecedor"/>
 														</items>
 													</FlexBox>
 												</items>
 											</FlexBox>
 										</content>
 									</Panel>
-									<Panel xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__panel0" headerText="Seleção" width="auto">
+									<Panel xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+										id="__panel0" headerText="Seleção" width="auto">
 										<headerToolbar>
 											<Toolbar xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="100%" id="__toolbar1_copy5" height="auto">
 												<content>
-													<Title xmlns:sap.ui.comp.smartform="sap.ui.comp.smartform" xmlns:sap.ui.comp.smartfield="sap.ui.comp.smartfield" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Seleção" width="100%" id="__title_cd"/>
+													<Title xmlns:sap.ui.comp.smartform="sap.ui.comp.smartform" xmlns:sap.ui.comp.smartfield="sap.ui.comp.smartfield" xmlns:mvc="sap.ui.core.mvc"
+														xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Seleção" width="100%" id="__title_cd"/>
 													<ToolbarSeparator id="__separator0"/>
-													<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="auto" id="cdDelete" icon="sap-icon://delete" press="deletePressCD"/>
+													<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+														width="auto" id="cdDelete" icon="sap-icon://delete" press="deletePressCD"/>
 												</content>
 											</Toolbar>
 										</headerToolbar>
 										<content>
-											<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="100%" id="__box19_copy2">
+											<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+												width="100%" id="__box19_copy2">
 												<items>
 													<FlexBox width="7rem" id="__box20" alignItems="Center">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="UF" width="7rem" id="__title0_copy4" titleStyle="H3"/>
+															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="UF"
+																width="7rem" id="__title0_copy4" titleStyle="H3"/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="100%" id="__box20_copy" alignItems="Center">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="100%" id="__box20_copy" alignItems="Center">
 														<items>
-															<MultiInput width="31rem" id="UFInput" placeholder="Escolha a UF ..." suggestionItems="{ path: '/UF', sorter: { path: 'Bland' }}" valueHelpRequest="onF4UF" tokenChange="onF4UFTokenUpdate">
+															<MultiInput width="31rem" id="UFInput" placeholder="Escolha a UF ..."
+																suggestionItems="{ path: '/UF', sorter: { path: 'Bland', descending : false }}" valueHelpRequest="onF4UF" tokenChange="onF4UFTokenUpdate"
+																valueHelpOnly="true">
 																<core:Item key="{Bland}" text="{Bezei}"/></MultiInput>
 														</items>
 													</FlexBox>
 												</items>
 											</FlexBox>
-											<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="100%" id="__box19_copy">
+											<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+												width="100%" id="__box19_copy">
 												<items>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="7rem" id="__box20_copy2" alignItems="Center">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="7rem" id="__box20_copy2" alignItems="Center">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Grupo" width="7rem" id="__title0_copy5" titleStyle="H3"/>
+															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+																text="Grupo" width="7rem" id="__title0_copy5" titleStyle="H3"/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="100%" id="__box20_copy3" alignItems="Center">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="100%" id="__box20_copy3" alignItems="Center">
 														<items>
-															<MultiInput width="31rem" id="grupoLojasInput" placeholder="Escolha o Grupo ..." suggestionItems="{ path: '/GrupoLojas', sorter: { path: 'Bandeira' }}" valueHelpRequest="onF4grupoLojas" tokenChange="onF4grupoLojasTokenUpdate">
+															<MultiInput width="31rem" id="grupoLojasInput" placeholder="Escolha o Grupo ..."
+																suggestionItems="{ path: '/GrupoLojas', sorter: { path: 'Bandeira', descending: false }}" valueHelpRequest="onF4grupoLojas"
+																tokenChange="onF4grupoLojasTokenUpdate" valueHelpOnly="true">
 																<core:Item key="{Bandeira}" text="{Descricao}"/></MultiInput>
 														</items>
 													</FlexBox>
@@ -126,14 +164,18 @@
 											</FlexBox>
 											<FlexBox width="100%" id="__box18">
 												<items>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="7rem" id="__box20_copy4" alignItems="Center">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="7rem" id="__box20_copy4" alignItems="Center">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Lojas" width="7rem" id="__title0_copy6" titleStyle="H3"/>
+															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+																text="Lojas" width="7rem" id="__title0_copy6" titleStyle="H3"/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="100%" id="__box20_copy5" alignItems="Center">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="100%" id="__box20_copy5" alignItems="Center">
 														<items>
-															<MultiInput width="31rem" id="cdInput" placeholder="Escolha a Loja ..." suggestionItems="{ path: '/CD', sorter: { path: 'Werks' }}" valueHelpRequest="onF4CD" tokenChange="onF4CDTokenUpdate">
+															<MultiInput width="31rem" id="cdInput" placeholder="Escolha a Loja ..." suggestionItems="{ path: '/CD', sorter: { path: 'Werks' }}"
+																valueHelpRequest="onF4CD" tokenChange="onF4CDTokenUpdate" valueHelpOnly="true">
 																<core:Item key="{Werks}" text="{Nome}"/></MultiInput>
 														</items>
 													</FlexBox>
@@ -147,17 +189,22 @@
 												<items>
 													<FlexBox width="8rem" id="__box17" alignContent="Start" alignItems="Center">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Contrato" width="8rem" id="__title0_copy2" titleStyle="H3"/>
+															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+																text="Contrato" width="8rem" id="__title0_copy2" titleStyle="H3"/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="100%" id="__box17_copy" alignItems="Center">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="100%" id="__box17_copy" alignItems="Center">
 														<items>
-															<Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" width="100%" id="contratoInput" showValueHelp="true" valueHelpRequest="onF4Contrato" placeholder="Escolha o Contrato ..."/>
+															<Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+																width="100%" id="contratoInput" showValueHelp="true" valueHelpRequest="onF4Contrato" placeholder="Escolha o Contrato ..."/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" width="3rem" id="__box17_copy2" alignContent="End" alignItems="Center">
+													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
+														width="3rem" id="__box17_copy2" alignContent="End" alignItems="Center">
 														<items>
-															<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="3rem" id="contratoDelete" icon="sap-icon://delete" press="clearContrato"/>
+															<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+																width="3rem" id="contratoDelete" icon="sap-icon://delete" press="clearContrato"/>
 														</items>
 													</FlexBox>
 												</items>
@@ -166,26 +213,32 @@
 									</Panel>
 								</items>
 							</FlexBox>
-							<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__box2" width="100%" direction="Column" height="100%" fitContainer="true">
+							<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns="sap.m" id="__box2" width="100%"
+								direction="Column" height="100%" fitContainer="true">
 								<items>
 									<Panel id="__panel4" width="auto">
 										<content>
 											<SearchField width="100%" placeholder="Selecione os Produtos" id="buscaProduto" liveChange="onSearchProduto"/>
-											<List xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" id="idProdutos" items="{/Produto}" selectionChange="onSelectionChangeProduto" mode="MultiSelect" growing="true" growingThreshold="50" includeItemInSelection="true">
+											<List xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+												id="idProdutos" items="{/Produto}" selectionChange="onSelectionChangeProduto" mode="MultiSelect" growing="true" growingThreshold="50"
+												includeItemInSelection="true">
 												<StandardListItem class="_cl_idProdutos" title="{Maktx}" iconDensityAware="false" iconInset="false" id="listProdutos" info="{Matnr}"/>
 											</List>
 										</content>
 										<headerToolbar>
-											<Toolbar xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="100%" id="__toolbar1_copy3">
+											<Toolbar xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
+												width="100%" id="__toolbar1_copy3">
 												<content>
 													<Title text="Produto" width="100%" id="__title0_copy3"/>
 													<ToolbarSeparator xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:semantic="sap.m.semantic" id="__separator1"/>
-													<Button xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="auto" id="produtoDelete" icon="sap-icon://delete" press="clearSelectedProduto"/>
+													<Button xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="auto" id="produtoDelete" icon="sap-icon://delete"
+														press="clearSelectedProduto"/>
 												</content>
 											</Toolbar>
 										</headerToolbar>
 										<infoToolbar>
-											<OverflowToolbar xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" id="idInfoToolbar" visible="false">
+											<OverflowToolbar xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+												id="idInfoToolbar" visible="false">
 												<content>
 													<Label width="100%" id="idCountSelected"/>
 												</content>
