@@ -13,33 +13,33 @@
 								</FlexBox>
 							</items>
 						</FlexBox>
-						<FlexBox width="100%" fitContainer="true" justifyContent="End" height="15em">
-							<items>
-								<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/people'}" startDateChange="handleNavDate" appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext">
-									<toolbarContent>
-										<Toolbar width="100%" id="__toolbar1">
-											<content>
-												<Title text="Agenda" titleStyle="H4" id="__title1"/>
-												<Button id="addButton" icon="sap-icon://add" press="handleAppointmentCreate" tooltip="Add"/>
-												<ToolbarSpacer id="__spacer0"/>
-											</content>
-										</Toolbar>
-									</toolbarContent>
-									<rows>
-										<PlanningCalendarRow icon="{pic}" title="{name}" text="{role}" appointments="{path : 'appointments', templateShareable: true}"
-											intervalHeaders="{path: 'headers', templateShareable: true}">
-											<appointments>
-												<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" text="{info}" type="{type}"
-													tentative="{tentative}"/>
-											</appointments>
-											<intervalHeaders>
-												<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" type="{type}"/>
-											</intervalHeaders>
-										</PlanningCalendarRow>
-									</rows>
-								</PlanningCalendar>
-							</items>
-						</FlexBox>
+						<!--<FlexBox width="100%" fitContainer="true" justifyContent="End" height="15em">-->
+						<!--	<items>-->
+						<!--		<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/people'}" startDateChange="handleNavDate" appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext">-->
+						<!--			<toolbarContent>-->
+						<!--				<Toolbar width="100%" id="__toolbar1">-->
+						<!--					<content>-->
+						<!--						<Title text="Agenda" titleStyle="H4" id="__title1"/>-->
+						<!--						<Button id="addButton" icon="sap-icon://add" press="handleAppointmentCreate" tooltip="Add"/>-->
+						<!--						<ToolbarSpacer id="__spacer0"/>-->
+						<!--					</content>-->
+						<!--				</Toolbar>-->
+						<!--			</toolbarContent>-->
+						<!--			<rows>-->
+						<!--				<PlanningCalendarRow icon="{pic}" title="{name}" text="{role}" appointments="{path : 'appointments', templateShareable: true}"-->
+						<!--					intervalHeaders="{path: 'headers', templateShareable: true}">-->
+						<!--					<appointments>-->
+						<!--						<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" text="{info}" type="{type}"-->
+						<!--							tentative="{tentative}"/>-->
+						<!--					</appointments>-->
+						<!--					<intervalHeaders>-->
+						<!--						<unified:CalendarAppointment startDate="{start}" endDate="{end}" icon="{pic}" title="{title}" type="{type}"/>-->
+						<!--					</intervalHeaders>-->
+						<!--				</PlanningCalendarRow>-->
+						<!--			</rows>-->
+						<!--		</PlanningCalendar>-->
+						<!--	</items>-->
+						<!--</FlexBox>-->
 					</items>
 				</FlexBox>
 				<content/>

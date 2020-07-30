@@ -225,57 +225,57 @@ sap.ui.define([
 			return new Date(d.setDate(diff));
 		},
 		populateAppointments: function () {
-			var oModel = new JSONModel();
-			var sRootPath = jQuery.sap.getModulePath("zcockpit");
+			// var oModel = new JSONModel();
+			// var sRootPath = jQuery.sap.getModulePath("zcockpit");
 
-			let aFilters = [];
-			aFilters.push(new sap.ui.model.Filter({
-				path: "Usuario",
-				operator: sap.ui.model.FilterOperator.EQ,
-				value1: this.sUname
-			}));
+			// let aFilters = [];
+			// aFilters.push(new sap.ui.model.Filter({
+			// 	path: "Usuario",
+			// 	operator: sap.ui.model.FilterOperator.EQ,
+			// 	value1: this.sUname
+			// }));
 
-			this.getOwnerComponent().getModel().read("/AgendaItem", {
-				filters: aFilters,
-				success: (res) => {
-					if (res.results.length === 0) {
-						return;
-					}
+			// this.getOwnerComponent().getModel().read("/AgendaItem", {
+			// 	filters: aFilters,
+			// 	success: (res) => {
+			// 		if (res.results.length === 0) {
+			// 			return;
+			// 		}
 
-					let plannData = {
-						startDate: new Date(new Date().setHours(7, 0, 0)),
-						people: []
-					}
+			// 		let plannData = {
+			// 			startDate: new Date(new Date().setHours(7, 0, 0)),
+			// 			people: []
+			// 		}
 
-					plannData.people.push({
-						appointments: []
-					});
-					//plannData.people[0].pic = sRootPath + "xxx.png";
-					plannData.people[0].name = res.results[0].Nome;
+			// 		plannData.people.push({
+			// 			appointments: []
+			// 		});
+			// 		//plannData.people[0].pic = sRootPath + "xxx.png";
+			// 		plannData.people[0].name = res.results[0].Nome;
 
-					for (let item of res.results) {
+			// 		for (let item of res.results) {
 
-						plannData.people[0].appointments.push({
-							start: item.Dthrinicio,
-							end: item.Dthrfim,
-							title: item.Name1,
-							info: item.Comentario,
-							type: "Type02",
-							lifnr: item.Lifnr,
-							ekgrp: item.Ekgrp,
-							tentative: false
-						});
-					}
-					oModel.setData(plannData);
-					console.log(plannData);
-					this.byId("MyCalendar").setModel(oModel);
-				},
-				error: (err) => {
-					sap.m.MessageBox.error(err, {
-						title: "Erro"
-					});
-				}
-			});
+			// 			plannData.people[0].appointments.push({
+			// 				start: item.Dthrinicio,
+			// 				end: item.Dthrfim,
+			// 				title: item.Name1,
+			// 				info: item.Comentario,
+			// 				type: "Type02",
+			// 				lifnr: item.Lifnr,
+			// 				ekgrp: item.Ekgrp,
+			// 				tentative: false
+			// 			});
+			// 		}
+			// 		oModel.setData(plannData);
+			// 		console.log(plannData);
+			// 		this.byId("MyCalendar").setModel(oModel);
+			// 	},
+			// 	error: (err) => {
+			// 		sap.m.MessageBox.error(err, {
+			// 			title: "Erro"
+			// 		});
+			// 	}
+			// });
 
 		},
 		handleAppointmentSelect: function (oEvent) {
