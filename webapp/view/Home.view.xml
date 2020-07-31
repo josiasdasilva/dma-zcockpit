@@ -15,7 +15,8 @@
 						</FlexBox>
 						<FlexBox width="100%" fitContainer="true" justifyContent="End" height="15em">
 							<items>
-								<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/people'}" startDateChange="handleNavDate" appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext">
+								<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/people'}" startDateChange="handleNavDate"
+									appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext">
 									<toolbarContent>
 										<Toolbar width="100%" id="__toolbar1">
 											<content>

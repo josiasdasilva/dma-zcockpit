@@ -22,7 +22,7 @@ sap.ui.define([
 			//this.populateAppointments();
 		},
 		_onMasterMatched: function (oEvent) {
-			this._buscaLogadoSync();
+			//this._buscaLogadoSync();
 			this.populateAppointments();
 		},
 		handleNavDate: function (oEvt) {
@@ -267,7 +267,7 @@ sap.ui.define([
 
 			let aFilters = [];
 			aFilters.push(new sap.ui.model.Filter({
-				path: "Uname",
+				path: "Usuario",
 				operator: sap.ui.model.FilterOperator.EQ,
 				value1: this.sUname
 			}));
