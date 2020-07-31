@@ -4,16 +4,16 @@
 		xmlns="sap.m">
 	<Dialog>
 		<beginButton>
-			<Button text="Save" type="Emphasized" press="handleDialogSaveButton"/>
+			<Button text="{i18n>save}" type="Emphasized" press="handleDialogSaveButton"/>
 		</beginButton>
 		<endButton>
-			<Button text="Cancel" press="handleDialogCancelButton"/>
+			<Button text="{i18n>cancel}" press="handleDialogCancelButton"/> 
 		</endButton>
 		<l:VerticalLayout
 			class="sapUiContentPadding"
 			width="100%">
 			<CheckBox visible="false" id="isIntervalAppointment" text="Interval appointment" select="handleAppointmentTypeChange"/>
-			<Label visible="false" text="Select person: " labelFor="selectPerson"/>
+			<Label visible="true" text="{i18n>selec_supplier}: " labelFor="selectPerson"/>
 			<Select
 					id="selectPerson"
 					forceSelection="false"

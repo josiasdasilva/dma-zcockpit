@@ -4,8 +4,9 @@ sap.ui.define([
 	"sap/m/Popover",
 	"sap/ui/core/format/DateFormat",
 	"sap/ui/core/Fragment",
-	"sap/ui/model/json/JSONModel"
-], function (BaseController, Label, Popover, DateFormat, Fragment, JSONModel) {
+	"sap/ui/model/json/JSONModel",
+	"sap/m/MessageToast"
+], function (BaseController, Label, Popover, DateFormat, Fragment, JSONModel, MessageToast) {
 	"use strict";
 	//var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
 	return BaseController.extend("dma.zcockpit.controller.Home", {
@@ -325,9 +326,9 @@ sap.ui.define([
 		},
 		_addNewAppointment: function (oAppointment) {
 			var oModel = this.getView().getModel(),
-				sPath = "/people/" + Fragment.byId("dialogFrag", "selectPerson").getSelectedIndex().toString(),
+				sPath = "/people/" + Fragment.byId("idCalendCreate", "selectPerson").getSelectedIndex().toString(),
 				oPersonAppointments;
-			if (Fragment.byId("dialogFrag", "isIntervalAppointment").getSelected()) {
+			if (Fragment.byId("idCalendCreate", "isIntervalAppointment").getSelected()) {
 				sPath += "/headers";
 			} else {
 				sPath += "/appointments";
@@ -340,11 +341,11 @@ sap.ui.define([
 			this._oDetailsPopover.close();
 		},
 		handleAppointmentCreate: function () {
-			this._arrangeDialogFragment(this._aDialogTypes[0].type);
+			this._arrangeidCalendCreatement(this._aDialogTypes[0].type);
 		},
 		handleAppointmentAddWithContext: function (oEvent) {
 			this.oClickEventParameters = oEvent.getParameters();
-			this._arrangeDialogFragment(this._aDialogTypes[1].type);
+			this._arrangeidCalendCreatement(this._aDialogTypes[1].type);
 		},
 		_validateDateTimePicker: function (oDateTimePickerStart, oDateTimePickerEnd) {
 			var oStartDate = oDateTimePickerStart.getDateValue(),
@@ -361,8 +362,8 @@ sap.ui.define([
 			}
 		},
 		updateButtonEnabledState: function () {
-			var oStartDate = Fragment.byId("dialogFrag", "startDate"),
-				oEndDate = Fragment.byId("dialogFrag", "endDate"),
+			var oStartDate = Fragment.byId("idCalendCreate", "startDate"),
+				oEndDate = Fragment.byId("idCalendCreate", "endDate"),
 				bEnabled = oStartDate.getValueState() !== "Error" && oStartDate.getValue() !== "" && oEndDate.getValue() !== "" && oEndDate.getValueState() !==
 				"Error";
 			this._oNewAppointmentDialog.getBeginButton().setEnabled(bEnabled);
@@ -403,12 +404,30 @@ sap.ui.define([
 		handleCloseAppointment: function () {
 			this._oDetailsPopover.close();
 		},
+		handleDeleteAppointment: function () {
+
+			sap.m.MessageBox.confirm(
+				this.getOwnerComponent().getModel("i18n").getResourceBundle().getText("mgrview_delete"), {
+					onClose: (sAction) => {
+						if ("OK" === sAction) {
+							this.deleteAppointment(sId)
+								.then((res) => {
+									MessageToast.show(this.getOwnerComponent().getModel("i18n").getResourceBundle().getText("mgs_success_delete_appointment"));
+								})
+								.catch((err) => {
+									MessageToast.show(this.getOwnerComponent().getModel("i18n").getResourceBundle().getText("mgs_error_delete_appointment"));
+								})
+						}
+					}
+				}
+			);
+		},
 		handleEditButton: function () {
 			this._oDetailsPopover.close();
 			this.sPath = this._oDetailsPopover.getBindingContext().getPath();
-			this._arrangeDialogFragment(this._aDialogTypes[2].type);
+			this._arrangeidCalendCreatement(this._aDialogTypes[2].type);
 		},
-		_arrangeDialogFragment: function (iDialogType) {
+		_arrangeidCalendCreatement: function (iDialogType) {
 			if (!this._oNewAppointmentDialog) {
 				this._oNewAppointmentDialog = sap.ui.xmlfragment("idCalendCreate", "dma.zcockpit.view.fragment.calendar_create", this);
 				//this._oNewAppointmentDialog = oDialog;
@@ -437,7 +456,7 @@ sap.ui.define([
 			this._oNewAppointmentDialog.open();
 		},
 		handleAppointmentTypeChange: function (oEvent) {
-			var sFragName = "dialogFrag",
+			var sFragName = "idCalendCreate",
 				oAppointmentType = Fragment.byId(sFragName, "isIntervalAppointment");
 			oAppointmentType.setSelected(oEvent.getSource().getSelected());
 		},
@@ -462,7 +481,7 @@ sap.ui.define([
 			}
 		},
 		_convertToHeader: function (oAppointment) {
-			var sPersonId = Fragment.byId("dialogFrag", "selectPerson").getSelectedIndex().toString();
+			var sPersonId = Fragment.byId("idCalendCreate", "selectPerson").getSelectedIndex().toString();
 			this._removeAppointment(this._oNewAppointmentDialog.getModel().getProperty(this.sPath), sPersonId);
 			this._addNewAppointment({
 				start: oAppointment.start,
@@ -472,13 +491,13 @@ sap.ui.define([
 			});
 		},
 		handleDialogSaveButton: function () {
-			var oStartDate = Fragment.byId("dialogFrag", "startDate"),
-				oEndDate = Fragment.byId("dialogFrag", "endDate"),
-				sInfoValue = Fragment.byId("dialogFrag", "moreInfo").getValue(),
-				sInputTitle = Fragment.byId("dialogFrag", "inputTitle").getValue(),
-				iPersonId = Fragment.byId("dialogFrag", "selectPerson").getSelectedIndex(),
+			var oStartDate = Fragment.byId("idCalendCreate", "startDate"),
+				oEndDate = Fragment.byId("idCalendCreate", "endDate"),
+				sInfoValue = Fragment.byId("idCalendCreate", "moreInfo").getValue(),
+				sInputTitle = Fragment.byId("idCalendCreate", "inputTitle").getValue(),
+				iPersonId = Fragment.byId("idCalendCreate", "selectPerson").getSelectedIndex(),
 				oModel = this.getView().getModel(),
-				bIsIntervalAppointment = Fragment.byId("dialogFrag", "isIntervalAppointment").getSelected(),
+				bIsIntervalAppointment = Fragment.byId("idCalendCreate", "isIntervalAppointment").getSelected(),
 				oNewAppointment;
 			if (oStartDate.getValueState() !== "Error" && oEndDate.getValueState() !== "Error") {
 				if (this.sPath && this._oNewAppointmentDialog._sDialogType === "edit_appointment") {
@@ -512,7 +531,7 @@ sap.ui.define([
 		},
 		_appointmentOwnerChange: function () {
 			var iSpathPersonId = this.sPath[this.sPath.indexOf("/people/") + "/people/".length],
-				iSelectedPerson = Fragment.byId("dialogFrag", "selectPerson").getSelectedIndex(),
+				iSelectedPerson = Fragment.byId("idCalendCreate", "selectPerson").getSelectedIndex(),
 				sTempPath = this.sPath,
 				iLastElementIndex = this._oNewAppointmentDialog.getModel().getProperty("/people/" + iSelectedPerson.toString() + "/appointments/")
 				.length.toString();
