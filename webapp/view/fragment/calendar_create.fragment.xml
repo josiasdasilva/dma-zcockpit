@@ -12,8 +12,8 @@
 		<l:VerticalLayout
 			class="sapUiContentPadding"
 			width="100%">
-			<CheckBox id="isIntervalAppointment" text="Interval appointment" select="handleAppointmentTypeChange"/>
-			<Label text="Select person: " labelFor="selectPerson"/>
+			<CheckBox visible="false" id="isIntervalAppointment" text="Interval appointment" select="handleAppointmentTypeChange"/>
+			<Label visible="false" text="Select person: " labelFor="selectPerson"/>
 			<Select
 					id="selectPerson"
 					forceSelection="false"
@@ -24,21 +24,21 @@
 					}">
 				<core:Item key="{name}" text="{name}"/>
 			</Select>
-			<Label text="Title: " labelFor="inputTitle"/>
+			<Label text="{i18n>create_appointment}: " labelFor="inputTitle"/>
 			<Input id="inputTitle"/>
-			<Label text="Start date: " labelFor="startDate"/>
+			<Label text="{i18n>from}: " labelFor="startDate"/>
 			<DateTimePicker
 					id="startDate"
 					displayFormat="short"
 					required="true"
 					change="handleCreateChange"/>
-			<Label text="End date: " labelFor="endDate"/>
+			<Label text="{i18n>until}: " labelFor="endDate"/>
 			<DateTimePicker
 					id="endDate"
 					displayFormat="short"
 					required="true"
 					change="handleCreateChange"/>
-			<Label text="More information: " labelFor="inputInfo"/>
+			<Label text="{i18n>info_add}: " labelFor="inputInfo"/>
 			<Input id="moreInfo"/>
 		</l:VerticalLayout>
 	</Dialog>

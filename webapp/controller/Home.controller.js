@@ -224,6 +224,43 @@ sap.ui.define([
 				diff = d.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
 			return new Date(d.setDate(diff));
 		},
+		saveAppointment: function (oDataJson) {
+			return new Promise((resolve, reject) => {
+				this.getOwnerComponent().getModel().createEntry("/AgendaItem", {
+					properties: oDataJson,
+					success: (oData, oResponse) => {
+						resolve([oData, oResponse])
+					},
+					error: (err) => {
+						reject(err);
+					}
+				});
+			});
+		},
+		deleteAppointment: function (sId) {
+			return new Promise((resolve, reject) => {
+				this.getOwnerComponent().getModel().remove(`/AgendaItem(${sId})`, {
+					success: (res) => {
+						resolve(res);
+					},
+					error: (err) => {
+						reject(err);
+					}
+				});
+			});
+		},
+		updateAppointment: function () {
+			return new Promise((resolve, reject) => {
+				oModel.update(`/AgendaItem(${sId})`, oEntry, {
+					success: (res) => {
+						resolve(res);
+					},
+					error: (err) => {
+						reject(err);
+					}
+				});
+			});
+		},
 		populateAppointments: function () {
 			var oModel = new JSONModel();
 			var sRootPath = jQuery.sap.getModulePath("zcockpit");
@@ -331,8 +368,8 @@ sap.ui.define([
 			this._oNewAppointmentDialog.getBeginButton().setEnabled(bEnabled);
 		},
 		handleCreateChange: function (oEvent) {
-			var oDateTimePickerStart = Fragment.byId("dialogFrag", "startDate"),
-				oDateTimePickerEnd = Fragment.byId("dialogFrag", "endDate");
+			var oDateTimePickerStart = Fragment.byId("idCalendCreate", "startDate"),
+				oDateTimePickerEnd = Fragment.byId("idCalendCreate", "endDate");
 			if (oEvent.getParameter("valid")) {
 				this._validateDateTimePicker(oDateTimePickerStart, oDateTimePickerEnd);
 			} else {
@@ -503,7 +540,8 @@ sap.ui.define([
 			this.updateButtonEnabledState();
 		},
 		_setCreateWithContextAppointmentDialogContent: function () {
-			var aPeople = this.getView().getModel().getProperty("/people/"),
+			//this.getView().getModel().getProperty("/people/"),
+			var aPeople = this.byId("MyCalendar").getModel().oData.people,
 				oSelectedIntervalStart = this.oClickEventParameters.startDate,
 				oStartDate = Fragment.byId("idCalendCreate", "startDate"),
 				oSelectedIntervalEnd = this.oClickEventParameters.endDate,
