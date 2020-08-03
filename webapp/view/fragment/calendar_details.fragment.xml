@@ -4,7 +4,7 @@
 			<Button text="{i18n>edit}" type="Emphasized" press="handleCloseAppointment"/>
 		</beginButton>
 		<endButton>
-			<Button text="{i18n>delete}" press="handleDeleteAppointment" type="Reject"/>
+			<Button text="{i18n>delete}" press="handleRemoveAppointment" type="Reject"/>
 		</endButton>
 		<content>
 			<f:SimpleForm editable="false" layout="ResponsiveGridLayout" singleContainerFullSize="false">

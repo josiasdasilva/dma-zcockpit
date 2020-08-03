@@ -1,45 +1,25 @@
-<core:FragmentDefinition
-		xmlns:l="sap.ui.layout"
-		xmlns:core="sap.ui.core"
-		xmlns="sap.m">
+<core:FragmentDefinition xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns="sap.m">
 	<Dialog>
 		<beginButton>
 			<Button text="{i18n>save}" type="Emphasized" press="handleDialogSaveButton"/>
 		</beginButton>
 		<endButton>
-			<Button text="{i18n>cancel}" press="handleDialogCancelButton"/> 
+			<Button text="{i18n>cancel}" press="handleDialogCancelButton"/>
 		</endButton>
-		<l:VerticalLayout
-			class="sapUiContentPadding"
-			width="100%">
+		<l:VerticalLayout class="sapUiContentPadding" width="100%">
 			<CheckBox visible="false" id="isIntervalAppointment" text="Interval appointment" select="handleAppointmentTypeChange"/>
-			<Label visible="true" text="{i18n>selec_supplier}: " labelFor="selectPerson"/>
-			<Select
-					id="selectPerson"
-					forceSelection="false"
-					change="handleChangeSelect"
-					width="100%"
-					items="{
-						path: '/people'
-					}">
-				<core:Item key="{name}" text="{name}"/>
-			</Select>
-			<Label text="{i18n>create_appointment}: " labelFor="inputTitle"/>
-			<Input id="inputTitle"/>
-			<Label text="{i18n>from}: " labelFor="startDate"/>
-			<DateTimePicker
-					id="startDate"
-					displayFormat="short"
-					required="true"
-					change="handleCreateChange"/>
-			<Label text="{i18n>until}: " labelFor="endDate"/>
-			<DateTimePicker
-					id="endDate"
-					displayFormat="short"
-					required="true"
-					change="handleCreateChange"/>
-			<Label text="{i18n>info_add}: " labelFor="inputInfo"/>
-			<Input id="moreInfo"/>
-		</l:VerticalLayout>
-	</Dialog>
+			<Label visible="true" text="{i18n>supplier}: " labelFor="fornecedorInput"/>
+		<Input xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
+			width="100%" id="fornecedorInput" type="Text" showSuggestion="true" showValueHelp="true"
+			valueHelpRequest="onF4Fornecedor" valueHelpOnly="true"/>
+		<Label visible="false" text="{i18n>create_appointment}: " labelFor="inputTitle"/>
+		<Input visible="false" id="inputTitle"/>
+		<Label text="{i18n>from}: " labelFor="startDate"/>
+		<DateTimePicker id="startDate" displayFormat="short" required="true" change="handleCreateChange"/>
+		<Label text="{i18n>until}: " labelFor="endDate"/>
+		<DateTimePicker id="endDate" displayFormat="short" required="true" change="handleCreateChange"/>
+		<Label text="{i18n>comment}: " labelFor="moreInfo"/>
+		<Input id="moreInfo"/>
+	</l:VerticalLayout>
+</Dialog>
 </core:FragmentDefinition>

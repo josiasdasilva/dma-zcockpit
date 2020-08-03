@@ -44,6 +44,9 @@ sap.ui.define([
 		getResourceBundle: function () {
 			return this.getOwnerComponent().getModel("i18n").getResourceBundle();
 		},
+		getText: function(sText){
+			return this.getResourceBundle().getText(sText);
+		},
 
 		/**
 		 * Event handler for navigating back.

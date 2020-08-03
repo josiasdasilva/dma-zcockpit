@@ -10,7 +10,23 @@ sap.ui.define([
 	"use strict";
 	//var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
 	return BaseController.extend("dma.zcockpit.controller.Home", {
+		_planningCalendar: null,
+		_aDialogTypes: null,
+		sUname: '',
+		sEkgrp: '',
 		onInit: function () {
+
+			this._planningCalendar = this.byId("MyCalendar");
+			this._aDialogTypes = [{
+				title: this.getText('create_appointment'),
+				type: "create_appointment"
+			}, {
+				title: this.getText('create_appointment'),
+				type: "create_appointment_with_context"
+			}, {
+				title: this.getText('edit_appointment'),
+				type: "edit_appointment"
+			}];
 
 			this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container
 				.getUser().getId();
@@ -20,11 +36,23 @@ sap.ui.define([
 			var sRootPath = jQuery.sap.getModulePath("dma.zcockpit");
 			var sImagePath = sRootPath + "/img/background_cockpit.png";
 			this.byId("img_epa").setSrc(sImagePath); /* popula dados da Agenda */
-			//this.populateAppointments();
+			//this.loadAppointments();
+			this.loadUserData();
+		},
+		loadUserData: function () {
+			this.getOwnerComponent().getModel().read(`/Usuario('${this.sUname }')`, {
+				success: (res) => {
+					this.sEkgrp = res.Ekgrp;
+					this.sUname = res.Uname;
+				},
+				error: (err) => {
+					MessageToast.show(this.getText('msg_error_loadUser_data'));
+				}
+			});
 		},
 		_onMasterMatched: function (oEvent) {
 			//this._buscaLogadoSync();
-			this.populateAppointments();
+			this.loadAppointments();
 		},
 		handleNavDate: function (oEvt) {
 			console.log(oEvt.getSource().getStartDate());
@@ -42,7 +70,7 @@ sap.ui.define([
 				success: function (oData2, oResponse) {
 					globalModel.setProperty("/Ekgrp", oData2.Ekgrp);
 					globalModel.setProperty("/Uname", oData2.Uname);
-				},
+				}.bind(this),
 				error: function (oError) {}
 			});
 		},
@@ -89,11 +117,7 @@ sap.ui.define([
 		},
 		goToPedidos: function (oEvt) {
 
-			var oAppnt = this.byId("MyCalendar").getModel().oData.people[0].appointments.find((appont) => {
-				return appont.start.toGMTString() === this._oDetailsPopover.oAppointment.mProperties.startDate.toGMTString() && appont.end.toGMTString() ===
-					this._oDetailsPopover
-					.oAppointment.mProperties.endDate.toGMTString()
-			});
+			var oAppnt = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath);
 
 			var globalModel = this.getModel("globalModel");
 			var sEkgrp = globalModel.getProperty("/Ekgrp");
@@ -209,16 +233,6 @@ sap.ui.define([
 				this._oDetailsPopover.destroy();
 			}
 		},
-		_aDialogTypes: [{
-			title: "Create Appointment",
-			type: "create_appointment"
-		}, {
-			title: "Create Appointment",
-			type: "create_appointment_with_context"
-		}, {
-			title: "Edit Appointment",
-			type: "edit_appointment"
-		}],
 		getMonday: function () {
 			let d = new Date();
 			var day = d.getDay(),
@@ -228,6 +242,7 @@ sap.ui.define([
 		saveAppointment: function (oDataJson) {
 			return new Promise((resolve, reject) => {
 				this.getOwnerComponent().getModel().createEntry("/AgendaItem", {
+					groupId: "createGroup",
 					properties: oDataJson,
 					success: (oData, oResponse) => {
 						resolve([oData, oResponse])
@@ -240,7 +255,7 @@ sap.ui.define([
 		},
 		deleteAppointment: function (sId) {
 			return new Promise((resolve, reject) => {
-				this.getOwnerComponent().getModel().remove(`/AgendaItem(${sId})`, {
+				this.getOwnerComponent().getModel().remove(`/AgendaItem('${sId}')`, {
 					success: (res) => {
 						resolve(res);
 					},
@@ -250,9 +265,9 @@ sap.ui.define([
 				});
 			});
 		},
-		updateAppointment: function () {
+		updateAppointment: function (sId, oDataJson) {
 			return new Promise((resolve, reject) => {
-				oModel.update(`/AgendaItem(${sId})`, oEntry, {
+				oModel.update(`/AgendaItem(${sId})`, oDataJson, {
 					success: (res) => {
 						resolve(res);
 					},
@@ -262,7 +277,7 @@ sap.ui.define([
 				});
 			});
 		},
-		populateAppointments: function () {
+		loadAppointments: function (dStartDate) {
 			var oModel = new JSONModel();
 			var sRootPath = jQuery.sap.getModulePath("zcockpit");
 
@@ -272,7 +287,7 @@ sap.ui.define([
 				operator: sap.ui.model.FilterOperator.EQ,
 				value1: this.sUname
 			}));
-
+			this._planningCalendar.setBusy(true);
 			this.getOwnerComponent().getModel().read("/AgendaItem", {
 				filters: aFilters,
 				success: (res) => {
@@ -281,7 +296,7 @@ sap.ui.define([
 					}
 
 					let plannData = {
-						startDate: new Date(new Date().setHours(7, 0, 0)),
+						startDate: dStartDate ? dStartDate : new Date(new Date().setHours(7, 0, 0)),
 						people: []
 					}
 
@@ -289,26 +304,31 @@ sap.ui.define([
 						appointments: []
 					});
 					//plannData.people[0].pic = sRootPath + "xxx.png";
-					plannData.people[0].name = res.results[0].Nome;
+					plannData.people[0].name = res.results[0].Nomecomprador;
+					plannData.people[0].ekgrp = res.results[0].Grpcompradores;
 
 					for (let item of res.results) {
 
 						plannData.people[0].appointments.push({
+							Zuuid: item.Zuuid,
 							start: item.Dthrinicio,
 							end: item.Dthrfim,
-							title: item.Name1,
+							title: item.Nomefornecedor,
 							info: item.Comentario,
 							type: "Type02",
-							lifnr: item.Lifnr,
-							ekgrp: item.Ekgrp,
+							lifnr: item.Fornecedor,
+							ekgrp: item.Grpcompradores,
+							Usuario: item.Usuario,
 							tentative: false
 						});
 					}
 					oModel.setData(plannData);
 					console.log(plannData);
-					this.byId("MyCalendar").setModel(oModel);
+					this._planningCalendar.setModel(oModel);
+					this._planningCalendar.setBusy(false);
 				},
 				error: (err) => {
+					this._planningCalendar.setBusy(false);
 					sap.m.MessageBox.error(err, {
 						title: "Erro"
 					});
@@ -344,6 +364,9 @@ sap.ui.define([
 			this._arrangeidCalendCreatement(this._aDialogTypes[0].type);
 		},
 		handleAppointmentAddWithContext: function (oEvent) {
+
+			this.currentPeople = this._planningCalendar.getModel().getProperty(oEvent.mParameters.row.getBindingContext().sPath);
+
 			this.oClickEventParameters = oEvent.getParameters();
 			this._arrangeidCalendCreatement(this._aDialogTypes[1].type);
 		},
@@ -404,18 +427,20 @@ sap.ui.define([
 		handleCloseAppointment: function () {
 			this._oDetailsPopover.close();
 		},
-		handleDeleteAppointment: function () {
+		handleRemoveAppointment: function () {
 
+			let sZuuid = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath).Zuuid
 			sap.m.MessageBox.confirm(
 				this.getOwnerComponent().getModel("i18n").getResourceBundle().getText("mgrview_delete"), {
 					onClose: (sAction) => {
 						if ("OK" === sAction) {
-							this.deleteAppointment(sId)
+							this.deleteAppointment(sZuuid)
 								.then((res) => {
-									MessageToast.show(this.getOwnerComponent().getModel("i18n").getResourceBundle().getText("mgs_success_delete_appointment"));
+									MessageToast.show(this.getText("msg_success_delete_appointment"));
+									this.loadAppointments(this._planningCalendar.getStartDate());
 								})
 								.catch((err) => {
-									MessageToast.show(this.getOwnerComponent().getModel("i18n").getResourceBundle().getText("mgs_error_delete_appointment"));
+									MessageToast.show(this.getText("msg_error_delete_appointment"));
 								})
 						}
 					}
@@ -461,6 +486,7 @@ sap.ui.define([
 			oAppointmentType.setSelected(oEvent.getSource().getSelected());
 		},
 		handleDialogCancelButton: function () {
+			this.clearEditCreateAppointmentDialog();
 			this._oNewAppointmentDialog.close();
 		},
 		_editAppointment: function (oAppointment, bIsIntervalAppointment, iPersonId) {
@@ -490,42 +516,122 @@ sap.ui.define([
 				type: oAppointment.type
 			});
 		},
+		getEditCreateFields: function () {
+			return {
+				startDate: Fragment.byId("idCalendCreate", "startDate"),
+				endDate: Fragment.byId("idCalendCreate", "endDate"),
+				moreInfo: Fragment.byId("idCalendCreate", "moreInfo"),
+				fornecedorInput: Fragment.byId("idCalendCreate", "fornecedorInput")
+			};
+		},
+		clearEditCreateAppointmentDialog: function () {
+			this.getEditCreateFields().startDate.setDateValue(null);
+			this.getEditCreateFields().endDate.setDateValue(null);
+			this.getEditCreateFields().moreInfo.setValue('');
+			this.getEditCreateFields().fornecedorInput.setValue('');
+			this.getEditCreateFields().fornecedorInput.setDescription('');
+			this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.None);
+			this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.None);
+			this.getEditCreateFields().moreInfo.setValueState(sap.ui.core.ValueState.None);
+			this.getEditCreateFields().fornecedorInput.setValueState(sap.ui.core.ValueState.None);
+		},
+		validateEditCreateAppointmentDialog: function () {
+			if (!this.getEditCreateFields().startDate.getDateValue()) {
+				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.Error);
+				this.getEditCreateFields().startDate.setValueStateText(this.getText('required'));
+				return false;
+			}else{
+				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.None);
+			}
+			if (!this.getEditCreateFields().endDate.getDateValue()) {
+				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.Error);
+				this.getEditCreateFields().endDate.setValueStateText(this.getText('required'));
+				return false;
+			}else{
+				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.None);
+			}
+
+			if (this.getEditCreateFields().endDate.getDateValue() < this.getEditCreateFields().startDate.getDateValue()) {
+				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.Error);
+				this.getEditCreateFields().startDate.setValueStateText(this.getText('begin_bigger_end'));
+				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.Error);
+				this.getEditCreateFields().endDate.setValueStateText(this.getText('begin_bigger_end'));
+				return false;
+			}else{
+				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.None);
+				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.None);
+			}
+			if (!this.getEditCreateFields().fornecedorInput.getValue() || this.getEditCreateFields().fornecedorInput.getValue().lenght === 0 ) {
+				this.getEditCreateFields().fornecedorInput.setValueState(sap.ui.core.ValueState.Error);
+				this.getEditCreateFields().fornecedorInput.setValueStateText(this.getText('required'));
+				return false;
+			}else{
+				this.getEditCreateFields().fornecedorInput.setValueState(sap.ui.core.ValueState.None);
+			}
+	
+			return true;
+		},
 		handleDialogSaveButton: function () {
-			var oStartDate = Fragment.byId("idCalendCreate", "startDate"),
-				oEndDate = Fragment.byId("idCalendCreate", "endDate"),
-				sInfoValue = Fragment.byId("idCalendCreate", "moreInfo").getValue(),
+			
+			if(!this.validateEditCreateAppointmentDialog()){
+				MessageToast.show(this.getText("msg_error_data_incomplete"));
+				return;
+			}
+			
+			debugger;
+			var sInfoValue = Fragment.byId("idCalendCreate", "moreInfo").getValue(),
 				sInputTitle = Fragment.byId("idCalendCreate", "inputTitle").getValue(),
-				iPersonId = Fragment.byId("idCalendCreate", "selectPerson").getSelectedIndex(),
-				oModel = this.getView().getModel(),
-				bIsIntervalAppointment = Fragment.byId("idCalendCreate", "isIntervalAppointment").getSelected(),
-				oNewAppointment;
-			if (oStartDate.getValueState() !== "Error" && oEndDate.getValueState() !== "Error") {
+				sLifnr = Fragment.byId("idCalendCreate", "fornecedorInput").getValue(),
+				sLifnrDescr = Fragment.byId("idCalendCreate", "fornecedorInput").getDescription(),
+				bIsIntervalAppointment = Fragment.byId("idCalendCreate", "isIntervalAppointment").getSelected();
+
+			if (this.getEditCreateFields().startDate.getValueState() !== "Error" && this.getEditCreateFields().endDate.getValueState() !== "Error") {
 				if (this.sPath && this._oNewAppointmentDialog._sDialogType === "edit_appointment") {
-					this._editAppointment({
-						title: sInputTitle,
-						info: sInfoValue,
-						type: this._oDetailsPopover.getBindingContext().getObject().type,
-						start: oStartDate.getDateValue(),
-						end: oEndDate.getDateValue()
-					}, bIsIntervalAppointment, iPersonId);
+
+					let updAppointment = {
+						Grpcompradores: this.sEkgrp,
+						Fornecedor: sLifnr,
+						Nomefornecedor: sLifnrDescr,
+						Comentario: sInfoValue,
+						Usuario: this.sUname,
+						Dthrinicio: this.getEditCreateFields().startDate.getDateValue(),
+						Dthrfim: this.getEditCreateFields().endDate.getDateValue(),
+						Modificador: this.sUname
+					};
+
+					this.updateAppointment(sId, newAppointment)
+						.then((res) => {
+							MessageToast.show(this.getText("mgs_success_edit_appointment"));
+							this.loadAppointments(this._planningCalendar.getStartDate());
+						})
+						.catch((err) => {
+							MessageToast.show(this.getText("mgs_error_edit_appointment"));
+						});
+
 				} else {
-					if (bIsIntervalAppointment) {
-						oNewAppointment = {
-							title: sInputTitle,
-							start: oStartDate.getDateValue(),
-							end: oEndDate.getDateValue()
-						};
-					} else {
-						oNewAppointment = {
-							title: sInputTitle,
-							info: sInfoValue,
-							start: oStartDate.getDateValue(),
-							end: oEndDate.getDateValue()
-						};
-					}
-					this._addNewAppointment(oNewAppointment);
+
+					let newAppointment = {
+						Grpcompradores: this.sEkgrp,
+						Fornecedor: sLifnr,
+						Nomefornecedor: sLifnrDescr,
+						Comentario: sInfoValue,
+						Usuario: this.sUname,
+						Dthrinicio: this.getEditCreateFields().startDate.getDateValue(),
+						Dthrfim: this.getEditCreateFields().endDate.getDateValue(),
+						Modificador: this.sUname
+					};
+
+					this.saveAppointment(newAppointment)
+						.then((res) => {
+							MessageToast.show(this.getText("msg_success_create_appointment"));
+							this.loadAppointments(this._planningCalendar.getStartDate());
+						})
+						.catch((err) => {
+							MessageToast.show(this.getText("msg_error_create_appointment"));
+						});
 				}
-				oModel.updateBindings();
+
+				this.clearEditCreateAppointmentDialog();
 				this._oNewAppointmentDialog.close();
 			}
 		},
@@ -546,9 +652,10 @@ sap.ui.define([
 				oDateTimePickerEnd = Fragment.byId("idCalendCreate", "endDate"),
 				oTitleInput = Fragment.byId("idCalendCreate", "inputTitle"),
 				oMoreInfoInput = Fragment.byId("idCalendCreate", "moreInfo"),
-				oPersonSelected = Fragment.byId("idCalendCreate", "selectPerson");
+				oPersonSelected = Fragment.byId("idCalendCreate", "fornecedorInput");
 			//Set the person in the first row as selected.
-			oPersonSelected.setSelectedItem(Fragment.byId("idCalendCreate", "selectPerson").getItems()[0]);
+			//oPersonSelected.setSelectedItem(Fragment.byId("idCalendCreate", "selectPerson").getItems()[0]);
+			this.currentPeople = this._planningCalendar.getModel().getProperty(this._planningCalendar.getRows()[0].getBindingContext().sPath);
 			oDateTimePickerStart.setValue("");
 			oDateTimePickerEnd.setValue("");
 			oDateTimePickerStart.setValueState("None");
@@ -556,11 +663,11 @@ sap.ui.define([
 			oTitleInput.setValue("");
 			oMoreInfoInput.setValue("");
 			oAppointmentType.setSelected(false);
-			this.updateButtonEnabledState();
+			//this.updateButtonEnabledState();
 		},
-		_setCreateWithContextAppointmentDialogContent: function () {
+		_setCreateWithContextAppointmentDialogContent: function (oAppnt) {
 			//this.getView().getModel().getProperty("/people/"),
-			var aPeople = this.byId("MyCalendar").getModel().oData.people,
+			var aPeople = this._planningCalendar.getModel().oData.people,
 				oSelectedIntervalStart = this.oClickEventParameters.startDate,
 				oStartDate = Fragment.byId("idCalendCreate", "startDate"),
 				oSelectedIntervalEnd = this.oClickEventParameters.endDate,
@@ -571,13 +678,13 @@ sap.ui.define([
 				oTitleInput = Fragment.byId("idCalendCreate", "inputTitle"),
 				oMoreInfoInput = Fragment.byId("idCalendCreate", "moreInfo"),
 				sPersonName, oPersonSelected;
-			if (this.oClickEventParameters.row) {
-				sPersonName = this.oClickEventParameters.row.getTitle();
-				oPersonSelected = Fragment.byId("idCalendCreate", "selectPerson");
-				oPersonSelected.setSelectedIndex(aPeople.indexOf(aPeople.filter(function (oPerson) {
-					return oPerson.name === sPersonName;
-				})[0]));
-			}
+			/*			if (this.oClickEventParameters.row) {
+							sPersonName = this.oClickEventParameters.row.getTitle();
+							oPersonSelected = Fragment.byId("idCalendCreate", "selectPerson");
+							oPersonSelected.setSelectedIndex(aPeople.indexOf(aPeople.filter(function (oPerson) {
+								return oPerson.name === sPersonName;
+							})[0]));
+						}*/
 			oStartDate.setDateValue(oSelectedIntervalStart);
 			oEndDate.setDateValue(oSelectedIntervalEnd);
 			oTitleInput.setValue("");
@@ -685,6 +792,47 @@ sap.ui.define([
 			}
 			this._oGroupPopover.addStyleClass("sapUiPopupWithPadding");
 			this._oGroupPopover.openBy(document.getElementById(sGroupAppDomRefId));
+		},
+		onF4Fornecedor: function (oEvent) {
+			
+			var sInputValue = oEvent.getSource().getDescription();
+			var sEkgrp = this.currentPeople.ekgrp; //this.byId("compradorInput").getValue();
+			this.inputId = oEvent.getSource().getId();
+			// create value help dialog
+			if (!this._F4fornecedorDialog) {
+				this._F4fornecedorDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.fornecedor", this);
+				this.getView().addDependent(this._F4fornecedorDialog);
+			}
+			// set previous filter - if comprador is filled
+			var oFilter = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+			// open value help dialog filtered by the input value
+			this._F4fornecedorDialog.getBinding("items").filter([oFilter]);
+			this._F4fornecedorDialog.open(sInputValue);
+		},
+		_handleF4fornecedorSearch: function (oEvent) {
+			var aFilters = [];
+			var sValue = oEvent.getParameter("value");
+			// Filtro Fornecedor - Nome
+			var oForn = new sap.ui.model.Filter("Mcod1", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
+			aFilters.push(oForn);
+			// Filtro Comprador
+			var sEkgrp = this.byId("compradorInput").getValue();
+			var oCompr = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+			aFilters.push(oCompr);
+			oEvent.getSource().getBinding("items").filter(aFilters);
+		},
+		_handleF4fornecedorClose: function (oEvent) {
+			var oSelectedItem = oEvent.getParameter("selectedItem");
+			if (oSelectedItem) {
+				//var fornecedorInput = this.getView().byId(this.inputId);
+				//fornecedorInput.setValue(oSelectedItem.getTitle());
+				let fornecedorInput = Fragment.byId("idCalendCreate", "fornecedorInput");
+				fornecedorInput.setValue(oSelectedItem.getTitle());
+				fornecedorInput.setDescription(oSelectedItem.getDescription());
+				//this.clearContrato(oEvent);
+			}
+			oEvent.getSource().getBinding("items").filter([]);
+			//this.habilitaBotaoPedido();
 		}
 	});
 });
