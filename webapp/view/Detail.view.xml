@@ -19,9 +19,9 @@
 							<!--FAFN Begin -->
 							<Bar>
 								<contentRight>
-									<SegmentedButton id="_segCompra" selectedKey="unidade_cp" select="onSelValorCompra">
+									<SegmentedButton id="_segCompra" selectedKey="unidade" select="onSelValorCompra">
 										<items>
-											<SegmentedButtonItem icon="sap-icon://product" key="unidade_cp"/>
+											<SegmentedButtonItem icon="sap-icon://product" key="unidade"/>
 											<SegmentedButtonItem icon="sap-icon://money-bills" key="real"/>
 										</items>
 									</SegmentedButton>
@@ -231,7 +231,7 @@
 										<header>
 											<HBox width="100%" justifyContent="SpaceAround">
 												<items>
-													<Label text="{i18n>tbl_compra.unidade}" app:binding="Unidade_cp"/>
+													<Label text="{i18n>tbl_compra.unidade}" app:binding="UnidadeCp"/>
 													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_17" useIconTooltip="false" color="#808080" visible="true"
 														width="30%"/>
 												</items>
@@ -274,8 +274,8 @@
 													emphasized="false"/>
 												<ObjectNumber number="{path: 'Dtultcp', formatter: '.formatter.dateFormatDdMm'}" emphasized="false"/>
 												<ObjectNumber number="{path: 'Dtultvd', formatter: '.formatter.dateFormatDdMm'}" emphasized="false"/>
-												<ObjectNumber number="{path: 'Estloja', formatter: '.formatter.toInteger'}" emphasized="false"/>
-												<ObjectNumber number="{path: 'Esttrf', formatter: '.formatter.toInteger'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Estloja', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
+												<ObjectNumber number="{path: 'Esttrf', formatter: '.formatter.fullNumberStr'}" emphasized="false"/>
 												<ObjectNumber number="{path: 'QtppendCent', formatter: '.formatter.toInteger'}" emphasized="false"/>
 												<ObjectNumber number="{path: 'QtppendForn', formatter: '.formatter.toInteger'}" emphasized="false"/>
 												<ObjectNumber number="{path: 'Estdia', formatter: '.formatter.toInteger'}" emphasized="false"/>
@@ -285,7 +285,7 @@
 												<Input id="inputSugestao" class="inputCompras" width="4em" value="{path: 'Requisicao', type: 'sap.ui.model.type.Integer' }"
 													fieldWidth="100%" type="Number" liveChange="_onLiveChangeInput" change="_onChangeInput" showTableSuggestionValueHelp="false"
 													startSuggestion="0" valueLiveUpdate="true"/>
-												<Text text="{Unidade_cp}"/>
+												<Text text="{UnidadeCp}"/>
 												<ObjectNumber number="{path: 'Umrez', formatter: '.formatter.toInteger'}" emphasized="false"/>
 											</cells>
 										</ColumnListItem>
@@ -327,7 +327,7 @@
 										<Column width="4em" hAlign="End"/>
 										<!-- Requisicao    -->
 										<Column id="_colinputSugestao" width="4em" hAlign="Center"/>
-										<!-- Unidade_cp    -->
+										<!-- Unidade Compra  -->
 										<Column width="3em" hAlign="Center"/>
 										<!-- Umrez    -->
 										<Column width="2em" hAlign="Center"/>

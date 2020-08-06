@@ -590,6 +590,24 @@ sap.ui.define([
 		_handleF4fornecedorSearch: function (oEvent) {
 			var aFilters = [];
 			var sValue = oEvent.getParameter("value");
+
+			var sBusca = this.byId("buscaProduto").getValue();
+			if (sBusca !== "") {
+				var numbers = /^[0-9]+$/;
+				if (numbers.test(sBusca)) {
+					var fMatnr = new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
+					aFilters.push(fMatnr);
+				} else {
+					var fMaktx = new sap.ui.model.Filter("Maktx", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
+					aFilters.push(fMaktx);
+				}
+			}
+					var orFilterLoja = new sap.ui.model.Filter({
+						filters: orArrayLoja,
+						and: false
+					});
+					aFilters.push(orFilterLoja);
+
 			// Filtro Fornecedor - Nome
 			var oForn = new sap.ui.model.Filter("Mcod1", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
 			aFilters.push(oForn);

@@ -252,7 +252,7 @@
 			<ScrollContainer vertical="true" focusable="true" height="99%">
 				<Table id="tablePedido" busyIndicatorDelay="{worklistView>/tableBusyDelay}" class="tableTelaPedido" growingScrollToLoad="true"
 					noDataText="{worklistView>/tableNoDataText}" updateFinished="onUpdateFinished" items="{/PO}" swipe="handleSwipe"
-					swipeDirection="LeftToRight" delete="onDeletePress" mode="Delete">
+					swipeDirection="LeftToRight" delete="onDeletePress" mode="Delete" growingThreshold="200">
 					<items>
 						<ColumnListItem class="tableLinhaPedido" press="toDetail" id="listItemPedido" detailPress="toDetail" type="Active">
 							<cells>
@@ -275,11 +275,11 @@
 									tooltip="{path: 'MargemAta', formatter: '.formatter.fullNumberStr' }" textAlign="Right"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'MrgVar', formatter: '.formatter.percentage1dig' }" emphasized="false"
 									tooltip="{path: 'MargemVar', formatter: '.formatter.fullNumberStr' }" textAlign="Right"/>
-								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstCd', formatter: '.formatter.toIntegerStr' }" emphasized="false"
+								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstCd', formatter: '.formatter.fullNumberStr' }" emphasized="false"
 									tooltip="{path: 'EstCd', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
-								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstLoja', formatter: '.formatter.toIntegerStr' }" emphasized="false"
+								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstLoja', formatter: '.formatter.fullNumberStr' }" emphasized="false"
 									tooltip="{path: 'EstLoja', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
-								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstTroca', formatter: '.formatter.toIntegerStr' }" emphasized="false"
+								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstTroca', formatter: '.formatter.fullNumberStr' }" emphasized="false"
 									tooltip="{path: 'EstTroca', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'QtppendCent', formatter: '.formatter.toIntegerStr' }" emphasized="false"
 									tooltip="{path: 'QtppendCent', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
