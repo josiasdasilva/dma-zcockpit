@@ -267,7 +267,7 @@ sap.ui.define([
 		},
 		updateAppointment: function (sId, oDataJson) {
 			return new Promise((resolve, reject) => {
-				oModel.update(`/AgendaItem(${sId})`, oDataJson, {
+				this.getOwnerComponent().getModel().update(`/AgendaItem('${sId}')`, oDataJson, {
 					success: (res) => {
 						resolve(res);
 					},
@@ -598,14 +598,16 @@ sap.ui.define([
 						Dthrfim: this.getEditCreateFields().endDate.getDateValue(),
 						Modificador: this.sUname
 					};
-
-					this.updateAppointment(sId, newAppointment)
+					
+					var oAppointment = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath);
+					
+					this.updateAppointment(oAppointment.Zuuid, updAppointment)
 						.then((res) => {
-							MessageToast.show(this.getText("mgs_success_edit_appointment"));
+							MessageToast.show(this.getText("msg_success_edit_appointment"));
 							this.loadAppointments(this._planningCalendar.getStartDate());
 						})
 						.catch((err) => {
-							MessageToast.show(this.getText("mgs_error_edit_appointment"));
+							MessageToast.show(this.getText("msg_error_edit_appointment"));
 						});
 
 				} else {
@@ -696,21 +698,22 @@ sap.ui.define([
 			delete this.oClickEventParameters;
 		},
 		_setEditAppointmentDialogContent: function () {
-			var oAppointment = this._oNewAppointmentDialog.getModel().getProperty(this.sPath),
+			var oAppointment = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath),
 				oSelectedIntervalStart = oAppointment.start,
 				oSelectedIntervalEnd = oAppointment.end,
-				oDateTimePickerStart = Fragment.byId("idCalendDetails", "startDate"),
-				oDateTimePickerEnd = Fragment.byId("idCalendDetails", "endDate"),
+				oDateTimePickerStart = Fragment.byId("idCalendCreate", "startDate"),
+				oDateTimePickerEnd = Fragment.byId("idCalendCreate", "endDate"),
 				sSelectedInfo = oAppointment.info,
 				sSelectedTitle = oAppointment.title,
 				iSelectedPersonId = this.sPath[this.sPath.indexOf("/people/") + "/people/".length],
-				oPersonSelected = Fragment.byId("idCalendDetails", "selectPerson"),
-				oStartDate = Fragment.byId("idCalendDetails", "startDate"),
-				oEndDate = Fragment.byId("idCalendDetails", "endDate"),
-				oMoreInfoInput = Fragment.byId("idCalendDetails", "moreInfo"),
-				oTitleInput = Fragment.byId("idCalendDetails", "inputTitle"),
-				oAppointmentType = Fragment.byId("idCalendDetails", "isIntervalAppointment");
-			oPersonSelected.setSelectedIndex(iSelectedPersonId);
+				oFornecedorInput = Fragment.byId("idCalendCreate", "fornecedorInput"),
+				oStartDate = Fragment.byId("idCalendCreate", "startDate"),
+				oEndDate = Fragment.byId("idCalendCreate", "endDate"),
+				oMoreInfoInput = Fragment.byId("idCalendCreate", "moreInfo"),
+				oTitleInput = Fragment.byId("idCalendCreate", "inputTitle"),
+				oAppointmentType = Fragment.byId("idCalendCreate", "isIntervalAppointment");
+			oFornecedorInput.setValue(oAppointment.lifnr);
+			oFornecedorInput.setDescription(oAppointment.title);
 			oStartDate.setDateValue(oSelectedIntervalStart);
 			oEndDate.setDateValue(oSelectedIntervalEnd);
 			oMoreInfoInput.setValue(sSelectedInfo);

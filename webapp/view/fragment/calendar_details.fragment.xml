@@ -1,7 +1,7 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
 	<ResponsivePopover id="detailsPopover" title="{i18n>detail_appointment}" class="sapUiPopupWithPadding" placement="Auto">
 		<beginButton >
-			<Button text="{i18n>edit}" type="Emphasized" press="handleCloseAppointment"/>
+			<Button text="{i18n>edit}" type="Emphasized" press="handleEditButton"/>
 		</beginButton>
 		<endButton>
 			<Button text="{i18n>delete}" press="handleRemoveAppointment" type="Reject"/>
