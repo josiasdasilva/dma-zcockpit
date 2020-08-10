@@ -1,5 +1,14 @@
 /* CSS */
 
+@media print {
+    .sapMPage section {
+        position: initial !important;
+    }
+    .myPage section {
+        overflow: visible !important
+    }
+}
+
 html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
     width: 100%;
     left: 0px;

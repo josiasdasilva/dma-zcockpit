@@ -27,6 +27,7 @@ sap.ui.define([
 				title: this.getText('edit_appointment'),
 				type: "edit_appointment"
 			}];
+			this.getOwnerComponent().getModel().setSizeLimit(9999);
 
 			this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container
 				.getUser().getId();
@@ -540,14 +541,14 @@ sap.ui.define([
 				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.Error);
 				this.getEditCreateFields().startDate.setValueStateText(this.getText('required'));
 				return false;
-			}else{
+			} else {
 				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.None);
 			}
 			if (!this.getEditCreateFields().endDate.getDateValue()) {
 				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.Error);
 				this.getEditCreateFields().endDate.setValueStateText(this.getText('required'));
 				return false;
-			}else{
+			} else {
 				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.None);
 			}
 
@@ -557,27 +558,27 @@ sap.ui.define([
 				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.Error);
 				this.getEditCreateFields().endDate.setValueStateText(this.getText('begin_bigger_end'));
 				return false;
-			}else{
+			} else {
 				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.None);
 				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.None);
 			}
-			if (!this.getEditCreateFields().fornecedorInput.getValue() || this.getEditCreateFields().fornecedorInput.getValue().lenght === 0 ) {
+			if (!this.getEditCreateFields().fornecedorInput.getValue() || this.getEditCreateFields().fornecedorInput.getValue().lenght === 0) {
 				this.getEditCreateFields().fornecedorInput.setValueState(sap.ui.core.ValueState.Error);
 				this.getEditCreateFields().fornecedorInput.setValueStateText(this.getText('required'));
 				return false;
-			}else{
+			} else {
 				this.getEditCreateFields().fornecedorInput.setValueState(sap.ui.core.ValueState.None);
 			}
-	
+
 			return true;
 		},
 		handleDialogSaveButton: function () {
-			
-			if(!this.validateEditCreateAppointmentDialog()){
+
+			if (!this.validateEditCreateAppointmentDialog()) {
 				MessageToast.show(this.getText("msg_error_data_incomplete"));
 				return;
 			}
-			
+
 			debugger;
 			var sInfoValue = Fragment.byId("idCalendCreate", "moreInfo").getValue(),
 				sInputTitle = Fragment.byId("idCalendCreate", "inputTitle").getValue(),
@@ -585,7 +586,8 @@ sap.ui.define([
 				sLifnrDescr = Fragment.byId("idCalendCreate", "fornecedorInput").getDescription(),
 				bIsIntervalAppointment = Fragment.byId("idCalendCreate", "isIntervalAppointment").getSelected();
 
-			if (this.getEditCreateFields().startDate.getValueState() !== "Error" && this.getEditCreateFields().endDate.getValueState() !== "Error") {
+			if (this.getEditCreateFields().startDate.getValueState() !== "Error" && this.getEditCreateFields().endDate.getValueState() !==
+				"Error") {
 				if (this.sPath && this._oNewAppointmentDialog._sDialogType === "edit_appointment") {
 
 					let updAppointment = {
@@ -598,9 +600,9 @@ sap.ui.define([
 						Dthrfim: this.getEditCreateFields().endDate.getDateValue(),
 						Modificador: this.sUname
 					};
-					
+
 					var oAppointment = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath);
-					
+
 					this.updateAppointment(oAppointment.Zuuid, updAppointment)
 						.then((res) => {
 							MessageToast.show(this.getText("msg_success_edit_appointment"));
@@ -797,7 +799,7 @@ sap.ui.define([
 			this._oGroupPopover.openBy(document.getElementById(sGroupAppDomRefId));
 		},
 		onF4Fornecedor: function (oEvent) {
-			
+
 			var sInputValue = oEvent.getSource().getDescription();
 			var sEkgrp = this.currentPeople.ekgrp; //this.byId("compradorInput").getValue();
 			this.inputId = oEvent.getSource().getId();

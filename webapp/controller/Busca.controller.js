@@ -180,7 +180,7 @@ sap.ui.define([
 			var sLifnr = oEvent.getParameter("arguments").Lifnr;
 			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
 			var sUname = oEvent.getParameter("arguments").Uname;
-			if(!sLifnr || sLifnr.length === 0){
+			if (!sLifnr || sLifnr.length === 0) {
 				this.clearComprador();
 				this.clearSelectedProduto();
 				return;
@@ -602,11 +602,11 @@ sap.ui.define([
 					aFilters.push(fMaktx);
 				}
 			}
-					var orFilterLoja = new sap.ui.model.Filter({
-						filters: orArrayLoja,
-						and: false
-					});
-					aFilters.push(orFilterLoja);
+			var orFilterLoja = new sap.ui.model.Filter({
+				filters: orArrayLoja,
+				and: false
+			});
+			aFilters.push(orFilterLoja);
 
 			// Filtro Fornecedor - Nome
 			var oForn = new sap.ui.model.Filter("Mcod1", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
