@@ -51,6 +51,8 @@
 						</contentRight>
 						<contentLeft>
 							<Button icon="sap-icon://history" type="Accept" width="auto" press="onBtnHistoricoPress" tooltip="Histórico"/>
+							<Button icon="sap-icon://write-new-document" type="Accept" width="auto" press="onPressChangeContract" tooltip="{i18n>editContract}"/>
+							<Button icon="sap-icon://inspection" type="Accept" width="auto" press="onPressDisplayContract" tooltip="{i18n>displayContract}"/>
 							<!--<Button xmlns:action="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" id="HistoryButton_copy" icon="sap-icon://history" type="Accept" width="auto" press="action" action:wiring="\{'press':\{'navigation':\{'routeName':'Historico'\}\}\}"/>-->
 						</contentLeft>
 						<contentMiddle>

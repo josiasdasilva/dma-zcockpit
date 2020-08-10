@@ -115,6 +115,40 @@ sap.ui.define([
 				}, true);
 			}
 		},
+		onPressDisplayContract: function (oEvent) {
+			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+			var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+				target: {
+					semanticObject: "ZZContract",
+					action: "display"
+				},
+				params: {
+					"contract": ''
+				}
+			})) || ""; // generate the Hash to display a Supplier
+			oCrossAppNavigator.toExternal({
+				target: {
+					shellHash: hash
+				}
+			}); // navigate to Supplier application
+		},
+		onPressChangeContract: function (oEvent) {
+			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+			var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+				target: {
+					semanticObject: "ZZContract",
+					action: "change"
+				},
+				params: {
+					"contract": ''
+				}
+			})) || ""; // generate the Hash to display a Supplier
+			oCrossAppNavigator.toExternal({
+				target: {
+					shellHash: hash
+				}
+			}); // navigate to Supplier application
+		},
 		goToPedidos: function (oEvt) {
 
 			var oAppnt = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath);
@@ -373,7 +407,7 @@ sap.ui.define([
 		_validateDateTimePicker: function (oDateTimePickerStart, oDateTimePickerEnd) {
 			var oStartDate = oDateTimePickerStart.getDateValue(),
 				oEndDate = oDateTimePickerEnd.getDateValue(),
-				sValueStateText = "Start date should be before End date";
+				sValueStateText = this.getText('begin_bigger_end');//"Start date should be before End date";
 			if (oStartDate && oEndDate && oEndDate.getTime() <= oStartDate.getTime()) {
 				oDateTimePickerStart.setValueState("Error");
 				oDateTimePickerEnd.setValueState("Error");
@@ -385,11 +419,11 @@ sap.ui.define([
 			}
 		},
 		updateButtonEnabledState: function () {
-			var oStartDate = Fragment.byId("idCalendCreate", "startDate"),
+/*			var oStartDate = Fragment.byId("idCalendCreate", "startDate"),
 				oEndDate = Fragment.byId("idCalendCreate", "endDate"),
 				bEnabled = oStartDate.getValueState() !== "Error" && oStartDate.getValue() !== "" && oEndDate.getValue() !== "" && oEndDate.getValueState() !==
 				"Error";
-			this._oNewAppointmentDialog.getBeginButton().setEnabled(bEnabled);
+			this._oNewAppointmentDialog.getBeginButton().setEnabled(bEnabled);*/
 		},
 		handleCreateChange: function (oEvent) {
 			var oDateTimePickerStart = Fragment.byId("idCalendCreate", "startDate"),
@@ -540,14 +574,14 @@ sap.ui.define([
 				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.Error);
 				this.getEditCreateFields().startDate.setValueStateText(this.getText('required'));
 				return false;
-			}else{
+			} else {
 				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.None);
 			}
 			if (!this.getEditCreateFields().endDate.getDateValue()) {
 				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.Error);
 				this.getEditCreateFields().endDate.setValueStateText(this.getText('required'));
 				return false;
-			}else{
+			} else {
 				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.None);
 			}
 
@@ -557,27 +591,27 @@ sap.ui.define([
 				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.Error);
 				this.getEditCreateFields().endDate.setValueStateText(this.getText('begin_bigger_end'));
 				return false;
-			}else{
+			} else {
 				this.getEditCreateFields().startDate.setValueState(sap.ui.core.ValueState.None);
 				this.getEditCreateFields().endDate.setValueState(sap.ui.core.ValueState.None);
 			}
-			if (!this.getEditCreateFields().fornecedorInput.getValue() || this.getEditCreateFields().fornecedorInput.getValue().lenght === 0 ) {
+			if (!this.getEditCreateFields().fornecedorInput.getValue() || this.getEditCreateFields().fornecedorInput.getValue().lenght === 0) {
 				this.getEditCreateFields().fornecedorInput.setValueState(sap.ui.core.ValueState.Error);
 				this.getEditCreateFields().fornecedorInput.setValueStateText(this.getText('required'));
 				return false;
-			}else{
+			} else {
 				this.getEditCreateFields().fornecedorInput.setValueState(sap.ui.core.ValueState.None);
 			}
-	
+
 			return true;
 		},
 		handleDialogSaveButton: function () {
-			
-			if(!this.validateEditCreateAppointmentDialog()){
+
+			if (!this.validateEditCreateAppointmentDialog()) {
 				MessageToast.show(this.getText("msg_error_data_incomplete"));
 				return;
 			}
-			
+
 			debugger;
 			var sInfoValue = Fragment.byId("idCalendCreate", "moreInfo").getValue(),
 				sInputTitle = Fragment.byId("idCalendCreate", "inputTitle").getValue(),
@@ -585,7 +619,8 @@ sap.ui.define([
 				sLifnrDescr = Fragment.byId("idCalendCreate", "fornecedorInput").getDescription(),
 				bIsIntervalAppointment = Fragment.byId("idCalendCreate", "isIntervalAppointment").getSelected();
 
-			if (this.getEditCreateFields().startDate.getValueState() !== "Error" && this.getEditCreateFields().endDate.getValueState() !== "Error") {
+			if (this.getEditCreateFields().startDate.getValueState() !== "Error" && this.getEditCreateFields().endDate.getValueState() !==
+				"Error") {
 				if (this.sPath && this._oNewAppointmentDialog._sDialogType === "edit_appointment") {
 
 					let updAppointment = {
@@ -598,9 +633,9 @@ sap.ui.define([
 						Dthrfim: this.getEditCreateFields().endDate.getDateValue(),
 						Modificador: this.sUname
 					};
-					
+
 					var oAppointment = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath);
-					
+
 					this.updateAppointment(oAppointment.Zuuid, updAppointment)
 						.then((res) => {
 							MessageToast.show(this.getText("msg_success_edit_appointment"));
@@ -797,7 +832,7 @@ sap.ui.define([
 			this._oGroupPopover.openBy(document.getElementById(sGroupAppDomRefId));
 		},
 		onF4Fornecedor: function (oEvent) {
-			
+
 			var sInputValue = oEvent.getSource().getDescription();
 			var sEkgrp = this.currentPeople.ekgrp; //this.byId("compradorInput").getValue();
 			this.inputId = oEvent.getSource().getId();
