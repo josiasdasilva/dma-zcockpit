@@ -11,25 +11,24 @@ sap.ui.define([
 	"use strict";
 	var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
 	return BaseController.extend("dma.zcockpit.controller.Pedido", {
-
 		_oTablePedidoHeader: null,
 		_segVenda: null,
 		_segPedido: null,
 		_oTablePedido: null,
 		formatter: formatter,
-
 		onInit: function () {
 			this.getRouter().getRoute("pedido").attachPatternMatched(this.onObjectMatched, this);
 
-			this._segVenda = this.getView().byId("_segVenda");
-			this._segPedido = this.getView().byId("_segPedido");
-			//FAFN - Begin
-			// if (!this._oColumnFilterPopover) {
-			//     this._oColumnFilterPopover = sap.ui.xmlfragment("dma.zcockpit.view.fragment.FilterColumn", this);
-			//     this._oColumnFilterPopover.setModel(this.getView().getModel());
-			// }
 			this._oTablePedidoHeader = this.getView().byId("tablePedidoHeader");
 			this._oTablePedido = this.getView().byId("tablePedido");
+			this._segVenda = this.getView().byId("_segVenda");
+			this._segPedido = this.getView().byId("_segPedido");
+
+			//FAFN - Begin
+			if (!this._oColumnFilterPopover) {
+				this._oColumnFilterPopover = sap.ui.xmlfragment("dma.zcockpit.view.fragment.FilterColumn", this);
+				this._oColumnFilterPopover.setModel(this.getView().getModel());
+			}
 			this._oTablePedidoHeader.addEventDelegate({
 				onAfterRendering: () => {
 					var oHeader = this._oTablePedidoHeader.$().find('.sapMListTblHeaderCell');
@@ -39,23 +38,6 @@ sap.ui.define([
 					}
 				}
 			}, this._oTablePedidoHeader);
-			//FAFN - End
-
-			//FAFN - Begin
-			/*			if (!this._oColumnFilterPopover) {
-							this._oColumnFilterPopover = sap.ui.xmlfragment("dma.zcockpit.view.fragment.FilterColumn", this); 
-							this._oColumnFilterPopover.setModel(this.getView().getModel());
-						}
-						this._oTablePedidoHeader = this.getView().byId("tablePedidoHeader");
-						this._oTablePedidoHeader.addEventDelegate({
-							onAfterRendering: () => {
-								var oHeader = this._oTablePedidoHeader.$().find('.sapMListTblHeaderCell');
-								for (var i = 0; i < oHeader.length; i++)  {
-									var oID = oHeader[i].id;
-									//this.onClickColumnHeader(oID);
-								}
-							}
-						}, this._oTablePedidoHeader);*/
 			//FAFN - End
 		},
 		//FAFN - Begin

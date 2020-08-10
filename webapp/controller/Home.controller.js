@@ -27,6 +27,7 @@ sap.ui.define([
 				title: this.getText('edit_appointment'),
 				type: "edit_appointment"
 			}];
+			this.getOwnerComponent().getModel().setSizeLimit(9999);
 
 			this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container
 				.getUser().getId();

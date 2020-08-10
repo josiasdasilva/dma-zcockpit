@@ -1,8 +1,8 @@
-<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" xmlns:table="sap.ui"
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:table="sap.ui" xmlns:semantic="sap.m.semantic"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:sap.ui.core="sap.ui.core"
 	controllerName="dma.zcockpit.controller.Pedido" height="100%">
-	<semantic:FullscreenPage id="fullPage" navButtonPress="onNavBack" title="{globalModel>/Lifnr} - {globalModel>/Fornecedor}"
-		showNavButton="true">
+	<semantic:FullscreenPage id="fullPage" navButtonPress="onNavBack" title="{pedidoView>/Mcod1}" showNavButton="true" enableScrolling="false"
+		showFooter="true">
 		<semantic:content>
 			<ObjectHeader title="Data da Remessa: { path: 'globalModel>/DtRemessa', formatter: '.formatter.dateFormat' }"
 				number="{ path: 'globalModel>/Total', formatter: '.formatter.fullNumberStr' }" numberUnit="R$" titleActive="true" id="headerCabecalho"
@@ -27,13 +27,6 @@
 				</contentLeft>
 			</Bar>
 			<Table id="tablePedidoHeader" class="tableTelaPedido" showNoData="false">
-				<headerToolbar>
-					<Toolbar visible="false">
-						<Title id="tableHeader" text="{worklistView>/worklistTableTitle}"/>
-						<ToolbarSpacer/>
-						<SearchField id="searchField" search="onSearch" tooltip="{i18n>worklistSearchTooltip}" width="auto"/>
-					</Toolbar>
-				</headerToolbar>
 				<columns>
 					<Column width="4.5em">
 						<header>
@@ -249,100 +242,101 @@
 					<Column width="1em" hAlign="Center"/>
 				</columns>
 			</Table>
-			<ScrollContainer vertical="true" focusable="true" height="99%">
-				<Table id="tablePedido" busyIndicatorDelay="{worklistView>/tableBusyDelay}" class="tableTelaPedido" growingScrollToLoad="true"
+			<ScrollContainer height="100%" width="100%" vertical="true" focusable="true">
+				<Table id="tablePedido" busyIndicatorDelay="{worklistView>/tableBusyDelay}" class="tableTelaPedido"
 					noDataText="{worklistView>/tableNoDataText}" updateFinished="onUpdateFinished" items="{/PO}" swipe="handleSwipe"
-					swipeDirection="LeftToRight" delete="onDeletePress" mode="Delete">
+					swipeDirection="LeftToRight" delete="onDeletePress" mode="Delete" growingThreshold="50" growingScrollToLoad="true">
 					<items>
-						<ColumnListItem class="tableLinhaPedido" press="toDetail" id="listItemPedido" detailPress="toDetail" type="Active">
+						<ColumnListItem class="tableLinhaPedido" press="toDetail" id="listItemPedido_copy_tablePedido_0" detailPress="toDetail" type="Active">
 							<cells>
-								<ObjectIdentifier class="textoLinhaPedido" title="{Matnr}" id="_column_matnr"/>
-								<Text class="textoLinhaPedido" text="{Maktx}" id="_column_maktx" wrapping="false" tooltip="{Maktx}"/>
+								<ObjectIdentifier class="textoLinhaPedido" title="{Matnr}" id="_column_matnr_copy_tablePedido_0"/>
+								<Text class="textoLinhaPedido" text="{Maktx}" id="_column_maktx_copy_tablePedido_0" wrapping="false" tooltip="{Maktx}"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstTeor', formatter: '.formatter.toIntegerStr' }" emphasized="false"
-									tooltip="{path: 'EstTeor', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
+									tooltip="{path: 'EstTeor', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number17_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'Mvd', formatter: '.formatter.toIntegerStr' }" emphasized="false"
-									tooltip="{path: 'Mvd', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
+									tooltip="{path: 'Mvd', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number18_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'Prultcp', formatter: '.formatter.fullNumberStr' }" emphasized="false"
-									tooltip="{path: 'PrUltCp', formatter: '.formatter.fullNumberStr' }" textAlign="Right"/>
+									tooltip="{path: 'PrUltCp', formatter: '.formatter.fullNumberStr' }" textAlign="Right" id="number19_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'Sugestao', formatter: '.formatter.toIntReqSugStr' }" emphasized="false"
-									textAlign="End" visible="{= ${Sugestao} &gt; 0 }"/>
+									textAlign="End" visible="{= ${Sugestao} &gt; 0 }" id="number20_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'Requisicao', formatter: '.formatter.toIntReqSugStr' }" emphasized="true"
-									textAlign="Right" visible="{= ${Requisicao} &gt;0}"/>
-								<ObjectNumber class="textoLinhaPedido" number="{path: 'Valor', formatter: '.formatter.fullNumberStr' }" emphasized="false" textAlign="Right"/>
+									textAlign="Right" visible="{= ${Requisicao} &gt;0}" id="number21_tablePedido_0"/>
+								<ObjectNumber class="textoLinhaPedido" number="{path: 'Valor', formatter: '.formatter.fullNumberStr' }" emphasized="false" textAlign="Right"
+									id="number22_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'Prultvd', formatter: '.formatter.fullNumberStr' }" emphasized="false"
-									tooltip="{PrUltVd}" textAlign="Right"/>
+									tooltip="{PrUltVd}" textAlign="Right" id="number23_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'MrgAta', formatter: '.formatter.percentage1dig' }" emphasized="false"
-									tooltip="{path: 'MargemAta', formatter: '.formatter.fullNumberStr' }" textAlign="Right"/>
+									tooltip="{path: 'MargemAta', formatter: '.formatter.fullNumberStr' }" textAlign="Right" id="number24_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'MrgVar', formatter: '.formatter.percentage1dig' }" emphasized="false"
-									tooltip="{path: 'MargemVar', formatter: '.formatter.fullNumberStr' }" textAlign="Right"/>
-								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstCd', formatter: '.formatter.toIntegerStr' }" emphasized="false"
-									tooltip="{path: 'EstCd', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
-								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstLoja', formatter: '.formatter.toIntegerStr' }" emphasized="false"
-									tooltip="{path: 'EstLoja', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
-								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstTroca', formatter: '.formatter.toIntegerStr' }" emphasized="false"
-									tooltip="{path: 'EstTroca', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
+									tooltip="{path: 'MargemVar', formatter: '.formatter.fullNumberStr' }" textAlign="Right" id="number25_tablePedido_0"/>
+								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstCd', formatter: '.formatter.fullNumberStr' }" emphasized="false"
+									tooltip="{path: 'EstCd', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number26_tablePedido_0"/>
+								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstLoja', formatter: '.formatter.fullNumberStr' }" emphasized="false"
+									tooltip="{path: 'EstLoja', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number27_tablePedido_0"/>
+								<ObjectNumber class="textoLinhaPedido" number="{path: 'EstTroca', formatter: '.formatter.fullNumberStr' }" emphasized="false"
+									tooltip="{path: 'EstTroca', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number28_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'QtppendCent', formatter: '.formatter.toIntegerStr' }" emphasized="false"
-									tooltip="{path: 'QtppendCent', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
+									tooltip="{path: 'QtppendCent', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number29_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido" number="{path: 'QtppendForn', formatter: '.formatter.toIntegerStr' }" emphasized="false"
-									tooltip="{path: 'QtppendForn', formatter: '.formatter.toIntegerStr' }" textAlign="Right"/>
+									tooltip="{path: 'QtppendForn', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number30_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido"
 									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaMm', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaMm', formatter: '.formatter.float2digStr'} }"
-									emphasized="false" textAlign="Right"/>
+									emphasized="false" textAlign="Right" id="number31_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido"
 									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaM1', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM1', formatter: '.formatter.float2digStr'} }"
-									emphasized="false" textAlign="Right"/>
+									emphasized="false" textAlign="Right" id="number32_tablePedido_0"/>
 								<ObjectNumber class="textoLinhaPedido"
 									number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaM2', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM2', formatter: '.formatter.float2digStr'} }"
-									emphasized="false" textAlign="Right"/>
-								<Text class="textoLinhaPedido" text="{Maabc}" id="_column_maabc" wrapping="false" visible="false"/>
+									emphasized="false" textAlign="Right" id="number33_tablePedido_0"/>
+								<Text class="textoLinhaPedido" text="{Maabc}" id="_column_maabc_copy_tablePedido_0" wrapping="false" visible="false"/>
 							</cells>
 						</ColumnListItem>
 					</items>
 					<columns>
 						<!-- Matnr -->
-						<Column width="4.5em"/>
+						<Column width="4.5em" id="column41"/>
 						<!-- Maktx -->
-						<Column demandPopin="false" width="10em"/>
+						<Column demandPopin="false" width="10em" id="column42"/>
 						<!-- EstTeor -->
-						<Column width="4em" hAlign="End"/>
+						<Column width="4em" hAlign="End" id="column43"/>
 						<!-- Mvd -->
-						<Column width="3em" hAlign="End"/>
+						<Column width="3em" hAlign="End" id="column44"/>
 						<!-- Prultcp -->
-						<Column width="3em" hAlign="End"/>
+						<Column width="3em" hAlign="End" id="column45"/>
 						<!-- Sugestao -->
-						<Column width="3.5em" hAlign="Center" styleClass="sugestao"/>
+						<Column width="3.5em" hAlign="Center" styleClass="sugestao" id="column46"/>
 						<!-- Requisicao -->
-						<Column width="3.5em" hAlign="Center" styleClass="requisicao"/>
+						<Column width="3.5em" hAlign="Center" styleClass="requisicao" id="column47"/>
 						<!-- Valor -->
-						<Column width="4em" hAlign="End"/>
+						<Column width="4em" hAlign="End" id="column48"/>
 						<!-- Prultvd -->
-						<Column width="2.8em" hAlign="End"/>
+						<Column width="2.8em" hAlign="End" id="column49"/>
 						<!-- MrgAta -->
-						<Column width="4em" hAlign="End"/>
+						<Column width="4em" hAlign="End" id="column50"/>
 						<!-- MrgVar -->
-						<Column width="4.5em" hAlign="End"/>
+						<Column width="4.5em" hAlign="End" id="column51"/>
 						<!-- EstCd -->
-						<Column width="3.7em" hAlign="End"/>
+						<Column width="3.7em" hAlign="End" id="column52"/>
 						<!-- EstLoja -->
-						<Column width="3.7em" hAlign="End"/>
+						<Column width="3.7em" hAlign="End" id="column53"/>
 						<!-- EstTroca -->
-						<Column width="3em" hAlign="End"/>
+						<Column width="3em" hAlign="End" id="column54"/>
 						<!-- QtppendCent -->
-						<Column width="3.4em" hAlign="End"/>
+						<Column width="3.4em" hAlign="End" id="column55"/>
 						<!-- QtppendLoja -->
-						<Column width="3.5em" hAlign="End"/>
+						<Column width="3.5em" hAlign="End" id="column56"/>
 						<!-- VlrVendaMM -->
-						<Column width="5em" hAlign="End"/>
+						<Column width="5em" hAlign="End" id="column57"/>
 						<!-- VlrVendaM1 -->
-						<Column width="5em" hAlign="End"/>
+						<Column width="5em" hAlign="End" id="column58"/>
 						<!-- VlrVendaM2 -->
-						<Column width="5em" hAlign="End"/>
+						<Column width="5em" hAlign="End" id="column59"/>
 						<!-- Maabc -->
-						<Column width="2em" hAlign="End" visible="false"/>
+						<Column width="2em" hAlign="End" visible="false" id="column60"/>
 						<!-- <Column width="2.4em" hAlign="End"/   icone -->
 					</columns>
 					<customData>
-						<sap.ui.core:CustomData xmlns:sap.ui.core="sap.ui.core" key="w5g.dt.editable" value="true" id="__data14"/>
+						<sap.ui.core:CustomData xmlns:sap.ui.core="sap.ui.core" key="w5g.dt.editable" value="true" id="data91"/>
 					</customData>
 				</Table>
 			</ScrollContainer>

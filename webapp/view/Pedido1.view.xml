@@ -1,0 +1,373 @@
+<mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:table="sap.ui"
+	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:sap.ui.core="sap.ui.core"
+	controllerName="dma.zcockpit.controller.Pedido" height="100%">
+	<Page id="fullPage" title="{globalModel>/Lifnr} - {globalModel>/Fornecedor}" showSubHeader="false" showNavButton="true"
+		navButtonPress="onNavBack" enableScrolling="false">
+		<content>
+			<FlexBox width="100%" direction="Column" fitContainer="true">
+				<items>
+					<FlexBox width="100%" fitContainer="true" justifyContent="Start" height="171px">
+						<items>
+							<ObjectHeader title="Data da Remessa: { path: 'globalModel>/DtRemessa', formatter: '.formatter.dateFormat' }"
+								number="{ path: 'globalModel>/Total', formatter: '.formatter.fullNumberStr' }" numberUnit="R$" titleActive="true" id="headerCabecalho"
+								fullScreenOptimized="true" condensed="true">
+								<attributes>
+									<ObjectAttribute text="{ path: 'globalModel>/TpPedido' }" id="__attribute19" title="Tipo de Pedido"/>
+								</attributes>
+							</ObjectHeader>
+							<Bar>
+								<contentRight>
+									<SegmentedButton id="_segPedido" selectedKey="embcmp" select="onSelValorPedido">
+										<items>
+											<SegmentedButtonItem id="_sbtnEmbCmp" icon="sap-icon://product" key="embcmp"/>
+											<SegmentedButtonItem id="_sbtnValor" icon="sap-icon://money-bills" key="real"/>
+										</items>
+									</SegmentedButton>
+								</contentRight>
+								<contentLeft>
+									<Input xmlns="sap.m" id="_input_filter_matnr" width="4.5em" maxLength="10"/>
+									<Input xmlns="sap.m" id="_input_filter_maktx" width="13em" maxLength="30"/>
+									<ToggleButton icon="sap-icon://filter" press="onFilterPress"/>
+								</contentLeft>
+							</Bar>
+							<Table id="tablePedidoHeader" class="tableTelaPedido" showNoData="false">
+								<headerToolbar>
+									<Toolbar visible="false">
+										<Title id="tableHeader" text="{worklistView>/worklistTableTitle}"/>
+										<ToolbarSpacer/>
+										<SearchField id="searchField" search="onSearch" tooltip="{i18n>worklistSearchTooltip}" width="auto"/>
+									</Toolbar>
+								</headerToolbar>
+								<columns>
+									<Column width="4.5em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.codigo}" app:binding="Matnr" app:filter="true"/>
+													<sap.ui.core:Icon id="_i_pedido_0" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column demandPopin="false" width="10em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.material}" app:binding="Maktx" app:filter="true" wrapping="false" maxLines="1"/>
+													<sap.ui.core:Icon id="_i_pedido_1" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="4em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.estoque_teorico}" app:binding="EstTeor" app:filter="false" textAlign="End" textDirection="RTL"/>
+													<sap.ui.core:Icon id="_i_pedido_2" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.mdv}" app:binding="Mvd" app:filter="false" tooltip="Média de Venda"/>
+													<sap.ui.core:Icon id="_i_pedido_3" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.preco_compra}" app:binding="Prultcp" app:filter="false" tooltip="Preço de Compra"/>
+													<sap.ui.core:Icon id="_i_pedido_4" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3.5em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.requis}" app:binding="Sugestao" tooltip="Requisição"/>
+													<sap.ui.core:Icon id="_i_pedido_5" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3.5em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.ajuste}" app:binding="Requisicao" tooltip="Ajuste"/>
+													<sap.ui.core:Icon id="_i_pedido_6" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="4em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.valor}" app:binding="Valor" app:filter="false" tooltip="Valor Total do Material"/>
+													<sap.ui.core:Icon id="_i_pedido_7" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="2.8em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.preco_venda}" app:binding="Prultvd" app:filter="false" tooltip="Preço de Venda"/>
+													<sap.ui.core:Icon id="_i_pedido_8" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="4em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.margem_ata}" app:binding="MrgAta" app:filter="false" tooltip="Margem Atacado"/>
+													<sap.ui.core:Icon id="_i_pedido_9" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="4.5em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.margem_var}" app:binding="MrgVar" app:filter="false" tooltip="Margem Varejo"/>
+													<sap.ui.core:Icon id="_i_pedido_10" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3.7em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.estoque_cd}" app:binding="EstCd" app:filter="false" tooltip="Estoque no CD"/>
+													<sap.ui.core:Icon id="_i_pedido_11" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3.7em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.estoque_loj}" app:binding="EstLoja" app:filter="false" tooltip="Estoque na Loja"/>
+													<sap.ui.core:Icon id="_i_pedido_12" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.estoque_tra}" app:binding="EstTroca" app:filter="false" tooltip="Estoque de Troca"/>
+													<sap.ui.core:Icon id="_i_pedido_13" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3.4em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text id="ped_pend_centralCT" app:binding="QtppendCent" app:filter="false" text="{i18n>xped.estoque_ppc}"/>
+													<sap.ui.core:Icon id="_i_pedido_14" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="3.5em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text id="ped_pend_fornCT" app:binding="QtppendForn" app:filter="false" text="{i18n>xped.estoque_ppf}"/>
+													<sap.ui.core:Icon id="_i_pedido_15" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="5em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.Venda_Atual}" app:binding="{= ${globalModel>/colVlrPedido} ? 'VlrVendaMm' : 'QtdVendaMm'}"
+														tooltip="Venda - Mês Atual"/>
+													<sap.ui.core:Icon id="_i_pedido_16" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="5em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.Venda_M1}" app:binding="{= ${globalModel>/colVlrPedido} ? 'VlrVendaM1' : 'QtdVendaM1'}" tooltip="Venda - Mês Atual-1"/>
+													<sap.ui.core:Icon id="_i_pedido_17" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="5em" hAlign="Center">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Text text="{i18n>xped.Venda_M2}" app:binding="{= ${globalModel>/colVlrPedido} ? 'VlrVendaM2' : 'QtdVendaM2'}" tooltip="Venda - Mês Atual-2"/>
+													<sap.ui.core:Icon id="_i_pedido_18" src="sap-icon://sort-ascending" size="0.96em" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<Column width="2em" hAlign="Center" visible="false"/>
+									<Column width="1em" hAlign="Center"/>
+								</columns>
+							</Table>
+						</items>
+					</FlexBox>
+					<FlexBox width="100%" fitContainer="true" justifyContent="Start" height="100%">
+						<ScrollContainer>
+							<Table id="tablePedido" busyIndicatorDelay="{worklistView>/tableBusyDelay}" class="tableTelaPedido"
+								noDataText="{worklistView>/tableNoDataText}" updateFinished="onUpdateFinished" items="{/PO}" swipe="handleSwipe"
+								swipeDirection="LeftToRight" delete="onDeletePress" mode="Delete" growingThreshold="50" growing="true" growingScrollToLoad="true">
+								<items>
+									<ColumnListItem class="tableLinhaPedido" press="toDetail" id="listItemPedido_copy_tablePedido_0" detailPress="toDetail" type="Active">
+										<cells>
+											<ObjectIdentifier class="textoLinhaPedido" title="{Matnr}" id="_column_matnr_copy_tablePedido_0"/>
+											<Text class="textoLinhaPedido" text="{Maktx}" id="_column_maktx_copy_tablePedido_0" wrapping="false" tooltip="{Maktx}"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'EstTeor', formatter: '.formatter.toIntegerStr' }" emphasized="false"
+												tooltip="{path: 'EstTeor', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number17_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'Mvd', formatter: '.formatter.toIntegerStr' }" emphasized="false"
+												tooltip="{path: 'Mvd', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number18_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'Prultcp', formatter: '.formatter.fullNumberStr' }" emphasized="false"
+												tooltip="{path: 'PrUltCp', formatter: '.formatter.fullNumberStr' }" textAlign="Right" id="number19_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'Sugestao', formatter: '.formatter.toIntReqSugStr' }" emphasized="false"
+												textAlign="End" visible="{= ${Sugestao} &gt; 0 }" id="number20_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'Requisicao', formatter: '.formatter.toIntReqSugStr' }" emphasized="true"
+												textAlign="Right" visible="{= ${Requisicao} &gt;0}" id="number21_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'Valor', formatter: '.formatter.fullNumberStr' }" emphasized="false" textAlign="Right"
+												id="number22_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'Prultvd', formatter: '.formatter.fullNumberStr' }" emphasized="false"
+												tooltip="{PrUltVd}" textAlign="Right" id="number23_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'MrgAta', formatter: '.formatter.percentage1dig' }" emphasized="false"
+												tooltip="{path: 'MargemAta', formatter: '.formatter.fullNumberStr' }" textAlign="Right" id="number24_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'MrgVar', formatter: '.formatter.percentage1dig' }" emphasized="false"
+												tooltip="{path: 'MargemVar', formatter: '.formatter.fullNumberStr' }" textAlign="Right" id="number25_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'EstCd', formatter: '.formatter.fullNumberStr' }" emphasized="false"
+												tooltip="{path: 'EstCd', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number26_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'EstLoja', formatter: '.formatter.fullNumberStr' }" emphasized="false"
+												tooltip="{path: 'EstLoja', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number27_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'EstTroca', formatter: '.formatter.fullNumberStr' }" emphasized="false"
+												tooltip="{path: 'EstTroca', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number28_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'QtppendCent', formatter: '.formatter.toIntegerStr' }" emphasized="false"
+												tooltip="{path: 'QtppendCent', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number29_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido" number="{path: 'QtppendForn', formatter: '.formatter.toIntegerStr' }" emphasized="false"
+												tooltip="{path: 'QtppendForn', formatter: '.formatter.toIntegerStr' }" textAlign="Right" id="number30_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido"
+												number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaMm', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaMm', formatter: '.formatter.float2digStr'} }"
+												emphasized="false" textAlign="Right" id="number31_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido"
+												number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaM1', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM1', formatter: '.formatter.float2digStr'} }"
+												emphasized="false" textAlign="Right" id="number32_tablePedido_0"/>
+											<ObjectNumber class="textoLinhaPedido"
+												number="{= ${globalModel>/colVlrPedido} ? ${path: 'VlrVendaM2', formatter: '.formatter.fullNumberStr'} : ${path: 'QtdVendaM2', formatter: '.formatter.float2digStr'} }"
+												emphasized="false" textAlign="Right" id="number33_tablePedido_0"/>
+											<Text class="textoLinhaPedido" text="{Maabc}" id="_column_maabc_copy_tablePedido_0" wrapping="false" visible="false"/>
+										</cells>
+									</ColumnListItem>
+								</items>
+								<columns>
+									<!-- Matnr -->
+									<Column width="4.5em" id="column41"/>
+									<!-- Maktx -->
+									<Column demandPopin="false" width="10em" id="column42"/>
+									<!-- EstTeor -->
+									<Column width="4em" hAlign="End" id="column43"/>
+									<!-- Mvd -->
+									<Column width="3em" hAlign="End" id="column44"/>
+									<!-- Prultcp -->
+									<Column width="3em" hAlign="End" id="column45"/>
+									<!-- Sugestao -->
+									<Column width="3.5em" hAlign="Center" styleClass="sugestao" id="column46"/>
+									<!-- Requisicao -->
+									<Column width="3.5em" hAlign="Center" styleClass="requisicao" id="column47"/>
+									<!-- Valor -->
+									<Column width="4em" hAlign="End" id="column48"/>
+									<!-- Prultvd -->
+									<Column width="2.8em" hAlign="End" id="column49"/>
+									<!-- MrgAta -->
+									<Column width="4em" hAlign="End" id="column50"/>
+									<!-- MrgVar -->
+									<Column width="4.5em" hAlign="End" id="column51"/>
+									<!-- EstCd -->
+									<Column width="3.7em" hAlign="End" id="column52"/>
+									<!-- EstLoja -->
+									<Column width="3.7em" hAlign="End" id="column53"/>
+									<!-- EstTroca -->
+									<Column width="3em" hAlign="End" id="column54"/>
+									<!-- QtppendCent -->
+									<Column width="3.4em" hAlign="End" id="column55"/>
+									<!-- QtppendLoja -->
+									<Column width="3.5em" hAlign="End" id="column56"/>
+									<!-- VlrVendaMM -->
+									<Column width="5em" hAlign="End" id="column57"/>
+									<!-- VlrVendaM1 -->
+									<Column width="5em" hAlign="End" id="column58"/>
+									<!-- VlrVendaM2 -->
+									<Column width="5em" hAlign="End" id="column59"/>
+									<!-- Maabc -->
+									<Column width="2em" hAlign="End" visible="false" id="column60"/>
+									<!-- <Column width="2.4em" hAlign="End"/   icone -->
+								</columns>
+								<customData>
+									<sap.ui.core:CustomData xmlns:sap.ui.core="sap.ui.core" key="w5g.dt.editable" value="true" id="data91"/>
+								</customData>
+							</Table>
+						</ScrollContainer>
+					</FlexBox>
+					<FlexBox width="100%" fitContainer="true" justifyContent="End" height="72px">
+						<items>
+							<Toolbar width="100%">
+								<!--<Toolbar class="sapContrast sapContrastPlus sapMBar sapMBar-CTX sapMContent-CTX sapMFooter-CTX sapMIBar sapMIBar-CTX sapMPageFooter" width="100%">-->
+								<ToolbarSpacer/>
+								<Button text="{i18n>xped.finalizapedido}" type="Accept" press="onCriaPedido"/>
+								<Button text="{i18n>xped.limpasugestao}" type="Reject" press="onResetPedido"/>
+								<content/>
+							</Toolbar>
+						</items>
+					</FlexBox>
+				</items>
+			</FlexBox>
+		</content>
+	</Page>
+</mvc:View>
