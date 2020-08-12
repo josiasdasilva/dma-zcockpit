@@ -14,8 +14,9 @@ sap.ui.define([
 		_aDialogTypes: null,
 		sUname: '',
 		sEkgrp: '',
+		_idAppntOverSeven: null,
 		onInit: function () {
-
+			this._idAppntOverSeven = this.byId("idAppntOverSeven");
 			this._planningCalendar = this.byId("MyCalendar");
 			this._aDialogTypes = [{
 				title: this.getText('create_appointment'),
@@ -56,7 +57,15 @@ sap.ui.define([
 			this.loadAppointments();
 		},
 		handleNavDate: function (oEvt) {
-			console.log(oEvt.getSource().getStartDate());
+			this._validateAppointmentOver18(oEvt.getSource().mProperties.startDate);
+		},
+		_validateAppointmentOver18: function (dDateRef) {
+			let dtStrRef = dDateRef.toDateString();
+
+			let bHasValueOver18 = this._planningCalendar.getModel().oData.people[0].appointments.some((item) => {
+				return dtStrRef === item.start.toDateString() && item.start.getHours() > 18
+			})
+			this._idAppntOverSeven.setVisible(bHasValueOver18);
 		},
 		_buscaLogado: function () {
 			var globalModel = this.getModel("globalModel");
@@ -361,6 +370,7 @@ sap.ui.define([
 					console.log(plannData);
 					this._planningCalendar.setModel(oModel);
 					this._planningCalendar.setBusy(false);
+					this._validateAppointmentOver18(plannData.startDate);
 				},
 				error: (err) => {
 					this._planningCalendar.setBusy(false);
@@ -408,7 +418,7 @@ sap.ui.define([
 		_validateDateTimePicker: function (oDateTimePickerStart, oDateTimePickerEnd) {
 			var oStartDate = oDateTimePickerStart.getDateValue(),
 				oEndDate = oDateTimePickerEnd.getDateValue(),
-				sValueStateText = this.getText('begin_bigger_end');//"Start date should be before End date";
+				sValueStateText = this.getText('begin_bigger_end'); //"Start date should be before End date";
 			if (oStartDate && oEndDate && oEndDate.getTime() <= oStartDate.getTime()) {
 				oDateTimePickerStart.setValueState("Error");
 				oDateTimePickerEnd.setValueState("Error");
@@ -420,11 +430,11 @@ sap.ui.define([
 			}
 		},
 		updateButtonEnabledState: function () {
-/*			var oStartDate = Fragment.byId("idCalendCreate", "startDate"),
-				oEndDate = Fragment.byId("idCalendCreate", "endDate"),
-				bEnabled = oStartDate.getValueState() !== "Error" && oStartDate.getValue() !== "" && oEndDate.getValue() !== "" && oEndDate.getValueState() !==
-				"Error";
-			this._oNewAppointmentDialog.getBeginButton().setEnabled(bEnabled);*/
+			/*			var oStartDate = Fragment.byId("idCalendCreate", "startDate"),
+							oEndDate = Fragment.byId("idCalendCreate", "endDate"),
+							bEnabled = oStartDate.getValueState() !== "Error" && oStartDate.getValue() !== "" && oEndDate.getValue() !== "" && oEndDate.getValueState() !==
+							"Error";
+						this._oNewAppointmentDialog.getBeginButton().setEnabled(bEnabled);*/
 		},
 		handleCreateChange: function (oEvent) {
 			var oDateTimePickerStart = Fragment.byId("idCalendCreate", "startDate"),
