@@ -325,6 +325,19 @@ sap.ui.define([
 					});
 				}
 			});
+		},
+		toPrint: function (oEvent) {
+			var globalModel = this.getModel("globalModel");
+			var localModel = this.getModel();
+			var sEkgrp = globalModel.getProperty("/Ekgrp");
+			var sLifnr = globalModel.getProperty("/Lifnr");
+
+			var sObjectPath = localModel.createKey("/PrnMaterial", {
+				Ekgrp: sEkgrp,
+				Lifnr: sLifnr
+			});
+			var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
+			window.open(sURL);
 		}
 	});
 });

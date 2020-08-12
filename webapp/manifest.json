@@ -124,7 +124,7 @@
 					"target": "fornecedor"
 				},
 				{
-					"pattern": "PedidoPrint/{Ebeln}",
+					"pattern": "PrnPedido/{Ebeln}",
 					"name": "pedidoprint",
 					"target": "pedidoprint"
 				},
