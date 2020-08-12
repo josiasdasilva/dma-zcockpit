@@ -186,10 +186,19 @@ sap.ui.define([
 		toPrint: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
 			var sEbeln = oEvent.getSource().getAggregation("cells")[1].getText();
-			globalModel.setProperty("/Ebeln", sEbeln);
-			this.getRouter().navTo("pedidoprint", {
+			var localModel = this.getModel();
+
+			var sObjectPath = localModel.createKey("/PrnPedido", {
 				Ebeln: sEbeln
-			}, true);
+			});
+			debugger;
+			var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
+			window.open(sURL);
+
+			// globalModel.setProperty("/Ebeln", sEbeln);
+			// this.getRouter().navTo("pedidoprint", {
+			// 	Ebeln: sEbeln
+			// }, true);
 		}
 
 	});
