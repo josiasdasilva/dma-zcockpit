@@ -454,6 +454,21 @@ sap.ui.define([
 			var globalModel = this.getModel("globalModel");
 			globalModel.setProperty("/colVlrCompra", this._segCompra.getProperty("selectedKey") === "real");
 			//this._VendaMM
+		},
+		toPrint: function (oEvent) {
+			var globalModel = this.getModel("globalModel");
+			var localModel = this.getModel();
+			var sEkgrp = globalModel.getProperty("/Ekgrp");
+			var sLifnr = globalModel.getProperty("/Lifnr");
+			var sMatnr = globalModel.getProperty("/Matnr");
+
+			var sObjectPath = localModel.createKey("/PrnLojas", {
+				Ekgrp: sEkgrp,
+				Lifnr: sLifnr,
+				Matnr: sMatnr
+			});
+			var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
+			window.open(sURL);
 		}
 	});
 });
