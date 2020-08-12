@@ -336,6 +336,7 @@ sap.ui.define([
 				filters: aFilters,
 				success: (res) => {
 					if (res.results.length === 0) {
+						this._planningCalendar.setBusy(false);
 						return;
 					}
 
