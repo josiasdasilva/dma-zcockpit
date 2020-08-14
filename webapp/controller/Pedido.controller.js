@@ -3,11 +3,14 @@ sap.ui.define([
 	"sap/ui/model/json/JSONModel",
 	"dma/zcockpit/model/formatter",
 	"sap/m/MessageToast",
+	"sap/m/Dialog",
+	"sap/m/DialogType",
+	"sap/m/ButtonType",
 	"sap/m/MessageBox",
 	"sap/ui/core/routing/History",
 	"sap/ui/model/Sorter",
 	"sap/ui/model/Filter"
-], function (BaseController, JSONModel, formatter, MessageToast, MessageBox, History, Sorter, Filter) {
+], function (BaseController, JSONModel, formatter, MessageToast, Dialog, DialogType, ButtonType, MessageBox, History, Sorter, Filter) {
 	"use strict";
 	var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
 	return BaseController.extend("dma.zcockpit.controller.Pedido", {
@@ -332,12 +335,34 @@ sap.ui.define([
 			var sEkgrp = globalModel.getProperty("/Ekgrp");
 			var sLifnr = globalModel.getProperty("/Lifnr");
 
-			var sObjectPath = localModel.createKey("/PrnMaterial", {
-				Ekgrp: sEkgrp,
-				Lifnr: sLifnr
+			MessageBox.confirm("Deseja imprimir o espelho do pedido?", {
+				title: "Espelho do Pedido",
+				actions: [
+					"Analítico",
+					"Sintético",
+					MessageBox.Action.CANCEL
+				],
+				emphasizedAction: "Analítico",
+				initialFocus: "Analítico",
+				onClose: (oAction) => {
+					if (oAction === "Analítico") {
+						var sObjectPath = localModel.createKey("/PrnMateriaisLojas", {
+							Ekgrp: sEkgrp,
+							Lifnr: sLifnr
+						});
+						var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
+						window.open(sURL);
+					}
+					if (oAction === "Sintético") {
+						var sObjectPath = localModel.createKey("/PrnMaterial", {
+							Ekgrp: sEkgrp,
+							Lifnr: sLifnr
+						});
+						var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
+						window.open(sURL);
+					}
+				}
 			});
-			var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
-			window.open(sURL);
 		}
 	});
 });
