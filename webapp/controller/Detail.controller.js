@@ -99,7 +99,7 @@ sap.ui.define([
 						width: '14em',
 						height: '2em',
 						items: [new sap.m.Link({
-							text: this.getText('nav_to_contract') + " " + this.oPopoverContact.ebeln,
+							text: this.getText('nav_to_contract') + " " + oData.Ebeln,
 							press: [this.onNavChangeContract, this]
 						})]
 					})
