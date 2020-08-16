@@ -542,6 +542,7 @@ sap.ui.define([
 		},
 		_handleF4compradorSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
+			// no backend a busca é feita usando OR para Código (FVAL) e Nome (NAME_TEXTC)
 			var oFilter = new sap.ui.model.Filter("Nome", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
 			oEvent.getSource().getBinding("items").filter([oFilter]);
 		},
@@ -590,25 +591,8 @@ sap.ui.define([
 		_handleF4fornecedorSearch: function (oEvent) {
 			var aFilters = [];
 			var sValue = oEvent.getParameter("value");
-
-			var sBusca = this.byId("buscaProduto").getValue();
-			if (sBusca !== "") {
-				var numbers = /^[0-9]+$/;
-				if (numbers.test(sBusca)) {
-					var fMatnr = new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
-					aFilters.push(fMatnr);
-				} else {
-					var fMaktx = new sap.ui.model.Filter("Maktx", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
-					aFilters.push(fMaktx);
-				}
-			}
-			var orFilterLoja = new sap.ui.model.Filter({
-				filters: orArrayLoja,
-				and: false
-			});
-			aFilters.push(orFilterLoja);
-
 			// Filtro Fornecedor - Nome
+			// no backend a busca é feita usando OR para Código (LIFNR) e Nome (Mcod1)
 			var oForn = new sap.ui.model.Filter("Mcod1", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
 			aFilters.push(oForn);
 			// Filtro Comprador
@@ -766,14 +750,16 @@ sap.ui.define([
 				// Filtro Texto 
 				var sBusca = this.byId("buscaProduto").getValue();
 				if (sBusca !== "") {
-					var numbers = /^[0-9]+$/;
-					if (numbers.test(sBusca)) {
-						var fMatnr = new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
-						aFilters.push(fMatnr);
-					} else {
-						var fMaktx = new sap.ui.model.Filter("Maktx", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
-						aFilters.push(fMaktx);
-					}
+					var fMaktx = new sap.ui.model.Filter("Maktx", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
+					aFilters.push(fMaktx);
+					// var numbers = /^[0-9]+$/;
+					// if (numbers.test(sBusca)) {
+					// 	var fMatnr = new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
+					// 	aFilters.push(fMatnr);
+					// } else {
+					// 	var fMaktx = new sap.ui.model.Filter("Maktx", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
+					// 	aFilters.push(fMaktx);
+					// }
 				}
 				// update list binding
 				oBinding.filter(aFilters);

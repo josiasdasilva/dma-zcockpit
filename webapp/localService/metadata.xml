@@ -2,6 +2,18 @@
 	xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
 	<edmx:DataServices m:DataServiceVersion="2.0">
 		<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ZCOCKPIT_COMERCIAL_SRV" xml:lang="en" sap:schema-version="1">
+			<EntityType Name="PrnMaterial" m:HasStream="true" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Ekgrp"/>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
 			<EntityType Name="POBusca" sap:content-version="1">
 				<Key>
 					<PropertyRef Name="Ekgrp"/>
@@ -14,6 +26,33 @@
 				<Property Name="UF" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="Bandeira" Type="Edm.String" MaxLength="18" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="Werks" Type="Edm.String" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+			</EntityType>
+			<EntityType Name="PrnMateriaisLojas" m:HasStream="true" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Ekgrp"/>
+					<PropertyRef Name="Lifnr"/>
+				</Key>
+				<Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+			</EntityType>
+			<EntityType Name="PrnLojas" m:HasStream="true" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Ekgrp"/>
+					<PropertyRef Name="Lifnr"/>
+					<PropertyRef Name="Matnr"/>
+				</Key>
+				<Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
 			</EntityType>
 			<EntityType Name="CD" sap:content-version="1">
 				<Key>
@@ -81,13 +120,13 @@
 					sap:updatable="false"/>
 				<Property Name="Pedido" Type="Edm.String" MaxLength="1" sap:unicode="false" sap:label="Single-Character Indicator" sap:creatable="false"
 					sap:updatable="false"/>
-				<NavigationProperty Name="POFaceamento" Relationship="ZCOCKPIT_COMERCIAL_SRV.POPOFaceamento" FromRole="FromRole_POPOFaceamento"
-					ToRole="ToRole_POPOFaceamento"/>
-				<NavigationProperty Name="POHistorico" Relationship="ZCOCKPIT_COMERCIAL_SRV.POPOHistorico" FromRole="FromRole_POPOHistorico"
-					ToRole="ToRole_POPOHistorico"/>
+				<NavigationProperty Name="POVenda" Relationship="ZCOCKPIT_COMERCIAL_SRV.POPOVenda" FromRole="FromRole_POPOVenda" ToRole="ToRole_POPOVenda"/>
 				<NavigationProperty Name="POCompra" Relationship="ZCOCKPIT_COMERCIAL_SRV.POPOCompra" FromRole="FromRole_POPOCompra"
 					ToRole="ToRole_POPOCompra"/>
-				<NavigationProperty Name="POVenda" Relationship="ZCOCKPIT_COMERCIAL_SRV.POPOVenda" FromRole="FromRole_POPOVenda" ToRole="ToRole_POPOVenda"/>
+				<NavigationProperty Name="POHistorico" Relationship="ZCOCKPIT_COMERCIAL_SRV.POPOHistorico" FromRole="FromRole_POPOHistorico"
+					ToRole="ToRole_POPOHistorico"/>
+				<NavigationProperty Name="POFaceamento" Relationship="ZCOCKPIT_COMERCIAL_SRV.POPOFaceamento" FromRole="FromRole_POPOFaceamento"
+					ToRole="ToRole_POPOFaceamento"/>
 			</EntityType>
 			<EntityType Name="POFaceamento" sap:content-version="1">
 				<Key>
@@ -398,6 +437,10 @@
 					sap:sortable="false" sap:filterable="false"/>
 				<Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
 					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="MediaSource" Type="Edm.Binary" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
+					sap:sortable="false" sap:filterable="false"/>
+				<Property Name="Url" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:sortable="false"
+					sap:filterable="false"/>
 			</EntityType>
 			<EntityType Name="TipoPedido" sap:content-version="1">
 				<Key>
@@ -455,40 +498,16 @@
 				<Property Name="Ort01" Type="Edm.String" MaxLength="35" sap:unicode="false" sap:label="City" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="Regio" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Region" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="Dtultcp" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
-				<NavigationProperty Name="POReset" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOReset" FromRole="FromRole_FornecedorPOReset"
-					ToRole="ToRole_FornecedorPOReset"/>
-				<NavigationProperty Name="Produto" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorProduto" FromRole="FromRole_FornecedorProduto"
-					ToRole="ToRole_FornecedorProduto"/>
-				<NavigationProperty Name="PO" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPO" FromRole="FromRole_FornecedorPO"
-					ToRole="ToRole_FornecedorPO"/>
-				<NavigationProperty Name="POSum" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOSum" FromRole="FromRole_FornecedorPOSum"
-					ToRole="ToRole_FornecedorPOSum"/>
 				<NavigationProperty Name="POCria" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOCria" FromRole="FromRole_FornecedorPOCria"
 					ToRole="ToRole_FornecedorPOCria"/>
-			</EntityType>
-			<EntityType Name="PrnMaterial" m:HasStream="true" sap:content-version="1">
-				<Key>
-					<PropertyRef Name="Ekgrp"/>
-					<PropertyRef Name="Lifnr"/>
-				</Key>
-				<Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-			</EntityType>
-			<EntityType Name="PrnLojas" m:HasStream="true" sap:content-version="1">
-				<Key>
-					<PropertyRef Name="Ekgrp"/>
-					<PropertyRef Name="Lifnr"/>
-				</Key>
-				<Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
-				<Property Name="MimeType" Type="Edm.String" Nullable="false" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:sortable="false" sap:filterable="false"/>
+				<NavigationProperty Name="POSum" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOSum" FromRole="FromRole_FornecedorPOSum"
+					ToRole="ToRole_FornecedorPOSum"/>
+				<NavigationProperty Name="PO" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPO" FromRole="FromRole_FornecedorPO"
+					ToRole="ToRole_FornecedorPO"/>
+				<NavigationProperty Name="Produto" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorProduto" FromRole="FromRole_FornecedorProduto"
+					ToRole="ToRole_FornecedorProduto"/>
+				<NavigationProperty Name="POReset" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOReset" FromRole="FromRole_FornecedorPOReset"
+					ToRole="ToRole_FornecedorPOReset"/>
 			</EntityType>
 			<Association Name="FornecedorPOReset" sap:content-version="1">
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.Fornecedor" Multiplicity="1" Role="FromRole_FornecedorPOReset"/>
@@ -625,8 +644,14 @@
 				</ReferentialConstraint>
 			</Association>
 			<EntityContainer Name="ZCOCKPIT_COMERCIAL_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+				<EntitySet Name="PrnMaterial" EntityType="ZCOCKPIT_COMERCIAL_SRV.PrnMaterial" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
 				<EntitySet Name="POBusca" EntityType="ZCOCKPIT_COMERCIAL_SRV.POBusca" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="PrnMateriaisLojas" EntityType="ZCOCKPIT_COMERCIAL_SRV.PrnMateriaisLojas" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
+				<EntitySet Name="PrnLojas" EntityType="ZCOCKPIT_COMERCIAL_SRV.PrnLojas" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
 				<EntitySet Name="CD" EntityType="ZCOCKPIT_COMERCIAL_SRV.CD" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="POSum" EntityType="ZCOCKPIT_COMERCIAL_SRV.POSum" sap:creatable="false" sap:updatable="false" sap:deletable="false"
@@ -669,10 +694,6 @@
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Fornecedor" EntityType="ZCOCKPIT_COMERCIAL_SRV.Fornecedor" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
-				<EntitySet Name="PrnMaterial" EntityType="ZCOCKPIT_COMERCIAL_SRV.PrnMaterial" sap:creatable="false" sap:updatable="false"
-					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
-				<EntitySet Name="PrnLojas" EntityType="ZCOCKPIT_COMERCIAL_SRV.PrnLojas" sap:creatable="false" sap:updatable="false" sap:deletable="false"
-					sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
 				<AssociationSet Name="FornecedorPOCriaSet" Association="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOCria" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:content-version="1">
 					<End EntitySet="Fornecedor" Role="FromRole_FornecedorPOCria"/>
