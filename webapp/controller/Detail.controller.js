@@ -69,6 +69,46 @@ sap.ui.define([
 			}, this._faceamentoTableHeader);
 			//FAFN - End
 		},
+		onNavChangeContract: function () {
+			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
+			var hash = (oCrossAppNavigator && oCrossAppNavigator.hrefForExternal({
+				target: {
+					semanticObject: "ZZContract",
+					action: "change"
+				},
+				params: {
+					"contract": this.oPopoverContact.ebeln
+				}
+			})) || ""; // generate the Hash to display a Supplier
+			oCrossAppNavigator.toExternal({
+				target: {
+					shellHash: hash
+				}
+			}); // navigate to Supplier application
+		},
+		handleLojaPress: function (e) {
+			var oData = e.getSource().getBindingContext().getModel().getProperty(e.getSource().getBindingContext().sPath)
+			this.oPopoverContact = new sap.m.ResponsivePopover({
+				showHeader: false,
+				placement: "Top",
+				content: [
+					new sap.m.HBox({
+						alignItems: 'Center',
+						fitContainer: true,
+						justifyContent: 'Center',
+						width: '14em',
+						height: '2em',
+						items: [new sap.m.Link({
+							text: this.getText('nav_to_contract') + " " + this.oPopoverContact.ebeln,
+							press: [this.onNavChangeContract, this]
+						})]
+					})
+				],
+				footer: []
+			});
+			this.oPopoverContact.openBy(e.getSource());
+			this.oPopoverContact.ebeln = oData.Ebeln;
+		},
 		onObjectMatched: function (oEvent) {
 			//var oViewModel = this.getModel("detailView ");
 			var globalModel = this.getModel("globalModel");

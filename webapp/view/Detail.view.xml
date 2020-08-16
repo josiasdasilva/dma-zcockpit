@@ -257,7 +257,8 @@
 									<items>
 										<ColumnListItem type="Active">
 											<cells>
-												<Text text="{Werks}"/>
+												<Link text="{Werks}" subtle="true" press="handleLojaPress"/>
+												<!--<Text text="{Werks}" />-->
 												<Text text="{Uf}"/>
 												<Text text="{Bandeira}"/>
 												<ObjectNumber

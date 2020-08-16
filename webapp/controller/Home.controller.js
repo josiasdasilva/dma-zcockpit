@@ -624,7 +624,6 @@ sap.ui.define([
 				return;
 			}
 
-			debugger;
 			var sInfoValue = Fragment.byId("idCalendCreate", "moreInfo").getValue(),
 				sInputTitle = Fragment.byId("idCalendCreate", "inputTitle").getValue(),
 				sLifnr = Fragment.byId("idCalendCreate", "fornecedorInput").getValue(),
