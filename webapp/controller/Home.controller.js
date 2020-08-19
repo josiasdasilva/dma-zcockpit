@@ -42,10 +42,18 @@ sap.ui.define([
 			this.loadUserData();
 		},
 		loadUserData: function () {
-			this.getOwnerComponent().getModel().read(`/Usuario('${this.sUname }')`, {
+			this.getOwnerComponent().getModel().read(`/Usuario`, {
+				//this.getOwnerComponent().getModel().read(`/Usuario('${this.sUname }')`, {
 				success: (res) => {
-					this.sEkgrp = res.Ekgrp;
-					this.sUname = res.Uname;
+					this.aEkgrp = [];
+					debugger;
+					for (let usrGrp of res.results) {
+						this.sEkgrp = usrGrp.Ekgrp;
+						this.aEkgrp.push(usrGrp.Ekgrp);
+						this.sUname = usrGrp.Uname;
+						this.sUserName = usrGrp.Nome
+					}
+
 				},
 				error: (err) => {
 					MessageToast.show(this.getText('msg_error_loadUser_data'));
@@ -335,10 +343,6 @@ sap.ui.define([
 			this.getOwnerComponent().getModel().read("/AgendaItem", {
 				filters: aFilters,
 				success: (res) => {
-					if (res.results.length === 0) {
-						this._planningCalendar.setBusy(false);
-						return;
-					}
 
 					let plannData = {
 						startDate: dStartDate ? dStartDate : new Date(new Date().setHours(7, 0, 0)),
@@ -348,6 +352,19 @@ sap.ui.define([
 					plannData.people.push({
 						appointments: []
 					});
+
+					if (res.results.length === 0) {
+						this._planningCalendar.setBusy(false);
+						//Creates dummy line
+						plannData.people[0].name = this.sUserName;
+						oModel.setData(plannData);
+						console.log(plannData);
+						this._planningCalendar.setModel(oModel);
+						this._planningCalendar.setBusy(false);
+						this._validateAppointmentOver18(plannData.startDate);
+						return;
+					}
+
 					//plannData.people[0].pic = sRootPath + "xxx.png";
 					plannData.people[0].name = res.results[0].Nomecomprador;
 					plannData.people[0].ekgrp = res.results[0].Grpcompradores;
@@ -845,15 +862,25 @@ sap.ui.define([
 		onF4Fornecedor: function (oEvent) {
 
 			var sInputValue = oEvent.getSource().getDescription();
-			var sEkgrp = this.currentPeople.ekgrp; //this.byId("compradorInput").getValue();
+			//var sEkgrp = this.currentPeople.ekgrp; //this.byId("compradorInput").getValue();
 			this.inputId = oEvent.getSource().getId();
 			// create value help dialog
 			if (!this._F4fornecedorDialog) {
 				this._F4fornecedorDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.fornecedor", this);
 				this.getView().addDependent(this._F4fornecedorDialog);
 			}
+			
+			let oEkgrpFilter = [];
+			for (let sEkgrp of this.aEkgrp) {
+				oEkgrpFilter.push(new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase()))
+			}
+			var oFilter = new Array(new sap.ui.model.Filter({
+				filters: oEkgrpFilter,
+				and: false
+			}));
+
 			// set previous filter - if comprador is filled
-			var oFilter = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+			//var oFilter = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
 			// open value help dialog filtered by the input value
 			this._F4fornecedorDialog.getBinding("items").filter([oFilter]);
 			this._F4fornecedorDialog.open(sInputValue);
