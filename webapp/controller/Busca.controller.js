@@ -151,13 +151,18 @@ sap.ui.define([
 			});
 		},
 		_onMasterMatched: function (oEvent) {
-			// var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
-			// var sUname = oEvent.getParameter("arguments").Uname;
-			// var sObjectPath = this.getModel().createKey("/Comprador", {
-			// 	Ekgrp: sEkgrp,
-			// 	Uname: sUname
-			// });
-			//this.byId("compradorInput").bindElement(sObjectPath);
+			var globalModel = this.getModel("globalModel");
+
+			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
+			globalModel.setProperty("/Ekgrp", sEkgrp);
+			var sUname = oEvent.getParameter("arguments").Uname;
+			globalModel.setProperty("/Uname", sUname);
+
+			var sObjectPath = this.getModel().createKey("/Comprador", {
+				Ekgrp: sEkgrp,
+				Uname: sUname
+			});
+			this.byId("compradorInput").bindElement(sObjectPath);
 
 			var globalModel = this.getModel("globalModel");
 			this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
@@ -165,9 +170,6 @@ sap.ui.define([
 			this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
 
 			this.clearSelectedProduto();
-
-			//globalModel.setProperty("/Uname", sLifnr);
-
 			this.habilitaBotaoPedido();
 
 			//FAFN Receb as informaçoes vindas do appointment se o mesmo foi clicado
@@ -176,7 +178,6 @@ sap.ui.define([
 
 		},
 		setDataFromAppointment: async function (oEvent) {
-			debugger;
 			var sLifnr = oEvent.getParameter("arguments").Lifnr;
 			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
 			var sUname = oEvent.getParameter("arguments").Uname;
@@ -191,7 +192,6 @@ sap.ui.define([
 						this.byId("compradorInput").setDescription(res.Nome);
 						this.byId("compradorInput").setValue(res.Ekgrp);
 						if (sLifnr && sLifnr.length > 0) {
-							debugger;
 							this.getOwnerComponent().getModel().read(`/Fornecedor(Ekgrp='${sEkgrp}',Lifnr='${sLifnr}')`, {
 								success: (res) => {
 									this.byId("fornecedorInput").setDescription(res.Mcod1);
@@ -541,10 +541,17 @@ sap.ui.define([
 			this.habilitaBotaoPedido();
 		},
 		_handleF4compradorSearch: function (oEvent) {
-			var sValue = oEvent.getParameter("value");
+			var globalModel = this.getModel("globalModel");
+			var aFilters = [];
+			// Filtrar compradores associados com o usuário SAP
+			var sUname = globalModel.getProperty("/Uname")
+			var fUname = new sap.ui.model.Filter("Uname", sap.ui.model.FilterOperator.EQ, sUname);
+			aFilters.push(fUname);
 			// no backend a busca é feita usando OR para Código (FVAL) e Nome (NAME_TEXTC)
-			var oFilter = new sap.ui.model.Filter("Nome", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
-			oEvent.getSource().getBinding("items").filter([oFilter]);
+			var sValue = oEvent.getParameter("value");
+			var fNome = new sap.ui.model.Filter("Nome", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
+			aFilters.push(fNome);
+			oEvent.getSource().getBinding("items").filter(aFilters);
 		},
 		_handleF4compradorClose: function (oEvent) {
 			var oSelectedItem = oEvent.getParameter("selectedItem");

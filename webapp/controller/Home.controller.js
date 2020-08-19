@@ -30,7 +30,7 @@ sap.ui.define([
 			}];
 			this.getOwnerComponent().getModel().setSizeLimit(9999);
 
-			this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container
+			this.sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004
 				.getUser().getId();
 
 			this.getRouter().getRoute("home").attachPatternMatched(this._onMasterMatched, this);
@@ -70,7 +70,7 @@ sap.ui.define([
 		_buscaLogado: function () {
 			var globalModel = this.getModel("globalModel");
 			var localModel = this.getModel();
-			var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container
+			var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004
 				.getUser().getId();
 			var sObjectPath = localModel.createKey("/Usuario", {
 				Uname: sUname
@@ -89,7 +89,7 @@ sap.ui.define([
 			return new Promise((resolve, reject) => {
 				var globalModel = this.getModel("globalModel");
 				var localModel = this.getModel();
-				var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container
+				var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004
 					.getUser().getId();
 				var sObjectPath = localModel.createKey("/Usuario", {
 					Uname: sUname

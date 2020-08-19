@@ -17,7 +17,7 @@
 							<items>
 								<MessageStrip id="idAppntOverSeven" visible="false" text="{i18n>msg_appointment_over_sevenpm}" type="Warning" showIcon="true"
 									showCloseButton="true" class="sapUiMediumMarginBottom"></MessageStrip>
-								<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/people'}" startDateChange="handleNavDate"
+								<PlanningCalendar id="MyCalendar" width="100%" startDate="{path: '/startDate'}" rows="{path: '/AgendaItem'}" startDateChange="handleNavDate"
 									appointmentSelect="handleAppointmentSelect" showEmptyIntervalHeaders="false" intervalSelect="handleAppointmentAddWithContext">
 									<toolbarContent>
 										<Toolbar width="100%" id="__toolbar1">
