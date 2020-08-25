@@ -109,7 +109,7 @@
 					"target": "home"
 				},
 				{
-					"pattern": "Comprador/{Ekgrp}/{Nome}",
+					"pattern": "FornHistorico/{Ekgrp}/{Nome}",
 					"name": "historico",
 					"target": "historico"
 				},
