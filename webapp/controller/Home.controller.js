@@ -42,6 +42,7 @@ sap.ui.define([
 			this.loadUserData();
 		},
 		loadUserData: function () {
+			var globalModel = this.getModel("globalModel");
 			this.getOwnerComponent().getModel().read(`/Usuario`, {
 				//this.getOwnerComponent().getModel().read(`/Usuario('${this.sUname }')`, {
 				success: (res) => {
@@ -52,6 +53,9 @@ sap.ui.define([
 						this.aEkgrp.push(usrGrp.Ekgrp);
 						this.sUname = usrGrp.Uname;
 						this.sUserName = usrGrp.Nome
+						globalModel.setProperty("/Ekgrp", usrGrp.Ekgrp);
+						globalModel.setProperty("/Uname", usrGrp.Uname);
+						globalModel.setProperty("/Nome", usrGrp.Nome);
 					}
 
 				},
@@ -88,6 +92,7 @@ sap.ui.define([
 				success: function (oData2, oResponse) {
 					globalModel.setProperty("/Ekgrp", oData2.Ekgrp);
 					globalModel.setProperty("/Uname", oData2.Uname);
+					globalModel.setProperty("/Nome", oData2.Nome);
 				}.bind(this),
 				error: function (oError) {}
 			});
@@ -107,8 +112,9 @@ sap.ui.define([
 					success: function (oData2, oResponse) {
 						globalModel.setProperty("/Ekgrp", oData2.Ekgrp);
 						globalModel.setProperty("/Uname", oData2.Uname);
+						globalModel.setProperty("/Nome", oData2.Nome);
 						sap.ui.core.BusyIndicator.hide();
-						resolve([oData2.Ekgrp, oData2.Uname]);
+						resolve([oData2.Ekgrp, oData2.Uname, oData2.Nome]);
 					},
 					error: function (oError) {
 						sap.ui.core.BusyIndicator.hide();
@@ -121,15 +127,17 @@ sap.ui.define([
 			var globalModel = this.getModel("globalModel");
 			var sEkgrp = globalModel.getProperty("/Ekgrp");
 			var sUname = globalModel.getProperty("/Uname");
-			if (sEkgrp === undefined || sUname === undefined) {
+			if (sEkgrp === undefined || sNome === undefined) {
 				this._buscaLogadoSync().then((res) => {
 					this.getRouter().navTo("historico", {
-						Ekgrp: res[0]
+						Ekgrp: res[0],
+						Nome: res[2]
 					}, true);
 				})
 			} else {
 				this.getRouter().navTo("historico", {
-					Ekgrp: sEkgrp
+					Ekgrp: sEkgrp,
+					Nome: sNome
 				}, true);
 			}
 		},
@@ -869,7 +877,7 @@ sap.ui.define([
 				this._F4fornecedorDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.fornecedor", this);
 				this.getView().addDependent(this._F4fornecedorDialog);
 			}
-			
+
 			let oEkgrpFilter = [];
 			for (let sEkgrp of this.aEkgrp) {
 				oEkgrpFilter.push(new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase()))

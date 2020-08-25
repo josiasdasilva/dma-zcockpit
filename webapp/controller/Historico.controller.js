@@ -9,10 +9,10 @@ sap.ui.define([
 		formatter: formatter,
 		_histpedidoTable: null,
 		onInit: function () {
-			this.getRouter().getRoute("historico").attachPatternMatched(this._onMasterMatched, this);
-			this.getRouter().attachBypassed(this.onBypassed, this); //this.habilitaBotaoPedido();
-
 			this._histpedidoTable = this.getView().byId("tableHistPedido");
+			this.getRouter().getRoute("historico").attachPatternMatched(this._onMasterMatched, this);
+			this.getRouter().attachBypassed(this.onBypassed, this);
+
 			this._histpedidoTable.addEventDelegate({
 				onAfterRendering: () => {
 					var oHeader = this._histpedidoTable.$().find('.sapMListTblHeaderCell');
@@ -24,21 +24,21 @@ sap.ui.define([
 			}, this._histpedidoTable);
 		},
 		_onMasterMatched: function (oEvent) {
-
-			// var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
-			// var sUname = oEvent.getParameter("arguments").Uname;
-			// var sObjectPath = this.getModel().createKey("/Comprador", {
-			// 	Ekgrp: sEkgrp,
-			// 	Uname: sUname
-			// });
-			// this.byId("compradorInput").bindElement(sObjectPath);
+			var aFilters = [];
 			var globalModel = this.getModel("globalModel");
-			// globalModel.
-			// this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
-			// this.byId("idComboPedido").setValue(globalModel.getProperty("/TpPedido"));
-			// this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
-			// this.clearSelectedProduto();
-			// this.habilitaBotaoPedido();
+			var oHistPedido = this._histpedidoTable.getBinding("items");
+
+			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
+			var sNome = oEvent.getParameter("arguments").Nome;
+			if (sEkgrp !== "") {
+				var fEkgrp = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp);
+				aFilters.push(fEkgrp);
+				oHistPedido.filter(aFilters);
+				// grava valor default
+				debugger;
+				this.byId("compradorInput").setDescription(sNome);
+				this.byId("compradorInput").setValue(sEkgrp);
+			}
 		},
 		onClickColumnHeader: function (oID, oTable) {
 			let sID = oID;
@@ -103,20 +103,13 @@ sap.ui.define([
 			// open value help dialog filtered by the input value
 			this._F4compradorDialog.open(sInputValue);
 		},
-		clearComprador: function (oEvent) {
-			var compradorInput = this.byId("compradorInput");
-			compradorInput.setValue("");
-			compradorInput.setDescription("");
-			this.clearFornecedor(oEvent);
-			this.clearContrato(oEvent);
-			this.habilitaBotaoPedido();
-		},
 		_handleF4compradorSearch: function (oEvent) {
 			var sValue = oEvent.getParameter("value");
 			var oFilter = new sap.ui.model.Filter("Nome", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
-			oEvent.getSource().getBinding("items").filter([oFilter]);
+			oEvent.getSource().getBinding("items").filter(oFilter);
 		},
 		_handleF4compradorClose: function (oEvent) {
+			var aFilters = [];
 			var oSelectedItem = oEvent.getParameter("selectedItem");
 			if (oSelectedItem) {
 				var compradorInput = this.getView().byId(this.inputId);
@@ -126,36 +119,36 @@ sap.ui.define([
 					Ekgrp: sEkgrp,
 					Uname: sUname
 				});
+
 				compradorInput.bindElement(sObjectPath);
 				this.clearFornecedor(oEvent);
-				this.clearContrato(oEvent);
-				this.filtraProdutos();
+				this.filtraHistorico(oEvent);
 			}
-			oEvent.getSource().getBinding("items").filter([]);
-			this.habilitaBotaoPedido();
 		},
 		/* Value Help Fornecedor */
 		onF4Fornecedor: function (oEvent) {
+			var aFilters = [];
 			var sInputValue = oEvent.getSource().getDescription();
-			var sEkgrp = this.byId("compradorInput").getValue();
 			this.inputId = oEvent.getSource().getId();
 			// create value help dialog
-			if (!this._F4fornecedorDialog) {
-				this._F4fornecedorDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.fornecedor", this);
-				this.getView().addDependent(this._F4fornecedorDialog);
+			if (!this._F4fornecHistoricoDialog) {
+				this._F4fornecHistoricoDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.fornecHistorico", this);
+				this.getView().addDependent(this._F4fornecHistoricoDialog);
 			}
-			// set previous filter - if comprador is filled
-			var oFilter = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+			var sEkgrp = this.byId("compradorInput").getValue();
+			if (sEkgrp !== "") {
+				var fEkgrp = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+				aFilters.push(fEkgrp);
+			}
 			// open value help dialog filtered by the input value
-			this._F4fornecedorDialog.getBinding("items").filter([oFilter]);
-			this._F4fornecedorDialog.open(sInputValue);
+			this._F4fornecHistoricoDialog.getBinding("items").filter(aFilters);
+			this._F4fornecHistoricoDialog.open(sInputValue);
 		},
 		clearFornecedor: function (oEvent) {
 			var fornecedorInput = this.byId("fornecedorInput");
 			fornecedorInput.setValue("");
 			fornecedorInput.setDescription("");
-			this.clearContrato(oEvent);
-			this.habilitaBotaoPedido();
+			this.filtraHistorico();
 		},
 		_handleF4fornecedorSearch: function (oEvent) {
 			var aFilters = [];
@@ -175,30 +168,63 @@ sap.ui.define([
 				var fornecedorInput = this.getView().byId(this.inputId);
 				fornecedorInput.setValue(oSelectedItem.getTitle());
 				fornecedorInput.setDescription(oSelectedItem.getDescription());
-				this.clearContrato(oEvent);
+				this.filtraHistorico(oEvent);
 			}
-			oEvent.getSource().getBinding("items").filter([]);
-			this.habilitaBotaoPedido();
+			// oEvent.getSource().getBinding("items").filter();
+		},
+		/* Filtra tabela */
+		filtraHistorico: function (oEvent) {
+			var aFilters = [];
+			var sEkgrp = this.byId("compradorInput").getValue();
+			if (sEkgrp !== "") {
+				var fEkgrp = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+				aFilters.push(fEkgrp);
+			}
+			// Filtro Fornecedor
+			var sLifnr = this.byId("fornecedorInput").getValue();
+			if (sLifnr !== "") {
+				var fLifnr = new sap.ui.model.Filter("Lifnr", sap.ui.model.FilterOperator.EQ, sLifnr);
+				aFilters.push(fLifnr);
+			}
+			// Filtro Data Pedido
+			// Filtro Data Remessa
+			this._histpedidoTable.getBinding("items").filter(aFilters);
+			this.habilitaImpressao();
+		},
+		onSelectionChange: function (oEvent) {
+			this.habilitaImpressao();
+		},
+		habilitaImpressao: function () {
+			var btnImprimir = this.byId("botaoImprimir");
+			btnImprimir.setEnabled(this._histpedidoTable.getSelectedItems().length > 0);
 		},
 		onNavBack: function (oEvent) {
-			this.getRouter().navTo("home", true); //}
+			this.getRouter().navTo("home", true);
+		},
+		onBtnClear: function (oEvent) {
+			this.clearFornecedor();
+			this.habilitaImpressao();
 		},
 		toPrint: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
-			var sEbeln = oEvent.getSource().getAggregation("cells")[1].getText();
 			var localModel = this.getModel();
 
+			var tbl_items = [];
+			var sEbeln = "";
+			tbl_items = this._histpedidoTable.getSelectedItems();
+			for (var i = 0; i < tbl_items.length; i++) {
+				if (i !== 0) {
+					sEbeln = sEbeln + ",";
+				}
+				sEbeln = sEbeln + tbl_items[0].getAggregation('cells')[0].getProperty('text');
+			}
 			var sObjectPath = localModel.createKey("/PrnPedido", {
 				Ebeln: sEbeln
 			});
-			debugger;
 			var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
 			window.open(sURL);
-
-			// globalModel.setProperty("/Ebeln", sEbeln);
-			// this.getRouter().navTo("pedidoprint", {
-			// 	Ebeln: sEbeln
-			// }, true);
+			this._histpedidoTable.removeSelections();
+			this.habilitaImpressao();
 		}
 
 	});

@@ -13,113 +13,82 @@
 									<FlexBox width="100%" class="flexBoxConfig" id="__box7" direction="Column">
 										<items>
 											<Label text="Comprador" width="100%" required="true"/>
-											<Input width="100%" id="compradorInput" type="Text" placeholder="Escolha o Comprador ..." showValueHelp="true"
-												valueHelpRequest="onF4Comprador" value="{Ekgrp}" description="{Nome}" fieldWidth="80px" required="true" valueHelpOnly="true" maxLength="40"
+											<Input width="100%" id="compradorInput" type="Text" placeholder="Escolha o Comprador ..." showValueHelp="true" value="{Ekgrp}"
+												description="{Nome}" fieldWidth="80px" required="true" valueHelpRequest="onF4Comprador" valueHelpOnly="true" maxLength="40"
 												showTableSuggestionValueHelp="false"/>
 										</items>
 									</FlexBox>
-									<FlexBox width="100%" class="flexBoxConfig" id="__box8" justifyContent="SpaceBetween" fitContainer="true" direction="Column">
+									<FlexBox width="100%" class="flexBoxConfig" justifyContent="SpaceBetween" fitContainer="true" direction="Column">
 										<items>
 											<Label text="Fornecedor" required="true" width="100%"/>
 											<Input width="100%" id="fornecedorInput" type="Text" placeholder="Escolha o Fornecedor ..." showSuggestion="true" showValueHelp="true"
-												valueHelpRequest="onF4Fornecedor" valueHelpOnly="true"/>
+												valueHelpRequest="onF4Fornecedor" valueHelpOnly="true" fieldWidth="130px" maxLength="50"/>
 										</items>
 									</FlexBox>
-									<FlexBox width="100%" class="flexBoxConfig" id="box6" direction="Column">
+									<FlexBox width="100%" class="flexBoxConfig" direction="Column" visible="false">
 										<items>
 											<Label text="Data do Pedido" width="100%" required="true" id="label0"/>
-											<DateRangeSelection id="DRS1" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"
+											<DateRangeSelection id="drPedido" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"
 												secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="handleChange"/>
 										</items>
 									</FlexBox>
-									<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table"
-										xmlns:sap.ui.core="sap.ui.core" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
-										xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1"
-										xmlns:action="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns="sap.m" width="100%" class="flexBoxConfig"
-										id="box6_copy" direction="Column">
+									<FlexBox width="100%" class="flexBoxConfig" direction="Column" visible="false">
 										<items>
 											<Label text="Data da Remessa" width="100%" required="true" id="label0_copy"/>
-											<DateRangeSelection id="DRS1_copy" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"
+											<DateRangeSelection id="drRemessa" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"
 												secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="handleChange"/>
 										</items>
 									</FlexBox>
 								</items>
 							</FlexBox>
 						</content>
+						<headerToolbar>
+							<Toolbar width="100%" id="toolbar1">
+								<content>
+									<Title text="Filtros" width="100%"/>
+									<ToolbarSpacer id="spacer0"/>
+									<Button id="btnClear" icon="sap-icon://delete" press="onBtnClear"/>
+								</content>
+							</Toolbar>
+						</headerToolbar>
 					</Panel>
 					<FlexBox width="100%" id="__box0" fitContainer="true" height="100%">
 						<items>
-							<Table noDataText="Sem dados para exibir" id="tableHistPedido" items="{path:'/Emitidos'}" class="tableTelaPedido">
+							<Table noDataText="Sem dados para exibir" id="tableHistPedido" items="{path:'/Emitidos'}" class="tableTelaPedido" mode="MultiSelect"
+								selectionChange="onSelectionChange">
 								<items>
-									<ColumnListItem type="Active" press="toPrint">
+									<ColumnListItem type="Active">
 										<cells>
-											<Text text="{Ekgrp}"/>
 											<Text text="{Ped_Ebeln}"/>
-											<Text text="{Werks}"/>
-											<ObjectNumber number="{path: 'Ped_Bedat', formatter: '.formatter.dateFormatDdMm'}" emphasized="false"/>
-											<ObjectNumber number="{path: 'Ped_Eindt', formatter: '.formatter.dateFormatDdMm'}" emphasized="false"/>
+											<Text text="{Ekgrp}"/>
 											<Text text="{Lifnr}"/>
-											<Text text="{Matnr}"/>
-											<Text text="{Maktx}" width="20em"/>
+											<Text text="{Name1}" width="40em"/>
+											<Text text="{Werks}"/>
+											<ObjectNumber number="{path: 'Ped_Bedat', formatter: '.formatter.dateFormatDdMm'}" emphasized="false" width="10em"/>
+											<ObjectNumber number="{path: 'Ped_Eindt', formatter: '.formatter.dateFormatDdMm'}" emphasized="false" width="10em"/>
 										</cells>
 									</ColumnListItem>
 								</items>
 								<columns>
-									<!--Comprador-->
-									<Column>
-										<header>
-											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
-												<items>
-													<Label text="{i18n>tbl_histpedidos.ekgrp}" app:binding="Ekgrp"/>
-													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_0" useIconTooltip="false" color="#808080" visible="true"
-														width="30%"/>
-												</items>
-											</HBox>
-										</header>
-									</Column>
 									<!--Pedido Ped_Ebeln-->
 									<Column>
 										<header>
 											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
 												<items>
 													<Label text="{i18n>tbl_histpedidos.ped_ebeln}" app:binding="Ped_Ebeln"/>
-													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_1" useIconTooltip="false" color="#808080" visible="true"
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_0" useIconTooltip="false" color="#808080" visible="true"
 														width="30%"/>
 												</items>
 											</HBox>
 										</header>
 									</Column>
-									<!--Loja-->
+									<!--Comprador-->
 									<Column>
 										<header>
 											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
 												<items>
-													<Label text="{i18n>tbl_histpedidos.werks}" app:binding="Werks"/>
-													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_2" useIconTooltip="false" color="#808080" visible="true"
-														width="30%"/>
-												</items>
-											</HBox>
-										</header>
-									</Column>
-									<!--Data Pedido Ped_Bedat-->
-									<Column hAlign="Center">
-										<header>
-											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
-												<items>
-													<Label text="{i18n>tbl_histpedidos.ped_bedat}" app:binding="Ped_Bedat"/>
-													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_3" useIconTooltip="false" color="#808080" visible="true"
-														width="30%"/>
-												</items>
-											</HBox>
-										</header>
-									</Column>
-									<!--Data Remessa Ped_Eindt-->
-									<Column hAlign="Center">
-										<header>
-											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
-												<items>
-													<Label text="{i18n>tbl_histpedidos.ped_eindt}" app:binding="Ped_Eindt"/>
-													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_4" useIconTooltip="false" color="#808080" visible="true"
+													<Label text="{i18n>tbl_histpedidos.ekgrp}" app:binding="Ekgrp"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_1" useIconTooltip="false" color="#808080" visible="true"
 														width="30%"/>
 												</items>
 											</HBox>
@@ -131,31 +100,55 @@
 											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
 												<items>
 													<Label text="{i18n>tbl_histpedidos.lifnr}" app:binding="Lifnr"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_2" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<!-- Nome Fornecedor-->
+									<Column width="40em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Label text="{i18n>tbl_histpedidos.name1}" app:binding="Name1"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_3" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<!--Loja-->
+									<Column>
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Label text="{i18n>tbl_histpedidos.werks}" app:binding="Werks"/>
+													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_4" useIconTooltip="false" color="#808080" visible="true"
+														width="30%"/>
+												</items>
+											</HBox>
+										</header>
+									</Column>
+									<!--Data Pedido Ped_Bedat-->
+									<Column hAlign="Center" width="10em">
+										<header>
+											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
+												<items>
+													<Label text="{i18n>tbl_histpedidos.ped_bedat}" app:binding="Ped_Bedat"/>
 													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_5" useIconTooltip="false" color="#808080" visible="true"
 														width="30%"/>
 												</items>
 											</HBox>
 										</header>
 									</Column>
-									<!--Material-->
-									<Column>
+									<!--Data Remessa Ped_Eindt-->
+									<Column hAlign="Center" width="10em">
 										<header>
 											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
 												<items>
-													<Label text="{i18n>tbl_histpedidos.matnr}" app:binding="Matnr"/>
+													<Label text="{i18n>tbl_histpedidos.ped_eindt}" app:binding="Ped_Eindt"/>
 													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_6" useIconTooltip="false" color="#808080" visible="true"
-														width="30%"/>
-												</items>
-											</HBox>
-										</header>
-									</Column>
-									<!--Descrição-->
-									<Column width="20em">
-										<header>
-											<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween">
-												<items>
-													<Label text="{i18n>tbl_histpedidos.maktx}" app:binding="Maktx"/>
-													<sap.ui.core:Icon src="sap-icon://sort-ascending" size="0.96em" id="_i_histped_7" useIconTooltip="false" color="#808080" visible="true"
 														width="30%"/>
 												</items>
 											</HBox>
@@ -176,5 +169,12 @@
 		<headerContent>
 			<Button width="4em" id="btnConfig" press="onConfig" icon="sap-icon://action-settings" visible="false"/>
 		</headerContent>
+		<footer>
+			<Bar id="bar0">
+				<contentRight>
+					<Button xmlns="sap.m" icon="sap-icon://print" id="botaoImprimir" press="toPrint" enabled="false"/>
+				</contentRight>
+			</Bar>
+		</footer>
 	</Page>
 </mvc:View>
