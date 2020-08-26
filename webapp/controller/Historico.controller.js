@@ -35,10 +35,10 @@ sap.ui.define([
 				aFilters.push(fEkgrp);
 				oHistPedido.filter(aFilters);
 				// grava valor default
-				debugger;
 				this.byId("compradorInput").setDescription(sNome);
 				this.byId("compradorInput").setValue(sEkgrp);
 			}
+			this.resetSortIcons(this._histpedidoTable, true);
 		},
 		onClickColumnHeader: function (oID, oTable) {
 			let sID = oID;
@@ -74,9 +74,8 @@ sap.ui.define([
 			}
 		},
 		resetSortIcons: function (oTable, oFirst) {
-			// var oQtde = oTable.getAggregation("columns").length;
 			var prefIcone = "";
-			var oQtde = oTable.getColCount() - 1;
+			var oQtde = oTable.getAggregation("columns").length - 1;
 			if (oTable === this._histpedidoTable) {
 				prefIcone = "_i_histped_"
 			}
@@ -86,7 +85,7 @@ sap.ui.define([
 				zIcon.setSrc("sap-icon://sort-ascending");
 			}
 			if (oFirst) {
-				let zIcon = this.byId(prefIcone + "1");
+				let zIcon = this.byId(prefIcone + "0");
 				zIcon.setColor("#f00000");
 				zIcon.setSrc("sap-icon://sort-ascending");
 			}
@@ -172,6 +171,9 @@ sap.ui.define([
 			}
 			// oEvent.getSource().getBinding("items").filter();
 		},
+		onChangeDatas: function (oEvent) {
+			this.filtraHistorico(oEvent);
+		},
 		/* Filtra tabela */
 		filtraHistorico: function (oEvent) {
 			var aFilters = [];
@@ -186,8 +188,20 @@ sap.ui.define([
 				var fLifnr = new sap.ui.model.Filter("Lifnr", sap.ui.model.FilterOperator.EQ, sLifnr);
 				aFilters.push(fLifnr);
 			}
+			debugger;
 			// Filtro Data Pedido
+			var drPedido = this.byId("drPedido");
+			if (drPedido.getDateValue() !== null) {
+				var fPedido = new sap.ui.model.Filter("Ped_Bedat", sap.ui.model.FilterOperator.BT, drPedido.getDateValue(), drPedido.getSecondDateValue());
+				aFilters.push(fPedido);
+			}
 			// Filtro Data Remessa
+			var drRemessa = this.byId("drRemessa");
+			if (drRemessa.getDateValue() !== null) {
+				var fRemessa = new sap.ui.model.Filter("Ped_Eindt", sap.ui.model.FilterOperator.BT, drRemessa.getDateValue(), drRemessa.getSecondDateValue());
+				aFilters.push(fRemessa);
+			}
+
 			this._histpedidoTable.getBinding("items").filter(aFilters);
 			this.habilitaImpressao();
 		},
@@ -203,6 +217,11 @@ sap.ui.define([
 		},
 		onBtnClear: function (oEvent) {
 			this.clearFornecedor();
+			var drPedido = this.byId("drPedido");
+			drPedido.setValue(null);
+			var drRemessa = this.byId("drRemessa");
+			drRemessa.setValue(null);
+			this.filtraHistorico();
 			this.habilitaImpressao();
 		},
 		toPrint: function (oEvent) {

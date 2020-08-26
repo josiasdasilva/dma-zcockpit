@@ -127,6 +127,7 @@ sap.ui.define([
 			var globalModel = this.getModel("globalModel");
 			var sEkgrp = globalModel.getProperty("/Ekgrp");
 			var sUname = globalModel.getProperty("/Uname");
+			var sNome = globalModel.getProperty("/Nome");
 			if (sEkgrp === undefined || sNome === undefined) {
 				this._buscaLogadoSync().then((res) => {
 					this.getRouter().navTo("historico", {

@@ -25,18 +25,18 @@
 												valueHelpRequest="onF4Fornecedor" valueHelpOnly="true" fieldWidth="130px" maxLength="50"/>
 										</items>
 									</FlexBox>
-									<FlexBox width="100%" class="flexBoxConfig" direction="Column" visible="false">
+									<FlexBox width="100%" class="flexBoxConfig" direction="Column">
 										<items>
 											<Label text="Data do Pedido" width="100%" required="true" id="label0"/>
 											<DateRangeSelection id="drPedido" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"
-												secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="handleChange"/>
+												secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="onChangeDatas"/>
 										</items>
 									</FlexBox>
-									<FlexBox width="100%" class="flexBoxConfig" direction="Column" visible="false">
+									<FlexBox width="100%" class="flexBoxConfig" direction="Column">
 										<items>
 											<Label text="Data da Remessa" width="100%" required="true" id="label0_copy"/>
 											<DateRangeSelection id="drRemessa" delimiter="{path:'/delimiterDRS1'}" dateValue="{path:'/dateValueDRS1'}"
-												secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="handleChange"/>
+												secondDateValue="{path:'/secondDateValueDRS1'}" displayFormat="{path:'/dateFormatDRS1'}" change="onChangeDatas"/>
 										</items>
 									</FlexBox>
 								</items>

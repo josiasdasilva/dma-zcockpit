@@ -128,23 +128,30 @@ sap.ui.define([
 			});
 			var sHeader = this.byId("headerDetail");
 			sHeader.bindElement(sObjectPath);
+			// Tabela Compra
 			this._compraTable.bindItems({
 				path: sObjectPath + "/POCompra",
 				template: this._compraTable.getBindingInfo("items").template
 			});
+			this.resetSortIcons(this._compraTable, true);
+			// Tabela Venda
 			this._vendaTable.bindItems({
 				path: sObjectPath + "/POVenda",
 				template: this._vendaTable.getBindingInfo("items").template
 			});
+			this.resetSortIcons(this._vendaTable, true);
+			// Tabela Histórico
 			// var tableHistorico = this.byId("historicoTable");
 			// tableHistorico.bindItems({
 			// 	path: sObjectPath + "/POHistorico",
 			// 	template: tableHistorico.getBindingInfo("items").template
 			// });
+			// Tabela Faceamento
 			this._faceamentoTable.bindItems({
 				path: sObjectPath + "/POFaceamento",
 				template: this._faceamentoTable.getBindingInfo("items").template
 			});
+			this.resetSortIcons(this._faceamentoTable, true);
 			globalModel.setProperty("/Alterado", false);
 			this.byId('botaoGravarSugestao').setEnabled(false);
 			this.updateTotalTelaLocal();
@@ -251,19 +258,15 @@ sap.ui.define([
 			// oItems.filter(aFilters);
 		},
 		resetSortIcons: function (oTable, oFirst) {
-			// var oQtde = oTable.getAggregation("columns").length;
 			var prefIcone = "";
-			var oQtde = 0;
+			var oQtde = oTable.getAggregation("columns").length - 1;
 			if (oTable === this._compraTable) {
-				oQtde = 19; //this.compraTableHeader.getColCount();
 				prefIcone = "_i_compra_"
 			}
 			if (oTable === this._vendaTable) {
-				oQtde = 18; //this.vendaTableHeader.getColCount();
 				prefIcone = "_i_venda_"
 			}
 			if (oTable === this._faceamentoTable) {
-				oQtde = 9; //this.faceamentoTableHeader.getColCount();
 				prefIcone = "_i_faceamento_"
 			}
 			for (var i = 0; i < oQtde; i++) {
