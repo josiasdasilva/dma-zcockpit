@@ -1,32 +1,35 @@
 sap.ui.define([
 	"dma/zcockpit/controller/BaseController",
 	"dma/zcockpit/model/formatter",
+	'sap/m/Token',
+	"sap/ui/core/Fragment",
 	"sap/ui/model/Sorter",
-	"sap/ui/model/Filter"
-], function (BaseController, formatter, Sorter, Filter) {
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function (BaseController, formatter, Fragment, Sorter, Token, Filter, FilterOperator) {
 	"use strict";
 	return BaseController.extend("dma.zcockpit.controller.Historico", {
 		formatter: formatter,
-		_histpedidoTable: null,
+		_histPedidoTable: null,
 		onInit: function () {
-			this._histpedidoTable = this.getView().byId("tableHistPedido");
+			this._histPedidoTable = this.getView().byId("tableHistPedido");
 			this.getRouter().getRoute("historico").attachPatternMatched(this._onMasterMatched, this);
 			this.getRouter().attachBypassed(this.onBypassed, this);
 
-			this._histpedidoTable.addEventDelegate({
+			this._histPedidoTable.addEventDelegate({
 				onAfterRendering: () => {
-					var oHeader = this._histpedidoTable.$().find('.sapMListTblHeaderCell');
+					var oHeader = this._histPedidoTable.$().find('.sapMListTblHeaderCell');
 					for (var i = 0; i < oHeader.length; i++) {
 						var oID = oHeader[i].id;
-						this.onClickColumnHeader(oID, this._histpedidoTable);
+						this.onClickColumnHeader(oID, this._histPedidoTable);
 					}
 				}
-			}, this._histpedidoTable);
+			}, this._histPedidoTable);
 		},
 		_onMasterMatched: function (oEvent) {
 			var aFilters = [];
 			var globalModel = this.getModel("globalModel");
-			var oHistPedido = this._histpedidoTable.getBinding("items");
+			var oHistPedido = this._histPedidoTable.getBinding("items");
 
 			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
 			var sNome = oEvent.getParameter("arguments").Nome;
@@ -38,7 +41,7 @@ sap.ui.define([
 				this.byId("compradorInput").setDescription(sNome);
 				this.byId("compradorInput").setValue(sEkgrp);
 			}
-			this.resetSortIcons(this._histpedidoTable, true);
+			this.resetSortIcons(this._histPedidoTable, true);
 		},
 		onClickColumnHeader: function (oID, oTable) {
 			let sID = oID;
@@ -76,7 +79,7 @@ sap.ui.define([
 		resetSortIcons: function (oTable, oFirst) {
 			var prefIcone = "";
 			var oQtde = oTable.getAggregation("columns").length - 1;
-			if (oTable === this._histpedidoTable) {
+			if (oTable === this._histPedidoTable) {
 				prefIcone = "_i_histped_"
 			}
 			for (var i = 0; i < oQtde; i++) {
@@ -171,6 +174,78 @@ sap.ui.define([
 			}
 			// oEvent.getSource().getBinding("items").filter();
 		},
+		/* Value Help Loja */
+		onF4Loja: function (oEvent) {
+			// create value help dialog
+			if (!this._F4lojaHistoricoDialog) {
+				this._F4lojaHistoricoDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.lojaHistorico", this);
+				this.getView().addDependent(this._F4lojaHistoricoDialog);
+			}
+
+			var aInput = this.byId("lojaInput").getTokens();
+			var aLojaItems = this._F4lojaHistoricoDialog._oList.getItems();
+			for (var iTk = 0; iTk < aInput.length; iTk++) {
+				for (var type = 0; type < aLojaItems.length; type++) {
+					if (aLojaItems[type].getTitle() === aInput[iTk].getKey()) {
+						aLojaItems[type].setSelected(true);
+					}
+				}
+			}
+			this._openF4LojaDialog(oEvent);
+		},
+		_openF4LojaDialog: function (oEvent) {
+			var aFilters = [];
+			var sInputValue = oEvent.getSource().getDescription();
+			this.inputId = oEvent.getSource().getId();
+			this._filtroF4Lojas(aFilters);
+			// open value help dialog filtered by the input value
+			this._F4lojaHistoricoDialog.getBinding("items").filter(aFilters);
+			this._F4lojaHistoricoDialog.open(sInputValue);
+		},
+		_filtroF4Lojas: function (aFilters) {
+			// Filtro Ekgrp
+			var sEkgrp = this.byId("compradorInput").getValue();
+			if (sEkgrp !== "") {
+				var fEkgrp = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+				aFilters.push(fEkgrp);
+			}
+		},
+		clearLoja: function (oEvent) {
+			var lojaInput = this.byId("lojaInput");
+			lojaInput.removeAllTokens();
+			this.filtraHistorico();
+		},
+		_handleF4lojaSearch: function (oEvent) {
+			var aFilters = [];
+			this._filtroF4Lojas(aFilters);
+			// Filtro Loja - Nome
+			var sValue = oEvent.getParameter("value");
+			var oLoja = new sap.ui.model.Filter("Nome", sap.ui.model.FilterOperator.Contains, sValue.toUpperCase());
+			aFilters.push(oLoja);
+			// Grava todos os filtros
+			oEvent.getSource().getBinding("items").filter(aFilters);
+		},
+		_handleF4lojaClose: function (oEvent) {
+			var aSelectedItems = oEvent.getParameter("selectedItems"),
+				oMultiInput = this.byId("lojaInput");
+			oMultiInput.removeAllTokens();
+			if (aSelectedItems && aSelectedItems.length > 0) {
+				aSelectedItems.forEach(function (oItem) {
+					var nToken = new sap.m.Token({
+						key: oItem.getDescription(),
+						text: oItem.getTitle()
+					})
+					oMultiInput.addToken(nToken);
+				});
+			}
+			this.filtraHistorico(oEvent);
+		},
+		_handleF4lojaCancel: function (oEvent) {
+			//console.log('Ação cancelada');
+		},
+		onF4lojaTokenUpdate: function (oEvent) {
+			this.filtraHistorico(oEvent);
+		},
 		onChangeDatas: function (oEvent) {
 			this.filtraHistorico(oEvent);
 		},
@@ -188,7 +263,23 @@ sap.ui.define([
 				var fLifnr = new sap.ui.model.Filter("Lifnr", sap.ui.model.FilterOperator.EQ, sLifnr);
 				aFilters.push(fLifnr);
 			}
-			debugger;
+			// Filtro Loja
+			var sLojas = this.byId("lojaInput");
+			var orArrayLoja = [];
+			if (sLojas.getTokens().length > 0) {
+				for (var iLojas = 0; iLojas < sLojas.getTokens().length; iLojas++) {
+					orArrayLoja.push(new sap.ui.model.Filter(
+						"Werks",
+						sap.ui.model.FilterOperator.EQ,
+						sLojas.getTokens()[iLojas].getText()
+					));
+				}
+				var orFilterLoja = new sap.ui.model.Filter({
+					filters: orArrayLoja,
+					and: false
+				});
+				aFilters.push(orFilterLoja);
+			}
 			// Filtro Data Pedido
 			var drPedido = this.byId("drPedido");
 			if (drPedido.getDateValue() !== null) {
@@ -202,7 +293,7 @@ sap.ui.define([
 				aFilters.push(fRemessa);
 			}
 
-			this._histpedidoTable.getBinding("items").filter(aFilters);
+			this._histPedidoTable.getBinding("items").filter(aFilters);
 			this.habilitaImpressao();
 		},
 		onSelectionChange: function (oEvent) {
@@ -210,13 +301,14 @@ sap.ui.define([
 		},
 		habilitaImpressao: function () {
 			var btnImprimir = this.byId("botaoImprimir");
-			btnImprimir.setEnabled(this._histpedidoTable.getSelectedItems().length > 0);
+			btnImprimir.setEnabled(this._histPedidoTable.getSelectedItems().length > 0);
 		},
 		onNavBack: function (oEvent) {
 			this.getRouter().navTo("home", true);
 		},
 		onBtnClear: function (oEvent) {
 			this.clearFornecedor();
+			this.clearLoja();
 			var drPedido = this.byId("drPedido");
 			drPedido.setValue(null);
 			var drRemessa = this.byId("drRemessa");
@@ -230,19 +322,19 @@ sap.ui.define([
 
 			var tbl_items = [];
 			var sEbeln = "";
-			tbl_items = this._histpedidoTable.getSelectedItems();
+			tbl_items = this._histPedidoTable.getSelectedItems();
 			for (var i = 0; i < tbl_items.length; i++) {
 				if (i !== 0) {
 					sEbeln = sEbeln + ",";
 				}
-				sEbeln = sEbeln + tbl_items[0].getAggregation('cells')[0].getProperty('text');
+				sEbeln = sEbeln + tbl_items[i].getAggregation('cells')[0].getProperty('text');
 			}
 			var sObjectPath = localModel.createKey("/PrnPedido", {
 				Ebeln: sEbeln
 			});
 			var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
 			window.open(sURL);
-			this._histpedidoTable.removeSelections();
+			this._histPedidoTable.removeSelections();
 			this.habilitaImpressao();
 		}
 

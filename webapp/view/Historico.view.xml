@@ -1,5 +1,5 @@
 <mvc:View xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:table="sap.ui.table"
-	xmlns:sap.ui.core="sap.ui.core" xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar"
+	xmlns:sap.ui.core="sap.ui.core" xmlns="sap.m" xmlns:smartFilterBar="sap.ui.comp.smartfilterbar" xmlns:core="sap.ui.core"
 	xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" controllerName="dma.zcockpit.controller.Historico"
 	height="100%">
 	<Page title="Cockpit Comercial" id="__page3" showSubHeader="false" showNavButton="true" navButtonPress="onNavBack">
@@ -23,6 +23,15 @@
 											<Label text="Fornecedor" required="true" width="100%"/>
 											<Input width="100%" id="fornecedorInput" type="Text" placeholder="Escolha o Fornecedor ..." showSuggestion="true" showValueHelp="true"
 												valueHelpRequest="onF4Fornecedor" valueHelpOnly="true" fieldWidth="130px" maxLength="50"/>
+										</items>
+									</FlexBox>
+									<FlexBox width="100%" class="flexBoxConfig" justifyContent="SpaceBetween" fitContainer="true" direction="Column">
+										<items>
+											<Label text="Loja" required="true" width="100%"/>
+											<MultiInput width="100%" id="lojaInput" placeholder="Escolha a Loja ..."
+												suggestionItems="{ path: '/LojasHistorico', sorter: { path: 'Werks' }}" valueHelpRequest="onF4Loja" tokenChange="onF4lojaTokenUpdate"
+												valueHelpOnly="true">
+												<core:Item key="{Werks}" text="{Nome}"/></MultiInput>
 										</items>
 									</FlexBox>
 									<FlexBox width="100%" class="flexBoxConfig" direction="Column">
