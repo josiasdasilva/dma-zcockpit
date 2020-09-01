@@ -5,16 +5,17 @@
 		title="Lojas"
 		class="sapUiPopupWithPadding"
 		items="{/CD}"
-		liveChange="_handleF4cdSearch"
-		search="_handleF4cdSearch"
-		confirm="_handleF4cdClose"
-		cancel="_handleF4cdCancel"
+		liveChange="_handleF4LojasSearch"
+		search="_handleF4LojasSearch"
+		confirm="_handleF4LojasClose"
+		cancel="_handleF4LojasCancel"
 		multiSelect="true">
 		<StandardListItem
 			icon=""
 			iconDensityAware="false"
 			iconInset="false"
 			title="{Werks}"
-			description="{Nome}" />
+			description="{Nome}"
+			info="{UF}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

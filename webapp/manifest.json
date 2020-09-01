@@ -114,7 +114,7 @@
 					"target": "historico"
 				},
 				{
-					"pattern": "Comprador/{Ekgrp}/{Uname}/:Lifnr:",
+					"pattern": "Comprador/{Ekgrp}/:Lifnr:",
 					"name": "busca",
 					"target": "busca"
 				},

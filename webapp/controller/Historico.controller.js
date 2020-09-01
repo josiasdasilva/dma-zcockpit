@@ -116,10 +116,8 @@ sap.ui.define([
 			if (oSelectedItem) {
 				var compradorInput = this.getView().byId(this.inputId);
 				var sEkgrp = oSelectedItem.getTitle();
-				var sUname = oSelectedItem.getInfo();
 				var sObjectPath = this.getModel().createKey("/Comprador", {
-					Ekgrp: sEkgrp,
-					Uname: sUname
+					Ekgrp: sEkgrp
 				});
 
 				compradorInput.bindElement(sObjectPath);

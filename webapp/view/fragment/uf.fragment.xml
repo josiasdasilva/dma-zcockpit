@@ -1,7 +1,19 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
-	<SelectDialog title="UF" class="sapUiPopupWithPadding" items="{ path : '/UF', sorter : { path : 'Bland', descending : false } }"
-		showClearButton="true" liveChange="_handleF4UFSearch" search="_handleF4UFSearch" confirm="_handleF4UFClose" cancel="_handleF4UFCancel"
-		multiSelect="true">
-		<StandardListItem icon="" iconDensityAware="false" iconInset="false" title="{Bezei}" description="{Bland}"/>
+	<SelectDialog 
+		title="UF" 
+		class="sapUiPopupWithPadding" 
+		items="{ path : '/UF', sorter : { path : 'Bland', descending : false } }"
+		showClearButton="true" 
+		liveChange="_handleF4UFSearch" 
+		search="_handleF4UFSearch" 
+		confirm="_handleF4UFClose" 
+		cancel="_handleF4UFCancel"
+		multiSelect="true">	
+		<StandardListItem 
+			icon="" 
+			iconDensityAware="false" 
+			iconInset="false" 
+			title="{Bezei}" 
+			description="{Bland}"/>
 	</SelectDialog>
 </core:FragmentDefinition>

@@ -14,13 +14,36 @@ sap.ui.define([
 			this.getRouter().getRoute("busca").attachPatternMatched(this._onMasterMatched, this);
 			//this.habilitaBotaoPedido();
 		},
+		_onMasterMatched: function (oEvent) {
+			var globalModel = this.getModel("globalModel");
+			debugger;
+			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
+			globalModel.setProperty("/Ekgrp", sEkgrp);
+			var sObjectPath = this.getModel().createKey("/Comprador", {
+				Ekgrp: sEkgrp
+			});
+			this.byId("compradorInput").bindElement(sObjectPath);
+
+			var globalModel = this.getModel("globalModel");
+			this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
+			this.byId("idComboPedido").setValue(globalModel.getProperty("/TpPedido"));
+			this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
+
+			this.clearSelectedProduto();
+			this.habilitaBotaoPedido();
+
+			//FAFN Receb as informaçoes vindas do appointment se o mesmo foi clicado
+			this.setDataFromAppointment(oEvent);
+			//FAFN End
+
+		},
 		habilitaBotaoPedido: function (bCleanFields) {
-			this.filtraProdutos();
+			this.filtraProdutos(true);
 
 			var globalModel = this.getModel("globalModel");
 			var btnPedido = this.byId("botaoPedido");
 			// Filtros
-			// var sWerks = this.byId("cdInput").getValue() !== "";
+			// var sWerks = this.byId("lojasInput").getValue() !== "";
 			var sEkgrp = this.byId("compradorInput").getValue() !== "";
 			var sLifnr = this.byId("fornecedorInput").getValue() !== "";
 			var sEbeln = this.byId("contratoInput").getValue() !== "";
@@ -44,93 +67,10 @@ sap.ui.define([
 			globalModel.setProperty("/TpPedido", this.byId("idComboPedido").getValue());
 			globalModel.setProperty("/TpEntrada", this.byId("idTpEntrada").getValue());
 
+			// agrupa todos os filtros da tela
 			var aFilters = [];
-			// Filtro UF
-			var sUF = this.byId("UFInput");
-			if (sUF.getTokens().length > 0) {
-				var orArrayUF = [];
-				for (var iUF = 0; iUF < sUF.getTokens().length; iUF++) {
-					orArrayUF.push(new sap.ui.model.Filter(
-						"UF",
-						sap.ui.model.FilterOperator.EQ,
-						sUF.getTokens()[iUF].getText()
-					));
-				}
-				var orFilterUF = new sap.ui.model.Filter({
-					filters: orArrayUF,
-					and: false
-				});
-				aFilters.push(orFilterUF);
-			}
-			// Filtro Bandeira
-			var sBandeira = this.byId("grupoLojasInput");
-			var orArrayBand = [];
-			if (sBandeira.getTokens().length > 0) {
-				for (var iBand = 0; iBand < sBandeira.getTokens().length; iBand++) {
-					orArrayBand.push(new sap.ui.model.Filter(
-						"Bandeira",
-						sap.ui.model.FilterOperator.EQ,
-						sBandeira.getTokens()[iBand].getText()
-					));
-				}
-				var orFilterBand = new sap.ui.model.Filter({
-					filters: orArrayBand,
-					and: false
-				});
-				aFilters.push(orFilterBand);
-			}
-			// Filtro Loja
-			var sLojas = this.byId("cdInput");
-			var orArrayLoja = [];
-			if (sLojas.getTokens().length > 0) {
-				for (var iLojas = 0; iLojas < sLojas.getTokens().length; iLojas++) {
-					orArrayLoja.push(new sap.ui.model.Filter(
-						"Werks",
-						sap.ui.model.FilterOperator.EQ,
-						//						`'${sLojas.getTokens()[iLojas].getText()}'`
-						sLojas.getTokens()[iLojas].getKey()
-					));
-				}
-				var orFilterLoja = new sap.ui.model.Filter({
-					filters: orArrayLoja,
-					and: false
-				});
-				aFilters.push(orFilterLoja);
-			}
-			// Filtro Comprador
-			var sEkgrp = this.byId("compradorInput").getValue();
-			if (sEkgrp !== "") {
-				var fEkgrp = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
-				aFilters.push(fEkgrp);
-			}
-			// Filtro Comprador
-			var sLifnr = this.byId("fornecedorInput").getValue();
-			if (sLifnr !== "") {
-				var fLifnr = new sap.ui.model.Filter("Lifnr", sap.ui.model.FilterOperator.EQ, sLifnr);
-				globalModel.setProperty("/Lifnr", fLifnr);
-				aFilters.push(fLifnr);
-			}
-			// Filtro Contrato
-			var sEbeln = this.byId("contratoInput").getValue();
-			if (sEbeln !== "") {
-				globalModel.setProperty("/Ebeln", sEbeln);
-				var fEbeln = new sap.ui.model.Filter("Ebeln", sap.ui.model.FilterOperator.EQ, sEbeln);
-				aFilters.push(fEbeln);
-			}
-			//  produtos
-			var sMatnr = this.byId("idProdutos").getSelectedContexts(true);
-			if (sMatnr && sMatnr.length > 0) {
-				globalModel.setProperty("/Matnr", sMatnr);
-				var orArray = [];
-				for (var i = 0; i < sMatnr.length; i++) {
-					orArray.push(new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.EQ, sMatnr[i].getProperty('Matnr')));
-				}
-				var orFilter = new sap.ui.model.Filter({
-					filters: orArray,
-					and: false
-				});
-				aFilters.push(orFilter);
-			}
+			this.montaFiltros(aFilters, true);
+
 			// executa busca dos produtos na ficha técnica
 			var that = this;
 			sap.ui.core.BusyIndicator.show();
@@ -150,33 +90,6 @@ sap.ui.define([
 				}
 			});
 		},
-		_onMasterMatched: function (oEvent) {
-			var globalModel = this.getModel("globalModel");
-
-			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
-			globalModel.setProperty("/Ekgrp", sEkgrp);
-			var sUname = oEvent.getParameter("arguments").Uname;
-			globalModel.setProperty("/Uname", sUname);
-
-			var sObjectPath = this.getModel().createKey("/Comprador", {
-				Ekgrp: sEkgrp,
-				Uname: sUname
-			});
-			this.byId("compradorInput").bindElement(sObjectPath);
-
-			var globalModel = this.getModel("globalModel");
-			this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
-			this.byId("idComboPedido").setValue(globalModel.getProperty("/TpPedido"));
-			this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
-
-			this.clearSelectedProduto();
-			this.habilitaBotaoPedido();
-
-			//FAFN Receb as informaçoes vindas do appointment se o mesmo foi clicado
-			this.setDataFromAppointment(oEvent);
-			//FAFN End
-
-		},
 		setDataFromAppointment: async function (oEvent) {
 			var sLifnr = oEvent.getParameter("arguments").Lifnr;
 			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
@@ -187,7 +100,7 @@ sap.ui.define([
 				return;
 			}
 			if (sEkgrp && sEkgrp.length > 0) {
-				this.getOwnerComponent().getModel().read(`/Comprador(Ekgrp='${sEkgrp}',Uname='${sUname}')`, {
+				this.getOwnerComponent().getModel().read(`/Comprador(Ekgrp='${sEkgrp}')`, {
 					success: (res) => {
 						this.byId("compradorInput").setDescription(res.Nome);
 						this.byId("compradorInput").setValue(res.Ekgrp);
@@ -196,7 +109,7 @@ sap.ui.define([
 								success: (res) => {
 									this.byId("fornecedorInput").setDescription(res.Mcod1);
 									this.byId("fornecedorInput").setValue(res.Lifnr);
-									this.filtraProdutos(true);
+									this.habilitaBotaoPedido();
 								},
 								error: (err) => {
 									sap.m.MessageBox.error(err.responseText, {
@@ -213,7 +126,6 @@ sap.ui.define([
 					}
 				});
 			}
-
 		},
 		/* Configurações */
 		onExpand: function (oEvent) {
@@ -232,10 +144,10 @@ sap.ui.define([
 		onNavBack: function (oEvent) {
 			this.getRouter().navTo("home", true); //}
 		},
-		deletePressCD: function (oEvent) {
+		deletePressLojas: function (oEvent) {
 			this.clearUF(oEvent);
 		},
-		/* Value Help CD */
+		/* Value Help UF */
 		onF4UF: function (oEvent) {
 			if (!this._F4UFDialog) {
 				this._F4UFDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.uf", this);
@@ -291,20 +203,22 @@ sap.ui.define([
 				});
 			}
 			this.cleargrupoLojas(oEvent);
-			this.clearCD(oEvent);
-			this.habilitaBotaoPedido();
+			this.clearLojas(oEvent);
+			//this.habilitaBotaoPedido();
 		},
 		_handleF4UFCancel: function (oEvent) {
 			//console.log('ação cancelada');
 		},
 		onF4UFTokenUpdate: function (oEvent) {
+			this.cleargrupoLojas(oEvent);
+			this.clearLojas(oEvent);
 			this.habilitaBotaoPedido();
 		},
 		clearUF: function (oEvent) {
 			var UFInput = this.byId("UFInput");
 			UFInput.removeAllTokens();
 			this.cleargrupoLojas(oEvent);
-			this.clearCD(oEvent);
+			this.clearLojas(oEvent);
 			this.habilitaBotaoPedido();
 		},
 		/* Value Help Grupo Lojas - Bandeira */
@@ -390,45 +304,46 @@ sap.ui.define([
 						text: oItem.getTitle()
 					}));
 				});
-				this.clearCD(oEvent);
+				this.clearLojas(oEvent);
 			}
-			this.habilitaBotaoPedido();
+			//this.habilitaBotaoPedido();
 		},
 		_handleF4grupoLojasCancel: function (oEvent) {
 			//console.log('Ação cancelada');
 		},
 		onF4grupoLojasTokenUpdate: function (oEvent) {
+			this.clearLojas(oEvent);
 			this.habilitaBotaoPedido();
 		},
 		cleargrupoLojas: function (oEvent) {
 			var grupoLojasInput = this.byId("grupoLojasInput");
 			grupoLojasInput.removeAllTokens();
-			this.clearCD(oEvent);
+			this.clearLojas(oEvent);
 			this.habilitaBotaoPedido();
 		},
-		/* Value Help CD */
-		onF4CD: function (oEvent) {
+		/* Value Help Lojas */
+		onF4Lojas: function (oEvent) {
 			// create value help dialog
-			if (!this._F4CDDialog) {
-				this._F4CDDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.cd", this);
-				this.getView().addDependent(this._F4CDDialog);
+			if (!this._F4LojasDialog) {
+				this._F4LojasDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.lojas", this);
+				this.getView().addDependent(this._F4LojasDialog);
 			}
 
-			var aInput = this.byId("cdInput").getTokens();
-			var aCdItems = this._F4CDDialog._oList.getItems();
+			var aInput = this.byId("lojasInput").getTokens();
+			var aLojasItems = this._F4LojasDialog._oList.getItems();
 			for (var iTk = 0; iTk < aInput.length; iTk++) {
-				for (var type = 0; type < aCdItems.length; type++) {
-					if (aCdItems[type].getTitle() === aInput[iTk].getKey()) {
-						aCdItems[type].setSelected(true);
+				for (var type = 0; type < aLojasItems.length; type++) {
+					if (aLojasItems[type].getTitle() === aInput[iTk].getKey()) {
+						aLojasItems[type].setSelected(true);
 					}
 				}
 			}
-			this._openF4CDDialog(oEvent);
+			this._openF4LojasDialog(oEvent);
 		},
-		_openF4CDDialog: function (oEvent) {
+		_openF4LojasDialog: function (oEvent) {
 			var aFilters = [];
 			var sInputValue = oEvent.getSource().getDescription();
-			this._filtroF4CD(aFilters);
+			this._filtroF4Lojas(aFilters);
 			// create a filter for the binding
 			aFilters.push(new sap.ui.model.Filter(
 				"Nome",
@@ -436,49 +351,36 @@ sap.ui.define([
 				sInputValue
 			));
 			// open value help dialog filtered by the input value
-			this._F4CDDialog.getBinding("items").filter(aFilters);
-			this._F4CDDialog.open(sInputValue);
+			this._F4LojasDialog.getBinding("items").filter(aFilters);
+			this._F4LojasDialog.open(sInputValue);
 		},
-		_filtroF4CD: function (aFilters) {
+		_filtroF4Lojas: function (aFilters) {
 			// Filtro UF
 			var sUF = this.byId("UFInput");
 			if (sUF.getTokens().length > 0) {
-				var orArrayUF = [];
 				for (var iUF = 0; iUF < sUF.getTokens().length; iUF++) {
-					orArrayUF.push(new sap.ui.model.Filter(
-						"UF",
-						sap.ui.model.FilterOperator.EQ,
-						sUF.getTokens()[iUF].getText()
-					));
+					aFilters.push(new sap.ui.model.Filter({
+						path: "UF",
+						operator: sap.ui.model.FilterOperator.EQ,
+						value1: sUF.getTokens()[iUF].getText()
+					}));
 				}
-				var orFilterUF = new sap.ui.model.Filter({
-					filters: orArrayUF,
-					and: false
-				});
-				aFilters.push(orFilterUF);
 			}
 			// Filtro Bandeira
 			var sBandeira = this.byId("grupoLojasInput");
-			var orArrayBand = [];
 			if (sBandeira.getTokens().length > 0) {
 				for (var iBand = 0; iBand < sBandeira.getTokens().length; iBand++) {
-					orArrayBand.push(new sap.ui.model.Filter(
-						"Bandeira",
-						sap.ui.model.FilterOperator.EQ,
-						sBandeira.getTokens()[iBand].getText()
-					));
+					aFilters.push(new sap.ui.model.Filter({
+						path: "Bandeira",
+						operator: sap.ui.model.FilterOperator.Contains,
+						value1: sBandeira.getTokens()[iBand].getText()
+					}));
 				}
-				var orFilterBand = new sap.ui.model.Filter({
-					filters: orArrayBand,
-					and: false
-				});
-				aFilters.push(orFilterBand);
 			}
-			return aFilters;
 		},
-		_handleF4cdSearch: function (oEvent) {
+		_handleF4LojasSearch: function (oEvent) {
 			var aFilters = [];
-			this._filtroF4CD(aFilters);
+			this._filtroF4Lojas(aFilters);
 
 			//Filtro Nome
 			var sNomeLoja = oEvent.getParameter("value");
@@ -491,14 +393,11 @@ sap.ui.define([
 			oEvent.getSource().getBinding("items").filter(aFilters);
 
 		},
-		_handleF4cdClose: function (oEvent) {
+		_handleF4LojasClose: function (oEvent) {
 			var aSelectedItems = oEvent.getParameter("selectedItems"),
-				oMultiInput = this.byId("cdInput");
+				oMultiInput = this.byId("lojasInput");
 
-			//FAFN - Begin
 			oMultiInput.removeAllTokens();
-			//FAFN - End
-
 			if (aSelectedItems && aSelectedItems.length > 0) {
 				aSelectedItems.forEach(function (oItem) {
 					oMultiInput.addToken(new Token({
@@ -509,15 +408,15 @@ sap.ui.define([
 			}
 			this.habilitaBotaoPedido();
 		},
-		_handleF4cdCancel: function (oEvent) {
+		_handleF4LojasCancel: function (oEvent) {
 			//console.log('Ação cancelada');
 		},
-		onF4CDTokenUpdate: function (oEvent) {
+		onF4LojasTokenUpdate: function (oEvent) {
 			this.habilitaBotaoPedido();
 		},
-		clearCD: function (oEvent) {
-			var cdInput = this.byId("cdInput");
-			cdInput.removeAllTokens();
+		clearLojas: function (oEvent) {
+			var lojasInput = this.byId("lojasInput");
+			lojasInput.removeAllTokens();
 			this.habilitaBotaoPedido();
 		},
 		/* Value Help Ekgrp */
@@ -558,16 +457,13 @@ sap.ui.define([
 			if (oSelectedItem) {
 				var compradorInput = this.getView().byId(this.inputId);
 				var sEkgrp = oSelectedItem.getTitle();
-				var sUname = oSelectedItem.getInfo();
 				var sObjectPath = this.getModel().createKey("/Comprador", {
-					Ekgrp: sEkgrp,
-					Uname: sUname
+					Ekgrp: sEkgrp
 				});
 
 				compradorInput.bindElement(sObjectPath);
 				this.clearFornecedor(oEvent);
 				this.clearContrato(oEvent);
-				this.filtraProdutos();
 			}
 			oEvent.getSource().getBinding("items").filter([]);
 			this.habilitaBotaoPedido();
@@ -674,116 +570,124 @@ sap.ui.define([
 			oEvent.getSource().getBinding("items").filter([]);
 			this.habilitaBotaoPedido();
 		},
-		/* Busca de Produtos */
-		filtraProdutos: function (bNoRefresh) {
-			// add filter for search
-			var aFilters = [];
+		montaFiltros: function (aFilters, sPedido) {
 			// Filtro Comprador
 			var sEkgrp = this.byId("compradorInput").getValue();
 			var sLifnr = this.byId("fornecedorInput").getValue();
 
-			var oList = this.byId("idProdutos");
-			var oBinding = oList.getBinding("items");
-
 			if ((sEkgrp === "") || (sLifnr === "")) {
-				// update list binding
-				oBinding.aFilters = null;
-				oList.getModel().refresh(true);
+				aFilters = null;
 			} else {
 				// Filtro Comprador
-				var fEkgrp = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp.toUpperCase());
+				var fEkgrp = new sap.ui.model.Filter({
+					path: "Ekgrp",
+					operator: sap.ui.model.FilterOperator.EQ,
+					value1: sEkgrp.toUpperCase()
+				});
 				aFilters.push(fEkgrp);
 				// Filtro Fornecedor
-				var fLifnr = new sap.ui.model.Filter("Lifnr", sap.ui.model.FilterOperator.EQ, sLifnr.toUpperCase());
+				var fLifnr = new sap.ui.model.Filter({
+					path: "Lifnr",
+					operator: sap.ui.model.FilterOperator.EQ,
+					value1: sLifnr.toUpperCase()
+				});
 				aFilters.push(fLifnr);
 				// Filtro UF
 				var sUF = this.byId("UFInput");
 				if (sUF.getTokens().length > 0) {
-					var orArrayUF = [];
 					for (var iUF = 0; iUF < sUF.getTokens().length; iUF++) {
-						orArrayUF.push(new sap.ui.model.Filter(
-							"UF",
-							sap.ui.model.FilterOperator.EQ,
-							sUF.getTokens()[iUF].getText()
-						));
+						aFilters.push(new sap.ui.model.Filter({
+							path: "UF",
+							operator: sap.ui.model.FilterOperator.EQ,
+							value1: sUF.getTokens()[iUF].getText()
+						}));
 					}
-					var orFilterUF = new sap.ui.model.Filter({
-						filters: orArrayUF,
-						and: false
-					});
-					aFilters.push(orFilterUF);
 				}
 
 				// Filtro Bandeira
 				var sBandeira = this.byId("grupoLojasInput");
-				var orArrayGL = [];
 				if (sBandeira.getTokens().length > 0) {
 					for (var iBand = 0; iBand < sBandeira.getTokens().length; iBand++) {
-						orArrayGL.push(new sap.ui.model.Filter(
-							"Bandeira",
-							sap.ui.model.FilterOperator.EQ,
-							sBandeira.getTokens()[iBand].getText()
-						));
+						aFilters.push(new sap.ui.model.Filter({
+							path: "Bandeira",
+							operator: sap.ui.model.FilterOperator.Contains,
+							value1: sBandeira.getTokens()[iBand].getText()
+						}));
 					}
-					var orFilterBand = new sap.ui.model.Filter({
-						filters: orArrayGL,
-						and: false
-					});
-					aFilters.push(orFilterBand);
 				}
 				// // Filtro Loja
-				var sLojas = this.byId("cdInput");
-				var orArrayLoja = [];
+				var sLojas = this.byId("lojasInput");
 				if (sLojas.getTokens().length > 0) {
 					for (var iLojas = 0; iLojas < sLojas.getTokens().length; iLojas++) {
-						orArrayLoja.push(new sap.ui.model.Filter(
+						aFilters.push(new sap.ui.model.Filter(
 							"Werks",
 							sap.ui.model.FilterOperator.EQ,
 							sLojas.getTokens()[iLojas].getText()
 						));
 					}
-					var orFilterLoja = new sap.ui.model.Filter({
-						filters: orArrayLoja,
-						and: false
-					});
-					aFilters.push(orFilterLoja);
 				}
 				// Filtro Contrato
 				var sEbeln = this.byId("contratoInput").getValue();
 				if (sEbeln !== "") {
-					var fEbeln = new sap.ui.model.Filter("Ebeln", sap.ui.model.FilterOperator.EQ, sEbeln.toUpperCase());
+					var fEbeln = new sap.ui.model.Filter({
+						path: "Ebeln",
+						operator: sap.ui.model.FilterOperator.EQ,
+						value1: sEbeln.toUpperCase()
+					});
 					aFilters.push(fEbeln);
 				}
-				// Filtro Texto 
-				var sBusca = this.byId("buscaProduto").getValue();
-				if (sBusca !== "") {
-					var fMaktx = new sap.ui.model.Filter("Maktx", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
-					aFilters.push(fMaktx);
-					// var numbers = /^[0-9]+$/;
-					// if (numbers.test(sBusca)) {
-					// 	var fMatnr = new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
-					// 	aFilters.push(fMatnr);
-					// } else {
-					// 	var fMaktx = new sap.ui.model.Filter("Maktx", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
-					// 	aFilters.push(fMaktx);
-					// }
+				// Filtro Produtos 
+				if (sPedido) {
+					var sMatnr = this.byId("idProdutos").getSelectedContexts(true);
+					if (sMatnr && sMatnr.length > 0) {
+						var globalModel = this.getModel("globalModel");
+						globalModel.setProperty("/Matnr", sMatnr);
+						var orArray = [];
+						for (var i = 0; i < sMatnr.length; i++) {
+							orArray.push(new sap.ui.model.Filter("Matnr", sap.ui.model.FilterOperator.EQ, sMatnr[i].getProperty('Matnr')));
+						}
+						var orFilter = new sap.ui.model.Filter({
+							filters: orArray,
+							and: false
+						});
+						aFilters.push(orFilter);
+					}
+				} else {
+					var sBusca = this.byId("buscaProduto").getValue();
+					if (sBusca !== "") {
+						var fMaktx = new sap.ui.model.Filter("Maktx", sap.ui.model.FilterOperator.Contains, sBusca.toUpperCase());
+						aFilters.push(fMaktx);
+					}
 				}
-				// update list binding
-				oBinding.filter(aFilters);
 			}
-			if (!bNoRefresh) {
-				oList.getModel().updateBindings(true);
-			}
+		},
+		/* Busca de Produtos */
+		filtraProdutos: function (bNoRefresh) {
+			// update list binding
+			var oList = this.byId("idProdutos");
+
+			// add filter for search
+			var aFilters = [];
+			this.montaFiltros(aFilters, false);
+			oList.getBinding("items").filter(aFilters);
+
+			// // update list binding
+			// oList.getModel().refresh(true);
+
+			// if (!bNoRefresh) {
+			// 	oList.getModel().updateBindings(true);
+			// }
 		},
 		clearSelectedProduto: function (oEvent) {
 			var oList = this.byId("idProdutos");
+			this.byId("buscaProduto").setValue("");
 			oList.removeSelections(true);
 			this.byId("idCountSelected").setText('');
 			this.byId("idInfoToolbar").setVisible(false);
-			this.filtraProdutos();
+			this.habilitaBotaoPedido();
 		},
 		onSearchProduto: function (oEvent) {
-			this.filtraProdutos();
+			this.habilitaBotaoPedido();
 		},
 		onSelectionChangeProduto: function (oEvent) {
 			var oList = oEvent.getSource();

@@ -107,31 +107,25 @@
 											</FlexBox>
 										</content>
 									</Panel>
-									<Panel xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
-										id="__panel0" headerText="Seleção" width="auto">
+									<Panel id="__panel0" headerText="Seleção" width="auto">
 										<headerToolbar>
-											<Toolbar xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="100%" id="__toolbar1_copy5" height="auto">
+											<Toolbar width="100%" height="auto">
 												<content>
-													<Title xmlns:sap.ui.comp.smartform="sap.ui.comp.smartform" xmlns:sap.ui.comp.smartfield="sap.ui.comp.smartfield" xmlns:mvc="sap.ui.core.mvc"
-														xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="Seleção" width="100%" id="__title_cd"/>
-													<ToolbarSeparator id="__separator0"/>
-													<Button xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
-														width="auto" id="cdDelete" icon="sap-icon://delete" press="deletePressCD"/>
+													<Title text="Seleção" width="100%"/>
+													<ToolbarSeparator/>
+													<Button width="auto" id="lojasDelete" icon="sap-icon://delete" press="deletePressLojas"/>
 												</content>
 											</Toolbar>
 										</headerToolbar>
 										<content>
-											<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
-												width="100%" id="__box19_copy2">
+											<FlexBox width="100%">
 												<items>
-													<FlexBox width="7rem" id="__box20" alignItems="Center">
+													<FlexBox width="7rem" alignItems="Center">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m" text="UF"
-																width="7rem" id="__title0_copy4" titleStyle="H3"/>
+															<Title text="UF" width="7rem" titleStyle="H3"/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
-														width="100%" id="__box20_copy" alignItems="Center">
+													<FlexBox width="100%" alignItems="Center">
 														<items>
 															<MultiInput width="31rem" id="UFInput" placeholder="Escolha a UF ..."
 																suggestionItems="{ path: '/UF', sorter: { path: 'Bland', descending : false }}" valueHelpRequest="onF4UF" tokenChange="onF4UFTokenUpdate"
@@ -141,18 +135,14 @@
 													</FlexBox>
 												</items>
 											</FlexBox>
-											<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
-												width="100%" id="__box19_copy">
+											<FlexBox width="100%" id="__box19_copy">
 												<items>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
-														width="7rem" id="__box20_copy2" alignItems="Center">
+													<FlexBox width="7rem" alignItems="Center">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
-																text="Grupo" width="7rem" id="__title0_copy5" titleStyle="H3"/>
+															<Title text="Grupo" width="7rem" titleStyle="H3"/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
-														width="100%" id="__box20_copy3" alignItems="Center">
+													<FlexBox width="100%" alignItems="Center">
 														<items>
 															<MultiInput width="31rem" id="grupoLojasInput" placeholder="Escolha o Grupo ..."
 																suggestionItems="{ path: '/GrupoLojas', sorter: { path: 'Bandeira', descending: false }}" valueHelpRequest="onF4grupoLojas"
@@ -162,20 +152,17 @@
 													</FlexBox>
 												</items>
 											</FlexBox>
-											<FlexBox width="100%" id="__box18">
+											<FlexBox width="100%">
 												<items>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
-														width="7rem" id="__box20_copy4" alignItems="Center">
+													<FlexBox width="7rem" alignItems="Center">
 														<items>
-															<Title xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
-																text="Lojas" width="7rem" id="__title0_copy6" titleStyle="H3"/>
+															<Title text="Lojas" width="7rem" titleStyle="H3"/>
 														</items>
 													</FlexBox>
-													<FlexBox xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core"
-														width="100%" id="__box20_copy5" alignItems="Center">
+													<FlexBox width="100%" alignItems="Center">
 														<items>
-															<MultiInput width="31rem" id="cdInput" placeholder="Escolha a Loja ..." suggestionItems="{ path: '/CD', sorter: { path: 'Werks' }}"
-																valueHelpRequest="onF4CD" tokenChange="onF4CDTokenUpdate" valueHelpOnly="true">
+															<MultiInput width="31rem" id="lojasInput" placeholder="Escolha a Loja ..." suggestionItems="{ path: '/CD', sorter: { path: 'Werks' }}"
+																valueHelpRequest="onF4Lojas" tokenChange="onF4LojasTokenUpdate" valueHelpOnly="true">
 																<core:Item key="{Werks}" text="{Nome}"/></MultiInput>
 														</items>
 													</FlexBox>
@@ -219,20 +206,17 @@
 									<Panel id="__panel4" width="auto">
 										<content>
 											<SearchField width="100%" placeholder="Selecione os Produtos" id="buscaProduto" liveChange="onSearchProduto"/>
-											<List xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
-												id="idProdutos" items="{/Produto}" selectionChange="onSelectionChangeProduto" mode="MultiSelect" growing="true" growingThreshold="50"
+											<List id="idProdutos" items="{/Produto}" selectionChange="onSelectionChangeProduto" mode="MultiSelect" growing="true" growingThreshold="50"
 												includeItemInSelection="true">
 												<StandardListItem class="_cl_idProdutos" title="{Maktx}" iconDensityAware="false" iconInset="false" id="listProdutos" info="{Matnr}"/>
 											</List>
 										</content>
 										<headerToolbar>
-											<Toolbar xmlns:l="sap.ui.layout" xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m"
-												width="100%" id="__toolbar1_copy3">
+											<Toolbar width="100%" id="__toolbar1_copy3">
 												<content>
 													<Title text="Produto" width="100%" id="__title0_copy3"/>
-													<ToolbarSeparator xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:semantic="sap.m.semantic" id="__separator1"/>
-													<Button xmlns:mvc="sap.ui.core.mvc" xmlns:semantic="sap.m.semantic" xmlns="sap.m" width="auto" id="produtoDelete" icon="sap-icon://delete"
-														press="clearSelectedProduto"/>
+													<ToolbarSeparator id="__separator1"/>
+													<Button width="auto" id="produtoDelete" icon="sap-icon://delete" press="clearSelectedProduto"/>
 												</content>
 											</Toolbar>
 										</headerToolbar>

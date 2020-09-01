@@ -47,15 +47,11 @@ sap.ui.define([
 				//this.getOwnerComponent().getModel().read(`/Usuario('${this.sUname }')`, {
 				success: (res) => {
 					this.aEkgrp = [];
-					debugger;
 					for (let usrGrp of res.results) {
 						this.sEkgrp = usrGrp.Ekgrp;
 						this.aEkgrp.push(usrGrp.Ekgrp);
 						this.sUname = usrGrp.Uname;
 						this.sUserName = usrGrp.Nome
-						globalModel.setProperty("/Ekgrp", usrGrp.Ekgrp);
-						globalModel.setProperty("/Uname", usrGrp.Uname);
-						globalModel.setProperty("/Nome", usrGrp.Nome);
 					}
 
 				},
