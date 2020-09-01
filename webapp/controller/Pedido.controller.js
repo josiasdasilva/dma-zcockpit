@@ -209,15 +209,11 @@ sap.ui.define([
 		},
 		onNavBack: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
-			//var oHistory = History.getInstance();
-			//var sPreviousHash = oHistory.getPreviousHash();
-			//if (sPreviousHash !== undefined) {
-			//	window.history.go(-1);
-			//} else {
-			//var sLifnr = oViewModel.getProperty("/lifnr");
+			// Limpa Fornecedor para volta
 			this.getRouter().navTo("busca", {
 				Ekgrp: globalModel.getProperty("/Ekgrp"),
-				Uname: globalModel.getProperty("/Uname")
+				Uname: globalModel.getProperty("/Uname"),
+				Lifnr: ""
 			}, true); //}
 		},
 		onTitleSelectorPress: function (oEvent) {
@@ -301,7 +297,8 @@ sap.ui.define([
 								title: "Pedido Criado com sucesso",
 								onClose: that.getRouter().navTo("busca", {
 									Ekgrp: globalModel.getProperty("/Ekgrp"),
-									Uname: globalModel.getProperty("/Uname")
+									Uname: globalModel.getProperty("/Uname"),
+									Lifnr: ""
 								}, true),
 								//details: oData2.Mensagem,
 								actions: [MessageBox.Action.OK],

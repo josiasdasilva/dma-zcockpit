@@ -17,27 +17,54 @@ sap.ui.define([
 		_onMasterMatched: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
 			debugger;
-			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
-			globalModel.setProperty("/Ekgrp", sEkgrp);
-			var sObjectPath = this.getModel().createKey("/Comprador", {
-				Ekgrp: sEkgrp
-			});
-			this.byId("compradorInput").bindElement(sObjectPath);
 
-			var globalModel = this.getModel("globalModel");
 			this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
 			this.byId("idComboPedido").setValue(globalModel.getProperty("/TpPedido"));
 			this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
 
+			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
+			var sLifnr = oEvent.getParameter("arguments").Lifnr;
+			var compradorInput = this.byId("compradorInput");
+			var fornecedorInput = this.byId("fornecedorInput");
+			if (sEkgrp && sEkgrp.length > 0) {
+				this.getOwnerComponent().getModel().read(`/Comprador(Ekgrp='${sEkgrp}')`, {
+					success: (res) => {
+						compradorInput.setDescription(res.Nome);
+						compradorInput.setValue(res.Ekgrp);
+						if (sLifnr && sLifnr.length > 0) {
+							this.getOwnerComponent().getModel().read(`/Fornecedor(Ekgrp='${sEkgrp}',Lifnr='${sLifnr}')`, {
+								success: (res) => {
+									fornecedorInput.setDescription(res.Mcod1);
+									fornecedorInput.setValue(res.Lifnr);
+									this.habilitaBotaoPedido();
+								},
+								error: (err) => {
+									sap.m.MessageBox.error(err.responseText, {
+										title: "Erro",
+									});
+								}
+							});
+						}
+					},
+					error: (err) => {
+						sap.m.MessageBox.error(err.responseText, {
+							title: "Erro",
+						});
+					}
+				});
+			} else {
+				compradorInput.setDescription("");
+				compradorInput.setValue("");
+			}
+			if (sLifnr == undefined) {
+				this.clearFornecedor(oEvent);
+				this.clearUF(oEvent);
+				this.clearContrato(oEvent);
+			}
 			this.clearSelectedProduto();
 			this.habilitaBotaoPedido();
-
-			//FAFN Receb as informaçoes vindas do appointment se o mesmo foi clicado
-			this.setDataFromAppointment(oEvent);
-			//FAFN End
-
 		},
-		habilitaBotaoPedido: function (bCleanFields) {
+		habilitaBotaoPedido: function () {
 			this.filtraProdutos(true);
 
 			var globalModel = this.getModel("globalModel");
@@ -67,6 +94,8 @@ sap.ui.define([
 			globalModel.setProperty("/TpPedido", this.byId("idComboPedido").getValue());
 			globalModel.setProperty("/TpEntrada", this.byId("idTpEntrada").getValue());
 
+			var sEkgrp = this.byId("compradorInput").getValue();
+			var sLifnr = this.byId("fornecedorInput").getValue();
 			// agrupa todos os filtros da tela
 			var aFilters = [];
 			this.montaFiltros(aFilters, true);
@@ -89,43 +118,6 @@ sap.ui.define([
 					// mensagem de erro !!!!!!!!!!!!!!!!!!!!!!!
 				}
 			});
-		},
-		setDataFromAppointment: async function (oEvent) {
-			var sLifnr = oEvent.getParameter("arguments").Lifnr;
-			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
-			var sUname = oEvent.getParameter("arguments").Uname;
-			if (!sLifnr || sLifnr.length === 0) {
-				this.clearComprador();
-				this.clearSelectedProduto();
-				return;
-			}
-			if (sEkgrp && sEkgrp.length > 0) {
-				this.getOwnerComponent().getModel().read(`/Comprador(Ekgrp='${sEkgrp}')`, {
-					success: (res) => {
-						this.byId("compradorInput").setDescription(res.Nome);
-						this.byId("compradorInput").setValue(res.Ekgrp);
-						if (sLifnr && sLifnr.length > 0) {
-							this.getOwnerComponent().getModel().read(`/Fornecedor(Ekgrp='${sEkgrp}',Lifnr='${sLifnr}')`, {
-								success: (res) => {
-									this.byId("fornecedorInput").setDescription(res.Mcod1);
-									this.byId("fornecedorInput").setValue(res.Lifnr);
-									this.habilitaBotaoPedido();
-								},
-								error: (err) => {
-									sap.m.MessageBox.error(err.responseText, {
-										title: "Erro",
-									});
-								}
-							});
-						}
-					},
-					error: (err) => {
-						sap.m.MessageBox.error(err.responseText, {
-							title: "Erro",
-						});
-					}
-				});
-			}
 		},
 		/* Configurações */
 		onExpand: function (oEvent) {
@@ -672,7 +664,7 @@ sap.ui.define([
 			oList.getBinding("items").filter(aFilters);
 
 			// // update list binding
-			// oList.getModel().refresh(true);
+			oList.getModel().refresh(true);
 
 			// if (!bNoRefresh) {
 			// 	oList.getModel().updateBindings(true);
@@ -684,7 +676,6 @@ sap.ui.define([
 			oList.removeSelections(true);
 			this.byId("idCountSelected").setText('');
 			this.byId("idInfoToolbar").setVisible(false);
-			this.habilitaBotaoPedido();
 		},
 		onSearchProduto: function (oEvent) {
 			this.habilitaBotaoPedido();
@@ -702,6 +693,6 @@ sap.ui.define([
 			var sText = bSelected ? aContexts.length + " produtos selecionados" : null;
 			oInfoToolbar.setVisible(bSelected);
 			oLabel.setText(sText);
-		}
+		},
 	});
 });
