@@ -1,18 +1,31 @@
-<core:FragmentDefinition xmlns="sap.m" xmlns:l="sap.ui.layout" xmlns:f="sap.ui.layout.form" xmlns:core="sap.ui.core">
-	<Dialog title="Pedido criado com sucesso">
-		<l:Grid defaultSpan="L12 M12 S12" width="auto" id="idGrid">
-			<l:content>
-				<f:SimpleForm id="SimpleFormDisplay354" minWidth="1024" maxContainerCols="2" editable="false" layout="ResponsiveGridLayout" labelSpanL="3"
-					labelSpanM="3" emptySpanL="4" emptySpanM="4" columnsL="2" columnsM="2">
-					<f:content>
-						<Label text="Número"/>
-						<Input id="idPedido" editable="false"/>
-					</f:content>
-				</f:SimpleForm>
-			</l:content>
-		</l:Grid>
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Pedido(s) criado com sucesso">
+		<Table noDataText="No Products Found" items="{path:'/PedCriado'}" mode="MultiSelect" width="auto">
+			<columns>
+				<Column hAlign="Center" width="10em">
+					<header>
+						<Label text="Pedido"/>
+					</header>
+				</Column>
+				<Column hAlign="Center" width="10em">
+					<header>
+						<Label text="Loja"/>
+					</header>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem type="Active">
+					<cells>
+						<Text text="{PedEbeln}"/>
+						<Text text="{Werks}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
 		<buttons>
-			<Button text="Fecha" press="closeDialog" type="Reject"/>
+			<Button text="Imprime" press="_handlePedCriadoPrint" icon="sap-icon://print"/>
+			<Button text="e-Mail" press="_handlePedCriadoEmail" icon="sap-icon://email" visible="false"/>
+			<Button text="Fecha" press="_handlePedCriadoClose" type="Reject"/>
 		</buttons>
 	</Dialog>
 </core:FragmentDefinition>

@@ -35,11 +35,12 @@ sap.ui.define([
 				delay: 0
 			});
 			this.setModel(globalModel, "globalModel");
-			var months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-			var d = new Date();
-			globalModel.setProperty("/DtRemessa", d.getDate() + "/" + months[d.getMonth()] + "/" + d.getFullYear());
+			// var months = ["01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
+			// var d = new Date();
+			// globalModel.setProperty("/DtRemessa", d.getDate() + "/" + months[d.getMonth()] + "/" + d.getFullYear());
+			globalModel.setProperty("/DtRemessa", new Date());
 			globalModel.setProperty("/TpPedido", "NB");
-			globalModel.setProperty("/TpEntrada", "ENTRADA");
+			// globalModel.setProperty("/TpEntrada", "ENTRADA");
 		},
 
 		/**

@@ -63,7 +63,7 @@
 					</Panel>
 					<FlexBox width="100%" id="__box0" fitContainer="true" height="100%">
 						<items>
-							<Table noDataText="Sem dados para exibir" id="tableHistPedido" items="{path:'/Emitidos'}" class="tableTelaPedido" mode="MultiSelect"
+							<Table noDataText="Nenhum pedido encontrado" id="tableHistPedido" items="{path:'/Emitidos'}" class="tableTelaPedido" mode="MultiSelect"
 								selectionChange="onSelectionChange">
 								<items>
 									<ColumnListItem type="Active">

@@ -16,11 +16,10 @@ sap.ui.define([
 		},
 		_onMasterMatched: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
-			debugger;
 
-			this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
+			this.byId("idDtRemessa").setDateValue(globalModel.getProperty("/DtRemessa"));
 			this.byId("idComboPedido").setValue(globalModel.getProperty("/TpPedido"));
-			this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
+			// this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
 
 			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
 			var sLifnr = oEvent.getParameter("arguments").Lifnr;
@@ -77,11 +76,11 @@ sap.ui.define([
 			// Configurações
 			var sDtRemessa = globalModel.getProperty("/DtRemessa") !== "";
 			var sComboPedido = globalModel.getProperty("/TpPedido") !== "";
-			var sTpEntrada = globalModel.getProperty("/TpEntrada") !== "";
+			// var sTpEntrada = globalModel.getProperty("/TpEntrada") !== "";
 
 			btnPedido.setEnabled(sDtRemessa &&
 				sComboPedido &&
-				sTpEntrada &&
+				// sTpEntrada &&
 				//sWerks && 
 				sEkgrp &&
 				(sLifnr || sEbeln));
@@ -90,9 +89,9 @@ sap.ui.define([
 			var localModel = this.getModel();
 			var globalModel = this.getModel("globalModel");
 
-			globalModel.setProperty("/DtRemessa", this.byId("idDtRemessa").getValue());
+			globalModel.setProperty("/DtRemessa", this.byId("idDtRemessa").getDateValue());
 			globalModel.setProperty("/TpPedido", this.byId("idComboPedido").getValue());
-			globalModel.setProperty("/TpEntrada", this.byId("idTpEntrada").getValue());
+			// globalModel.setProperty("/TpEntrada", this.byId("idTpEntrada").getValue());
 
 			var sEkgrp = this.byId("compradorInput").getValue();
 			var sLifnr = this.byId("fornecedorInput").getValue();
@@ -124,13 +123,13 @@ sap.ui.define([
 			var globalModel = this.getModel("globalModel");
 			var sValue = oEvent.getParameter("expand");
 			if (sValue) {
-				this.byId("idDtRemessa").setValue(globalModel.getProperty("/DtRemessa"));
+				this.byId("idDtRemessa").setDateValue(globalModel.getProperty("/DtRemessa"));
 				this.byId("idComboPedido").setValue(globalModel.getProperty("/TpPedido"));
-				this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
+				// this.byId("idTpEntrada").setValue(globalModel.getProperty("/TpEntrada"));
 			} else {
-				globalModel.setProperty("/DtRemessa", this.byId("idDtRemessa").getValue());
+				globalModel.setProperty("/DtRemessa", this.byId("idDtRemessa").getDateValue());
 				globalModel.setProperty("/TpPedido", this.byId("idComboPedido").getValue());
-				globalModel.setProperty("/TpEntrada", this.byId("idTpEntrada").getValue());
+				// globalModel.setProperty("/TpEntrada", this.byId("idTpEntrada").getValue());
 			}
 		},
 		onNavBack: function (oEvent) {

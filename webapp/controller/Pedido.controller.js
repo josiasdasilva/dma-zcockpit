@@ -9,8 +9,10 @@ sap.ui.define([
 	"sap/m/MessageBox",
 	"sap/ui/core/routing/History",
 	"sap/ui/model/Sorter",
-	"sap/ui/model/Filter"
-], function (BaseController, JSONModel, formatter, MessageToast, Dialog, DialogType, ButtonType, MessageBox, History, Sorter, Filter) {
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function (BaseController, JSONModel, formatter, MessageToast, Dialog, DialogType, ButtonType, MessageBox, History, Sorter, Filter,
+	FilterOperator) {
 	"use strict";
 	var sResponsivePaddingClasses = "sapUiResponsivePadding--header sapUiResponsivePadding--content sapUiResponsivePadding--footer";
 	return BaseController.extend("dma.zcockpit.controller.Pedido", {
@@ -278,33 +280,39 @@ sap.ui.define([
 			sap.ui.core.BusyIndicator.show();
 			var globalModel = this.getModel("globalModel");
 			var localModel = this.getModel();
+			var dateArray = globalModel.getProperty("/DtRemessa").toLocaleString("pt-BR", {
+				year: "numeric",
+				month: "2-digit",
+				day: "2-digit"
+			}).split('/');
+			var dt_remessa = dateArray[2] + dateArray[1] + dateArray[0];
 
 			var sObjectPath = localModel.createKey("/POCria", {
 				Ekgrp: globalModel.getProperty("/Ekgrp"),
 				Lifnr: globalModel.getProperty("/Lifnr"),
 				TpPedido: globalModel.getProperty("/TpPedido"),
-				DtRemessa: globalModel.getProperty("/DtRemessa").replace(/\//g, '')
+				DtRemessa: dt_remessa
 			});
 			var that = this;
 			localModel.read(sObjectPath, {
 				method: "GET",
-				success: function (oData2, oResponse) {
+				success: (oData2, oResponse) => {
 					sap.ui.core.BusyIndicator.hide();
-					var pEbeln = oData2.Ebeln;
-					if (pEbeln !== "0") {
-						sap.m.MessageBox.success("Número de pedidos criados: " + oData2.Ebeln.toString() + "\n" +
-							oData2.Mensagem, {
-								title: "Pedido Criado com sucesso",
-								onClose: that.getRouter().navTo("busca", {
-									Ekgrp: globalModel.getProperty("/Ekgrp"),
-									Uname: globalModel.getProperty("/Uname"),
-									Lifnr: ""
-								}, true),
-								//details: oData2.Mensagem,
-								actions: [MessageBox.Action.OK],
-								initialFocus: MessageBox.Action.OK,
-								styleClass: sResponsivePaddingClasses
-							});
+					if (oData2.Nroseq > 0) {
+						this.dialogoCriaPedido(oData2, oData2.Nroseq);
+						// sap.m.MessageBox.success("Número de pedidos criados: " + oData2.Ebeln.toString() + "\n" +
+						// 	oData2.Mensagem, {
+						// 		title: "Pedido Criado com sucesso",
+						// 		onClose: that.getRouter().navTo("busca", {
+						// 			Ekgrp: globalModel.getProperty("/Ekgrp"),
+						// 			Uname: globalModel.getProperty("/Uname"),
+						// 			Lifnr: ""
+						// 		}, true),
+						// 		//details: oData2.Mensagem,
+						// 		actions: [MessageBox.Action.OK],
+						// 		initialFocus: MessageBox.Action.OK,
+						// 		styleClass: sResponsivePaddingClasses
+						// 	});
 					} else {
 						sap.m.MessageBox.error("Erro na criação do Pedido.\n" +
 							oData2.Mensagem, {
@@ -316,7 +324,7 @@ sap.ui.define([
 							});
 					}
 				},
-				error: function (oError) {
+				error: (oError) => {
 					sap.ui.core.BusyIndicator.hide();
 					sap.m.MessageBox.error("Erro", {
 						title: "Pedido não Criado",
@@ -325,6 +333,48 @@ sap.ui.define([
 					});
 				}
 			});
+		},
+		/* Diálogo Pedidos Criados */
+		dialogoCriaPedido: function (oData2, pNroSeq) {
+			var aFilters = [];
+			if (!this._PedCriadoDialog) {
+				this._PedCriadoDialog = sap.ui.xmlfragment("dma.zcockpit.view.fragment.ped_criado", this);
+				this.getView().addDependent(this._PedCriadoDialog);
+			}
+			aFilters.push(new sap.ui.model.Filter(
+				"Nroseq",
+				sap.ui.model.FilterOperator.EQ,
+				pNroSeq
+			));
+			this._PedCriadoDialog.getContent()[0].getBinding("items").filter(aFilters);
+			this._PedCriadoDialog.open();
+		},
+		_handlePedCriadoPrint: function (oEvent) {
+			var globalModel = this.getModel("globalModel");
+			var localModel = this.getModel();
+
+			var tbl_items = this._PedCriadoDialog.getContent()[0].getSelectedItems();
+			var sEbeln = "";
+			for (var i = 0; i < tbl_items.length; i++) {
+				if (i !== 0) {
+					sEbeln = sEbeln + ",";
+				}
+				sEbeln = sEbeln + tbl_items[i].getAggregation('cells')[0].getProperty('text');
+			}
+			var sObjectPath = localModel.createKey("/PrnPedido", {
+				Ebeln: sEbeln
+			});
+			var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
+			window.open(sURL, '_blank');
+		},
+		_handlePedCriadoEmail: function (oEvent) {},
+		_handlePedCriadoClose: function (oEvent) {
+			var globalModel = this.getModel("globalModel");
+			this.getRouter().navTo("busca", {
+				Ekgrp: globalModel.getProperty("/Ekgrp"),
+				Uname: globalModel.getProperty("/Uname"),
+				Lifnr: ""
+			})
 		},
 		toPrint: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
@@ -348,7 +398,7 @@ sap.ui.define([
 							Lifnr: sLifnr
 						});
 						var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
-						window.open(sURL);
+						window.open(sURL, '_blank');
 					}
 					if (oAction === "Sintético") {
 						var sObjectPath = localModel.createKey("/PrnMaterial", {
@@ -356,7 +406,7 @@ sap.ui.define([
 							Lifnr: sLifnr
 						});
 						var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
-						window.open(sURL);
+						window.open(sURL, '_blank');
 					}
 				}
 			});
