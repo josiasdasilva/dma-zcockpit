@@ -27,6 +27,10 @@ html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
     background: #acbcde;
 }
 
+.tableTelaPedido .sapMListTblHeaderCell {
+    padding: 0rem;
+}
+
 .sapUiTableColHdrCnt {
     background: #acbcde;
 }
@@ -112,6 +116,10 @@ html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
 .sapMText { font-size: 0.700rem }
 .sapMLabel  { font-size: 0.700rem }
 */
+
+.linkContrato {
+    font-size: 0.750rem
+}
 
 .HBoxStyle {
     margin-top: 5%;

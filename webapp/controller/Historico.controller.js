@@ -33,6 +33,12 @@ sap.ui.define([
 
 			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
 			var sNome = oEvent.getParameter("arguments").Nome;
+
+			// inicia com data de hoje
+			var drPedido = this.byId("drPedido");
+			drPedido.setDateValue(new Date());
+			drPedido.setSecondDateValue(new Date());
+
 			if (sEkgrp !== "") {
 				var fEkgrp = new sap.ui.model.Filter("Ekgrp", sap.ui.model.FilterOperator.EQ, sEkgrp);
 				aFilters.push(fEkgrp);

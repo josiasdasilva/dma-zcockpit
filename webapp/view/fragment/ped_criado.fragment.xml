@@ -1,6 +1,6 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<Dialog title="Pedido(s) criado com sucesso">
-		<Table noDataText="No Products Found" items="{path:'/PedCriado'}" mode="MultiSelect" width="auto">
+		<Table noDataText="No Products Found" items="{path:'/PedCriado'}" mode="None" width="auto">
 			<columns>
 				<Column hAlign="Center" width="10em">
 					<header>

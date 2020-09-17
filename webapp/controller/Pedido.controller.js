@@ -180,9 +180,7 @@ sap.ui.define([
 			if (!this.dialog) {
 				// This fragment can be instantiated from a controller as follows:
 				this.dialog = sap.ui.xmlfragment("idPedCriado", "dma.zcockpit.view.fragment.ped_criado", this);
-				//debugger;
 			}
-			//debugger;
 			return this.dialog;
 		},
 		closeDialog: function () {
@@ -211,12 +209,25 @@ sap.ui.define([
 		},
 		onNavBack: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
-			// Limpa Fornecedor para volta
-			this.getRouter().navTo("busca", {
-				Ekgrp: globalModel.getProperty("/Ekgrp"),
-				Uname: globalModel.getProperty("/Uname"),
-				Lifnr: ""
-			}, true); //}
+
+			MessageBox.confirm(this.getView().getModel("i18n").getResourceBundle().getText("sairPedido"), {
+				title: this.getView().getModel("i18n").getResourceBundle().getText("sairPedidoTitulo"),
+				actions: [
+					MessageBox.Action.YES,
+					MessageBox.Action.NO
+				],
+				emphasizedAction: MessageBox.Action.YES,
+				initialFocus: MessageBox.Action.YES,
+				onClose: (oAction) => {
+					if (oAction === MessageBox.Action.YES) {
+						this.getRouter().navTo("busca", {
+							Ekgrp: globalModel.getProperty("/Ekgrp"),
+							Uname: globalModel.getProperty("/Uname"),
+							Lifnr: ""
+						}, true);
+					}
+				}
+			});
 		},
 		onTitleSelectorPress: function (oEvent) {
 			var cabec = this.byId("headerCabecalho");
@@ -280,12 +291,9 @@ sap.ui.define([
 			sap.ui.core.BusyIndicator.show();
 			var globalModel = this.getModel("globalModel");
 			var localModel = this.getModel();
-			var dateArray = globalModel.getProperty("/DtRemessa").toLocaleString("pt-BR", {
-				year: "numeric",
-				month: "2-digit",
-				day: "2-digit"
-			}).split('/');
-			var dt_remessa = dateArray[2] + dateArray[1] + dateArray[0];
+			var dt_remessa = sap.ui.core.format.DateFormat.getDateInstance({
+				pattern: "YYYYMMdd"
+			}).format(globalModel.getProperty("/DtRemessa"));
 
 			var sObjectPath = localModel.createKey("/POCria", {
 				Ekgrp: globalModel.getProperty("/Ekgrp"),
@@ -353,7 +361,7 @@ sap.ui.define([
 			var globalModel = this.getModel("globalModel");
 			var localModel = this.getModel();
 
-			var tbl_items = this._PedCriadoDialog.getContent()[0].getSelectedItems();
+			var tbl_items = this._PedCriadoDialog.getContent()[0].getItems();
 			var sEbeln = "";
 			for (var i = 0; i < tbl_items.length; i++) {
 				if (i !== 0) {

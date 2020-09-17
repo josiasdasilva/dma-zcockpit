@@ -361,8 +361,8 @@ sap.ui.define([
 			var sLifnr = globalModel.getProperty("/Lifnr");
 			var sAlterado = globalModel.getProperty("/Alterado");
 			if (sAlterado) {
-				MessageBox.confirm("A sugest\xE3o de compras foi alterada. \n " + "Deseja gravar as altera\xE7\xF5es?", {
-					title: "Altera\xE7\xF5es",
+				MessageBox.confirm(this.getView().getModel("i18n").getResourceBundle().getText("sairDetalhe"), {
+					title: this.getView().getModel("i18n").getResourceBundle().getText("sairDetalheTitulo"),
 					actions: [
 						MessageBox.Action.YES,
 						MessageBox.Action.NO,
