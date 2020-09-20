@@ -58,8 +58,42 @@ sap.ui.define([
 				this.onClickOrder(oEvent, this._oTablePedido, sBinding);
 			});
 		},
+		recoverSortConfig: function () {
+			let oConfigSort = localStorage.getItem('sortConfig') ? JSON.parse(localStorage.getItem('sortConfig')) : null;
+			let oItems = this._oTablePedido.getBinding("items");
+
+			if (oConfigSort) {
+				let oIcon = sap.ui.getCore().byId(oConfigSort.sId);
+				if (oIcon) {
+					oIcon.setColor(oConfigSort.isAsc ? "#f00000" : "#808080");
+					oIcon.setSrc(oConfigSort.isAsc ? "sap-icon://sort-ascending" : "sap-icon://sort-descending");
+					let oSorter = new Sorter(oConfigSort.field);
+					oSorter.bDescending = !oConfigSort.isAsc;
+					oItems.sort(oSorter, !oConfigSort.isAsc);
+				}
+			}
+
+		},
+		setSortConfig: function (sField, bIsAsc, sId) {
+			let oConfigSort = localStorage.getItem('sortConfig') ? JSON.parse(localStorage.getItem('sortConfig')) : null;
+			/*			let oConfigSort = aConfigSort.find((item) => {
+							return item.field === sField;
+						})*/
+			/*			if (oConfigSort) {
+							oConfigSort.isAsc = bIsAsc;
+						} else {*/
+			oConfigSort = {
+				field: sField,
+				isAsc: bIsAsc,
+				sId: sId
+			};
+			localStorage.setItem('sortConfig', JSON.stringify(oConfigSort));
+			//}
+		
+		},
 		onClickOrder: function (oEvent, oTable, oBinding) {
 			let oIcon = sap.ui.getCore().byId(oEvent.currentTarget.childNodes[0].childNodes[1].childNodes[0].id);
+			let sId = oEvent.currentTarget.childNodes[0].childNodes[1].childNodes[0].id;
 			let oItems = oTable.getBinding("items");
 			let oSorter = new Sorter(oBinding);
 			let oColor = oIcon.getColor();
@@ -70,16 +104,19 @@ sap.ui.define([
 				oIcon.setColor("#f00000");
 				oIcon.setSrc("sap-icon://sort-ascending");
 				oItems.sort(oSorter);
+				this.setSortConfig(oBinding, true, sId);
 			} else {
 				if (oSrc === "sap-icon://sort-ascending") {
 					oIcon.setColor("#f00000");
 					oIcon.setSrc("sap-icon://sort-descending");
 					oSorter.bDescending = true;
 					oItems.sort(oSorter, true);
+					this.setSortConfig(oBinding, false, sId);
 				} else {
 					this.reiniciaIconesSort(true);
 					let oSortInitial = new Sorter("Matnr");
 					oItems.sort(oSortInitial);
+					this.setSortConfig("Matnr", true, sId);
 				}
 			}
 		},
@@ -174,6 +211,7 @@ sap.ui.define([
 			});
 			tablePedido.getBinding("items").refresh();
 			// this.reiniciaIconesSort();
+			this.recoverSortConfig();
 		},
 		_getDialog: function () {
 			// create a fragment with dialog, and pass the selected data

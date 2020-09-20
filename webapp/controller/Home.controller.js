@@ -63,6 +63,10 @@ sap.ui.define([
 		_onMasterMatched: function (oEvent) {
 			//this._buscaLogadoSync();
 			this.loadAppointments();
+			localStorage.removeItem('sortConfig');
+			localStorage.removeItem('sortConfigcompraTableHeader');
+			localStorage.removeItem('sortConfigvendaTableHeader');
+			localStorage.removeItem('sortConfigfaceamentoTableHeader');
 		},
 		handleNavDate: function (oEvt) {
 			this._validateAppointmentOver18(oEvt.getSource().mProperties.startDate);

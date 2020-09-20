@@ -163,6 +163,9 @@ sap.ui.define([
 					break;
 				}
 			}
+			this.recoverSortConfig('compraTable');
+			this.recoverSortConfig('vendaTable');
+			this.recoverSortConfig('faceamentoTable');
 		},
 		//FAFN - Begin
 		onClickColumnHeader: function (oID, oTable) {
@@ -179,24 +182,66 @@ sap.ui.define([
 			let oSorter = new Sorter(oBinding);
 			let oColor = oIcon.getColor();
 			let oSrc = oIcon.getSrc();
+			let sId = oEvent.currentTarget.childNodes[0].childNodes[1].childNodes[0].id;
 
 			this.resetSortIcons(oTable, false);
 			if (oColor === "#808080") {
 				oIcon.setColor("#f00000");
 				oIcon.setSrc("sap-icon://sort-ascending");
 				oItems.sort(oSorter);
+				this.setSortConfig(oBinding, true, sId, this.getTableName(oTable.getId()));
 			} else {
 				if (oSrc === "sap-icon://sort-ascending") {
 					oIcon.setColor("#f00000");
 					oIcon.setSrc("sap-icon://sort-descending");
 					oSorter.bDescending = true;
 					oItems.sort(oSorter, true);
+					this.setSortConfig(oBinding, false, sId, this.getTableName(oTable.getId()));
 				} else {
 					this.resetSortIcons(oTable, true);
 					let oSortInitial = new Sorter("Werks");
 					oItems.sort(oSortInitial);
+					this.setSortConfig(oBinding, true, sId, this.getTableName(oTable.getId()));
 				}
 			}
+		},
+		getTableName: function (sId) {
+			if (sId.includes('compraTable')) {
+				return 'compraTableHeader';
+			}
+			if (sId.includes('vendaTable')) {
+				return 'vendaTableHeader';
+			}
+			if (sId.includes('faceamentoTable')) {
+				return 'faceamentoTableHeader';
+			}
+		},
+		recoverSortConfig: function (sTable) {
+			
+			let sStorage = 'sortConfig' + sTable;
+			let oConfigSort = localStorage.getItem(sStorage) ? JSON.parse(localStorage.getItem(sStorage)) : null;
+			let oItems = this.getView().byId(sTable).getBinding("items");
+
+			if (oConfigSort) {
+				if (oIcon) {
+					let oIcon = sap.ui.getCore().byId(oConfigSort.sId);
+					oIcon.setColor(oConfigSort.isAsc ? "#f00000" : "#808080");
+					oIcon.setSrc(oConfigSort.isAsc ? "sap-icon://sort-ascending" : "sap-icon://sort-descending");
+					let oSorter = new Sorter(oConfigSort.field);
+					oSorter.bDescending = !oConfigSort.isAsc;
+					oItems.sort(oSorter, !oConfigSort.isAsc);
+				}
+			}
+		},
+		setSortConfig: function (sField, bIsAsc, sId, sTable) {
+			let oConfigSort = localStorage.getItem('sortConfig' + sTable) ? JSON.parse(localStorage.getItem('sortConfig')) : null;
+			oConfigSort = {
+				table: sTable,
+				field: sField,
+				isAsc: bIsAsc,
+				sId: sId
+			};
+			localStorage.setItem('sortConfig' + sTable, JSON.stringify(oConfigSort));
 		},
 		onFilterPress: function (oEvent) {
 			var aFilters = [];
