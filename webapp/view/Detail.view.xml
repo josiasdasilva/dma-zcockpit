@@ -310,7 +310,7 @@
 										</Table>
 									</l:fixContent>
 									<l:flexContent>
-										<ScrollContainer xmlns="sap.m" height="30rem" vertical="true" focusable="true" id="container3">
+										<ScrollContainer vertical="true" focusable="true" class="scroll-compras">
 											<!--<ScrollContainer id="scrollCont1" vertical="true" focusable="true" height="32em">-->
 											<Table noDataText="Sem dados para exibir" id="compraTable" items="{path:'/POCompra', sorter: {path:'Werks'}}" class="tableTelaPedido"
 												updateFinished="compraUpdateFinished">

@@ -67,6 +67,18 @@ html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
 }
 */
 
+.scroll-compras {
+    height: 55vh !important;
+}
+
+.panel_produto {
+    height: 87vh !important
+}
+
+.scroll-busca-pedido {
+    height: 72vh ! important;
+}
+
 .textoLinhaPedido {
     font-size: 0.700rem;
 }
