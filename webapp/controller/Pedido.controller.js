@@ -44,6 +44,7 @@ sap.ui.define([
 				}
 			}, this._oTablePedidoHeader);
 			//FAFN - End
+			this.getView().byId("_i_pedido_0").setColor("#f00000");
 		},
 		//FAFN - Begin
 		onClickColumnHeader: function (oID) {
@@ -65,7 +66,7 @@ sap.ui.define([
 			if (oConfigSort) {
 				let oIcon = sap.ui.getCore().byId(oConfigSort.sId);
 				if (oIcon) {
-					oIcon.setColor(oConfigSort.isAsc ? "#f00000" : "#808080");
+					oIcon.setColor("#f00000");
 					oIcon.setSrc(oConfigSort.isAsc ? "sap-icon://sort-ascending" : "sap-icon://sort-descending");
 					let oSorter = new Sorter(oConfigSort.field);
 					oSorter.bDescending = !oConfigSort.isAsc;

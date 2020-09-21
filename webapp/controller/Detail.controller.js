@@ -207,25 +207,35 @@ sap.ui.define([
 		},
 		getTableName: function (sId) {
 			if (sId.includes('compraTable')) {
-				return 'compraTableHeader';
+				return 'compraTable';
 			}
 			if (sId.includes('vendaTable')) {
-				return 'vendaTableHeader';
+				return 'vendaTable';
 			}
 			if (sId.includes('faceamentoTable')) {
-				return 'faceamentoTableHeader';
+				return 'faceamentoTable';
 			}
 		},
 		recoverSortConfig: function (sTable) {
-			
+
 			let sStorage = 'sortConfig' + sTable;
 			let oConfigSort = localStorage.getItem(sStorage) ? JSON.parse(localStorage.getItem(sStorage)) : null;
 			let oItems = this.getView().byId(sTable).getBinding("items");
 
 			if (oConfigSort) {
+				
+				let oIcon = sap.ui.getCore().byId(oConfigSort.sId);
 				if (oIcon) {
-					let oIcon = sap.ui.getCore().byId(oConfigSort.sId);
-					oIcon.setColor(oConfigSort.isAsc ? "#f00000" : "#808080");
+					if(sTable.includes('compra')){
+						this.getView().byId('_i_compra_0').setColor('#808080');
+					}
+					if(sTable.includes('faceamento')){
+						this.getView().byId('_i_faceamento_0').setColor('#808080');
+					}
+					if(sTable.includes('venda')){
+						this.getView().byId('_i_venda_0').setColor('#808080');
+					}
+					oIcon.setColor("#f00000");
 					oIcon.setSrc(oConfigSort.isAsc ? "sap-icon://sort-ascending" : "sap-icon://sort-descending");
 					let oSorter = new Sorter(oConfigSort.field);
 					oSorter.bDescending = !oConfigSort.isAsc;

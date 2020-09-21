@@ -82,7 +82,7 @@ sap.ui.define([
 		_buscaLogado: function () {
 			var globalModel = this.getModel("globalModel");
 			var localModel = this.getModel();
-			var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004
+			var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container //9066004
 				.getUser().getId();
 			var sObjectPath = localModel.createKey("/Usuario", {
 				Uname: sUname
