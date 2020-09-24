@@ -1,0 +1,27 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Dialog title="Somatório por loja">
+		<Table id="idLojaSumTabela" mode="Delete" delete=".onDeleteLojaSum" items="{/POLojasSum}" noDataText="Sem dados"
+			selectionChange=".onItemPressed">
+			<headerToolbar></headerToolbar>
+			<columns>
+				<Column width="12em">
+					<Text text="Loja"/>
+				</Column>
+				<Column width="12em" hAlign="Right">
+					<Text text="Total"/>
+				</Column>
+			</columns>
+			<items>
+				<ColumnListItem id="listItemLojaSum" type="Active" press=".onObjectListItemPress">
+					<cells>
+						<Text text="{Werks}"/>
+						<Text text="{Total}"/>
+					</cells>
+				</ColumnListItem>
+			</items>
+		</Table>
+		<endButton>
+			<Button text="Fechar" press="closeLojaSumDialog"></Button>
+		</endButton>
+	</Dialog>
+</core:FragmentDefinition>

@@ -59,6 +59,51 @@ sap.ui.define([
 				this.onClickOrder(oEvent, this._oTablePedido, sBinding);
 			});
 		},
+		_getDialogLojaSum: function () {
+			if (!this._oDialogLojaSum) {
+
+				this._oDialogLojaSum = sap.ui.xmlfragment("idLojasSum", "dma.zcockpit.view.fragment.lojasSum", this);
+				this.getView().addDependent(this._oDialogLojaSum);
+			}
+			return this._oDialogLojaSum;
+		},
+		closeLojaSumDialog: function () {
+			this._oDialogLojaSum.close();
+		},
+		onOpenDialogLojaSum: function () {
+			let aFilters = [];
+			this._getDialogLojaSum().open();
+			var globalModel = this.getModel("globalModel");
+			let sEkgrp = globalModel.getProperty("/Ekgrp");
+			let sLifnr = globalModel.getProperty("/Lifnr");
+			aFilters.push(new sap.ui.model.Filter(
+				"Ekgrp",
+				sap.ui.model.FilterOperator.EQ,
+				sEkgrp
+			));
+			aFilters.push(new sap.ui.model.Filter(
+				"Lifnr",
+				sap.ui.model.FilterOperator.EQ,
+				sLifnr
+			));
+			var oTable = sap.ui.getCore().byId('idLojasSum--idLojaSumTabela');
+			var oItems = oTable.getBinding("items");
+			oItems.filter(aFilters);
+		},
+		onDeleteLojaSum: function (oEvent) {
+			debugger;
+			let sPath = oEvent.getParameter("listItem").getBindingContextPath();
+			let oBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+			this.getView().getModel().remove(sPath, {
+				success: (res) => {
+					MessageToast.show(oBundle.getText("msg_loja_removida_success"), {});
+				},
+				error: (err) => {
+					MessageToast.show(oBundle.getText("msg_loja_removida_error"), {});
+				}
+			});
+
+		},
 		recoverSortConfig: function () {
 			let oConfigSort = localStorage.getItem('sortConfig') ? JSON.parse(localStorage.getItem('sortConfig')) : null;
 			let oItems = this._oTablePedido.getBinding("items");
@@ -90,7 +135,7 @@ sap.ui.define([
 			};
 			localStorage.setItem('sortConfig', JSON.stringify(oConfigSort));
 			//}
-		
+
 		},
 		onClickOrder: function (oEvent, oTable, oBinding) {
 			let oIcon = sap.ui.getCore().byId(oEvent.currentTarget.childNodes[0].childNodes[1].childNodes[0].id);

@@ -20,6 +20,7 @@
 						<contentRight>
 							<SegmentedButton id="_segPedido" selectedKey="embcmp" select="onSelValorPedido">
 								<items>
+									<SegmentedButtonItem id="_sbtnLojaSum" icon="sap-icon://retail-store" key="lojaSum" press=".onOpenDialogLojaSum"/>
 									<SegmentedButtonItem id="_sbtnEmbCmp" icon="sap-icon://product" key="embcmp"/>
 									<SegmentedButtonItem id="_sbtnValor" icon="sap-icon://money-bills" key="real"/>
 								</items>
