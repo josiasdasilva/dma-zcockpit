@@ -41,12 +41,11 @@
 										</Bar>
 										<Table xmlns="sap.m" noDataText="Sem dados para exibir" id="compraTableHeader" showNoData="false" class="tableTelaPedido">
 											<columns>
-												<Column width="2.4em" hAlign="Center" id="column91">
+												<Column class="columnLoja" hAlign="Begin" width="2.5em" id="column91" minScreenWidth="2.5rem">
 													<header>
 														<HBox width="100%" justifyContent="SpaceBetween" alignContent="SpaceBetween" id="hbox45">
 															<items>
-																<Text xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" text="{i18n>tbl_compra.loja}" app:binding="Werks"
-																	width="auto" id="text51"/>
+																<Text text="{i18n>tbl_compra.loja}" app:binding="Werks" width="auto" id="text51"/>
 																<sap.ui.core:Icon xmlns:sap.ui.core="sap.ui.core" src="sap-icon://sort-ascending" size="0.96em" id="_i_compra_0" useIconTooltip="false"
 																	color="#808080" visible="true" width="30%"/>
 															</items>
@@ -317,7 +316,7 @@
 												<items>
 													<ColumnListItem type="Active">
 														<cells>
-															<Link class="linkContrato" text="{Werks}" subtle="true" press="handleLojaPress"/>
+															<Link class="linkContrato" text="{Werks}" subtle="true" press="handleLojaPress" width="2.5rem" textAlign="Left"/>
 															<!--<Text text="{Werks}" />-->
 															<!--<Text text="{Uf}"/>-->
 															<!--<Text text="{Bandeira}"/>-->

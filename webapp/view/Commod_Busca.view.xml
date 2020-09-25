@@ -1,0 +1,168 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:form="sap.ui.layout.form" xmlns:u="sap.ui.unified" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m"
+	controllerName="dma.zcockpit.controller.Commod_Busca" xmlns:html="http://www.w3.org/1999/xhtml">
+	<App>
+		<pages>
+			<Page title="Commodities">
+				<content>
+					<Wizard id="WizardCommodities" complete="wizardCompletedHandler">
+						<WizardStep id="CompradorLojaStep" title="Comprador / Lojas" validated="true">
+							<MessageStrip class="sapUiSmallMarginBottom"
+								text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. "
+								showIcon="true"/>
+							<Panel width="auto">
+								<content>
+									<FlexBox width="auto" fitContainer="true">
+										<items>
+											<FlexBox width="8rem" fitContainer="true" alignItems="Center" alignContent="Start">
+												<items>
+													<Title text="Comprador" width="8rem" id="__title0" titleStyle="H3"/>
+												</items>
+											</FlexBox>
+											<FlexBox width="100%" alignItems="Center">
+												<items>
+													<Input width="100%" id="compradorInput" type="Text" placeholder="Escolha o Comprador ..." showValueHelp="true"
+														valueHelpRequest="onF4Comprador" value="{Ekgrp}" description="{Nome}" fieldWidth="80px" required="true" valueHelpOnly="true" maxLength="40"
+														showTableSuggestionValueHelp="false"/>
+												</items>
+											</FlexBox>
+											<FlexBox width="3rem" justifyContent="Center" fitContainer="true" alignContent="End" alignItems="Center">
+												<items>
+													<Button width="auto" id="compradorDelete" icon="sap-icon://delete" press="clearComprador"/>
+												</items>
+											</FlexBox>
+										</items>
+									</FlexBox>
+								</content>
+							</Panel>
+							<Panel id="__panel0" headerText="Seleção" width="auto">
+								<headerToolbar>
+									<Toolbar width="100%" height="auto">
+										<content>
+											<Title text="Seleção" width="100%"/>
+											<ToolbarSeparator/>
+											<Button width="auto" id="lojasDelete" icon="sap-icon://delete" press="deletePressLojas"/>
+										</content>
+									</Toolbar>
+								</headerToolbar>
+								<content>
+									<FlexBox width="100%">
+										<items>
+											<FlexBox width="7rem" alignItems="Center">
+												<items>
+													<Title text="UF" width="7rem" titleStyle="H3"/>
+												</items>
+											</FlexBox>
+											<FlexBox width="100%" alignItems="Center">
+												<items>
+													<MultiInput width="31rem" id="UFInput" placeholder="Escolha a UF ..."
+														suggestionItems="{ path: '/UF', sorter: { path: 'Bland', descending : false }}" valueHelpRequest="onF4UF" tokenChange="onF4UFTokenUpdate"
+														valueHelpOnly="true">
+														<core:Item key="{Bland}" text="{Bezei}"/></MultiInput>
+												</items>
+											</FlexBox>
+										</items>
+									</FlexBox>
+									<FlexBox width="100%" id="__box19_copy">
+										<items>
+											<FlexBox width="7rem" alignItems="Center">
+												<items>
+													<Title text="Grupo" width="7rem" titleStyle="H3"/>
+												</items>
+											</FlexBox>
+											<FlexBox width="100%" alignItems="Center">
+												<items>
+													<MultiInput width="31rem" id="grupoLojasInput" placeholder="Escolha o Grupo ..."
+														suggestionItems="{ path: '/GrupoLojas', sorter: { path: 'Bandeira', descending: false }}" valueHelpRequest="onF4grupoLojas"
+														tokenChange="onF4grupoLojasTokenUpdate" valueHelpOnly="true">
+														<core:Item key="{Bandeira}" text="{Descricao}"/></MultiInput>
+												</items>
+											</FlexBox>
+										</items>
+									</FlexBox>
+									<FlexBox width="100%">
+										<items>
+											<FlexBox width="7rem" alignItems="Center">
+												<items>
+													<Title text="Lojas" width="7rem" titleStyle="H3"/>
+												</items>
+											</FlexBox>
+											<FlexBox width="100%" alignItems="Center">
+												<items>
+													<MultiInput width="31rem" id="lojasInput" placeholder="Escolha a Loja ..." suggestionItems="{ path: '/CD', sorter: { path: 'Werks' }}"
+														valueHelpRequest="onF4Lojas" tokenChange="onF4LojasTokenUpdate" valueHelpOnly="true">
+														<core:Item key="{Werks}" text="{Nome}"/></MultiInput>
+												</items>
+											</FlexBox>
+										</items>
+									</FlexBox>
+								</content>
+							</Panel>
+						</WizardStep>
+						<WizardStep id="ProdutoStep" validated="false" title="Seleção de Produtos" activate="additionalInfoValidation">
+							<MessageStrip class="sapUiSmallMarginBottom"
+								text="Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. " showIcon="true"/>
+							<Panel class="panel_produto" id="__panel_produto" width="auto" expandAnimation="false">
+								<content>
+									<SearchField width="100%" placeholder="Selecione os Produtos" id="buscaProduto" liveChange="onSearchProduto"/>
+									<ScrollContainer class="scroll-busca-pedido" vertical="true" height="auto">
+										<List id="idProdutos" items="{/Produto}" selectionChange="onSelectionChangeProduto" mode="MultiSelect" growingThreshold="30"
+											includeItemInSelection="true" noDataText="{i18n>xped.nodata}" growing="true" growingScrollToLoad="true">
+											<StandardListItem class="_cl_idProdutos" title="{Maktx}" iconDensityAware="false" iconInset="false" id="listProdutos" info="{Matnr}"/>
+										</List>
+									</ScrollContainer>
+								</content>
+								<headerToolbar>
+									<Toolbar width="100%" id="__toolbar1_copy3">
+										<content>
+											<Title text="Produto" width="100%" id="__title0_copy3"/>
+											<ToolbarSeparator id="__separator1"/>
+											<Button width="auto" id="produtoDelete" icon="sap-icon://delete" press="clearSelectedProduto"/>
+										</content>
+									</Toolbar>
+								</headerToolbar>
+								<infoToolbar>
+									<OverflowToolbar id="idProdToolbar" visible="false">
+										<content>
+											<Label width="100%" id="idCountProdSelected"/>
+										</content>
+									</OverflowToolbar>
+								</infoToolbar>
+							</Panel>
+						</WizardStep>
+						<WizardStep id="FornecedorStep" validated="true" activate="optionalStepActivation" title="Seleção de Fornecedores">
+							<MessageStrip class="sapUiSmallMarginBottom"
+								text="Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur." showIcon="true"/>
+							<Panel class="panel_fornecedor" id="__panel_fornecedor" width="auto" expandAnimation="false">
+								<content>
+									<SearchField width="100%" placeholder="Selecione os Fornecedores" id="buscaFornecedores" liveChange="onSearchFornecedor"/>
+									<ScrollContainer class="scroll-busca-pedido" vertical="true" height="auto">
+										<List id="idFornecedores" items="{/CommodFornecedor}" selectionChange="onSelectionChangeFornecedor" mode="MultiSelect" growingThreshold="30"
+											includeItemInSelection="true" noDataText="{i18n>xped.nodata}" growing="true" growingScrollToLoad="true">
+											<StandardListItem class="_cl_idFornecedores" title="{Maktx}" iconDensityAware="false" iconInset="false" id="listFornecedores" info="{Lifnr}"/>
+										</List>
+									</ScrollContainer>
+								</content>
+								<headerToolbar>
+									<Toolbar width="100%">
+										<content>
+											<Title text="Fornecedor" width="100%"/>
+											<ToolbarSeparator/>
+											<Button width="auto" id="fornecedorDelete" icon="sap-icon://delete" press="clearSelectedFornecedor"/>
+										</content>
+									</Toolbar>
+								</headerToolbar>
+								<infoToolbar>
+									<OverflowToolbar id="idFornToolbar" visible="false">
+										<content>
+											<Label width="100%" id="idCountFornSelected"/>
+										</content>
+									</OverflowToolbar>
+								</infoToolbar>
+							</Panel>
+						</WizardStep>
+					</Wizard>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

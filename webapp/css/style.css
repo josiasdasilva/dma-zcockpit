@@ -42,7 +42,7 @@ html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
 
 .sapMListTblCell {
     vertical-align: middle;
-    padding: 0.4em;
+    padding: 0.3em;
 }
 
 
@@ -130,7 +130,16 @@ html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
 */
 
 .linkContrato {
-    font-size: 0.750rem
+    font-size: 0.700rem !important;
+    text-align: left !important;
+}
+
+.columnLoja {
+    padding-left: 0rem !important;
+}
+
+.sapMListTblCell:first-child {
+    padding-left: 0.4rem;
 }
 
 .HBoxStyle {

@@ -255,6 +255,24 @@ sap.ui.define([
 			// 	}
 			// });
 		},
+		// onBtnCommodPress: function (oEvent) {
+		// 	var globalModel = this.getModel("globalModel");
+		// 	var sEkgrp = globalModel.getProperty("/Ekgrp");
+		// 	var sUname = globalModel.getProperty("/Uname");
+		// 	if (sEkgrp === undefined || sUname === undefined) {
+		// 		this._buscaLogadoSync().then((res) => {
+		// 			this.getRouter().navTo("commod_busca", {
+		// 				Ekgrp: res[0],
+		// 				Uname: res[1]
+		// 			}, true);
+		// 		})
+		// 	} else {
+		// 		this.getRouter().navTo("commod_busca", {
+		// 			Ekgrp: sEkgrp,
+		// 			Uname: sUname
+		// 		}, true);
+		// 	}
+		// },
 		// action: function (oEvent) {
 		// 	var that = this;
 		// 	var actionParameters = JSON.parse(oEvent.getSource().data("wiring").replace(/'/g, "\""));

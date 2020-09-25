@@ -119,6 +119,11 @@
 					"target": "busca"
 				},
 				{
+					"pattern": "Comprador/{Ekgrp}",
+					"name": "commod_busca",
+					"target": "commod_busca"
+				},
+				{
 					"pattern": "Fornecedor/{Ekgrp}/{Lifnr}",
 					"name": "fornecedor",
 					"target": "fornecedor"
@@ -152,6 +157,10 @@
 				},
 				"busca": {
 					"viewName": "Busca",
+					"viewLevel": 2
+				},
+				"commod_busca": {
+					"viewName": "Commod_Busca",
 					"viewLevel": 2
 				},
 				"pedido": {
