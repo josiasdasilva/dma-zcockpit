@@ -18,8 +18,8 @@
 					<Bar xmlns:mvc="sap.ui.core.mvc" xmlns:table="sap.ui" xmlns:semantic="sap.m.semantic"
 						xmlns:app="http://schemas.sap.com/sapui5/extension/sap.ui.core.CustomData/1" xmlns:sap.ui.core="sap.ui.core" xmlns="sap.m" id="bar1">
 						<contentRight>
-							<!--<Button text="Total por Loja" icon="sap-icon://retail-store" press=".onOpenDialogLojaSum" type="Emphasized"/>-->
-							<!--<Button enabled="false"/>-->
+							<Button text="Total por Loja" icon="sap-icon://retail-store" press=".onOpenDialogLojaSum" type="Emphasized"/>
+							<Button enabled="false"/>
 							<SegmentedButton id="_segPedido" selectedKey="embcmp" select="onSelValorPedido">
 								<items>
 									<!--<SegmentedButtonItem id="_sbtnLojaSum" icon="sap-icon://retail-store" key="lojaSum" press=".onOpenDialogLojaSum"/>-->

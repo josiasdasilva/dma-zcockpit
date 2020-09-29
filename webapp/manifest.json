@@ -119,7 +119,7 @@
 					"target": "busca"
 				},
 				{
-					"pattern": "Comprador/{Ekgrp}",
+					"pattern": "Commod_Busca/{Ekgrp}/:Lifnr:",
 					"name": "commod_busca",
 					"target": "commod_busca"
 				},
@@ -162,7 +162,7 @@
 				"commod_busca": {
 					"viewName": "Commod_Busca",
 					"viewLevel": 2
-				},
+				},   
 				"pedido": {
 					"viewName": "Pedido",
 					"viewLevel": 3

@@ -52,12 +52,24 @@
 					ToRole="ToRole_FornecedorPOReset"/>
 				<NavigationProperty Name="Produto" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorProduto" FromRole="FromRole_FornecedorProduto"
 					ToRole="ToRole_FornecedorProduto"/>
-				<NavigationProperty Name="POCria" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOCria" FromRole="FromRole_FornecedorPOCria"
-					ToRole="ToRole_FornecedorPOCria"/>
-				<NavigationProperty Name="POSum" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOSum" FromRole="FromRole_FornecedorPOSum"
-					ToRole="ToRole_FornecedorPOSum"/>
 				<NavigationProperty Name="PO" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPO" FromRole="FromRole_FornecedorPO"
 					ToRole="ToRole_FornecedorPO"/>
+				<NavigationProperty Name="POSum" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOSum" FromRole="FromRole_FornecedorPOSum"
+					ToRole="ToRole_FornecedorPOSum"/>
+				<NavigationProperty Name="POCria" Relationship="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOCria" FromRole="FromRole_FornecedorPOCria"
+					ToRole="ToRole_FornecedorPOCria"/>
+			</EntityType>
+			<EntityType Name="PedCriado" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Nroseq"/>
+					<PropertyRef Name="Werks"/>
+					<PropertyRef Name="PedEbeln"/>
+				</Key>
+				<Property Name="Nroseq" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Plant" sap:creatable="false"
+					sap:updatable="false"/>
+				<Property Name="PedEbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Purchasing Doc."
+					sap:creatable="false" sap:updatable="false"/>
 			</EntityType>
 			<EntityType Name="PrnMateriaisLojas" m:HasStream="true" sap:content-version="1">
 				<Key>
@@ -193,25 +205,20 @@
 			<EntityType Name="Emitidos" sap:content-version="1">
 				<Key>
 					<PropertyRef Name="Ped_Ebeln"/>
+					<PropertyRef Name="Werks"/>
+					<PropertyRef Name="Lifnr"/>
 				</Key>
 				<Property Name="Name1" Type="Edm.String" MaxLength="35" sap:unicode="false" sap:label="Name" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="Ped_Ebeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Purchasing Doc."
 					sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Uf" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Region" sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Bandeira" Type="Edm.String" MaxLength="20" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="Ped_Bedat" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="PO Date" sap:creatable="false"
 					sap:updatable="false"/>
-				<Property Name="Grupo" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Class group" sap:creatable="false"
-					sap:updatable="false"/>
-				<Property Name="Nroseq" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="Ped_Eindt" Type="Edm.DateTime" Precision="7" sap:unicode="false" sap:label="Delivery Date" sap:creatable="false"
 					sap:updatable="false"/>
 				<Property Name="Ekgrp" Type="Edm.String" MaxLength="3" sap:unicode="false" sap:label="Purch. Group" sap:creatable="false"
 					sap:updatable="false"/>
-				<Property Name="Werks" Type="Edm.String" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Lifnr" Type="Edm.String" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Matnr" Type="Edm.String" MaxLength="18" sap:unicode="false" sap:label="Material" sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Maktx" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="Description" sap:creatable="false"
+				<Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Vendor" sap:creatable="false"
 					sap:updatable="false"/>
 			</EntityType>
 			<EntityType Name="POReset" sap:content-version="1">
@@ -463,9 +470,8 @@
 				</Key>
 				<Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
-				<Property Name="Ebeln" Type="Edm.Decimal" Precision="11" Scale="0" sap:unicode="false" sap:creatable="false" sap:updatable="false"
-					sap:filterable="false"/>
-				<Property Name="Mensagem" Type="Edm.String" sap:unicode="false" sap:creatable="false" sap:updatable="false" sap:filterable="false"/>
+				<Property Name="Nroseq" Type="Edm.Decimal" Precision="11" Scale="0" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Mensagem" Type="Edm.String" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="TpPedido" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 				<Property Name="DtRemessa" Type="Edm.String" Nullable="false" MaxLength="8" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 			</EntityType>
@@ -547,6 +553,17 @@
 					sap:updatable="false"/>
 				<Property Name="Maktx" Type="Edm.String" MaxLength="40" sap:unicode="false" sap:label="Description" sap:creatable="false"
 					sap:updatable="false"/>
+			</EntityType>
+			<EntityType Name="POLojasSum" sap:content-version="1">
+				<Key>
+					<PropertyRef Name="Ekgrp"/>
+					<PropertyRef Name="Lifnr"/>
+					<PropertyRef Name="Werks"/>
+				</Key>
+				<Property Name="Ekgrp" Type="Edm.String" Nullable="false" MaxLength="3" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Lifnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Werks" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
+				<Property Name="Total" Type="Edm.Decimal" Precision="13" Scale="2" sap:unicode="false" sap:creatable="false" sap:updatable="false"/>
 			</EntityType>
 			<Association Name="FornecedorPOReset" sap:content-version="1">
 				<End Type="ZCOCKPIT_COMERCIAL_SRV.Fornecedor" Multiplicity="1" Role="FromRole_FornecedorPOReset"/>
@@ -689,6 +706,8 @@
 					sap:pageable="false" sap:content-version="1"/>
 				<EntitySet Name="Fornecedor" EntityType="ZCOCKPIT_COMERCIAL_SRV.Fornecedor" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="PedCriado" EntityType="ZCOCKPIT_COMERCIAL_SRV.PedCriado" sap:creatable="false" sap:updatable="false" sap:deletable="false"
+					sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
 				<EntitySet Name="PrnMateriaisLojas" EntityType="ZCOCKPIT_COMERCIAL_SRV.PrnMateriaisLojas" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
 				<EntitySet Name="PrnLojas" EntityType="ZCOCKPIT_COMERCIAL_SRV.PrnLojas" sap:creatable="false" sap:updatable="false" sap:deletable="false"
@@ -737,6 +756,8 @@
 					sap:deletable="false" sap:pageable="false" sap:addressable="false" sap:content-version="1"/>
 				<EntitySet Name="Produto" EntityType="ZCOCKPIT_COMERCIAL_SRV.Produto" sap:creatable="false" sap:updatable="false" sap:deletable="false"
 					sap:pageable="false" sap:content-version="1"/>
+				<EntitySet Name="POLojasSum" EntityType="ZCOCKPIT_COMERCIAL_SRV.POLojasSum" sap:creatable="false" sap:updatable="false"
+					sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 				<AssociationSet Name="FornecedorPOCriaSet" Association="ZCOCKPIT_COMERCIAL_SRV.FornecedorPOCria" sap:creatable="false" sap:updatable="false"
 					sap:deletable="false" sap:content-version="1">
 					<End EntitySet="Fornecedor" Role="FromRole_FornecedorPOCria"/>

@@ -61,7 +61,6 @@ sap.ui.define([
 			});
 		},
 		_onMasterMatched: function (oEvent) {
-			//this._buscaLogadoSync();
 			this.loadAppointments();
 			localStorage.removeItem('sortConfig');
 			localStorage.removeItem('sortConfigcompraTableHeader');
@@ -79,31 +78,32 @@ sap.ui.define([
 			})
 			this._idAppntOverSeven.setVisible(bHasValueOver18);
 		},
-		_buscaLogado: function () {
-			var globalModel = this.getModel("globalModel");
-			var localModel = this.getModel();
-			var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container //9066004
-				.getUser().getId();
-			var sObjectPath = localModel.createKey("/Usuario", {
-				Uname: sUname
-			});
-			localModel.read(sObjectPath, {
-				method: "GET",
-				success: function (oData2, oResponse) {
-					globalModel.setProperty("/Ekgrp", oData2.Ekgrp);
-					globalModel.setProperty("/Uname", oData2.Uname);
-					globalModel.setProperty("/Nome", oData2.Nome);
-				}.bind(this),
-				error: function (oError) {}
-			});
-		},
+		// _buscaLogado: function () {
+		// 	var globalModel = this.getModel("globalModel");
+		// 	var localModel = this.getModel();
+		// 	var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9066004" : sap.ushell.Container //9066004
+		// 		.getUser().getId();
+		// 	var sObjectPath = localModel.createKey("/Usuario", {
+		// 		Uname: sUname
+		// 	});
+		// 	localModel.read(sObjectPath, {
+		// 		method: "GET",
+		// 		success: function (oData2, oResponse) {
+		// 			globalModel.setProperty("/Ekgrp", oData2.Ekgrp);
+		// 			globalModel.setProperty("/Uname", oData2.Uname);
+		// 			globalModel.setProperty("/Nome", oData2.Nome);
+		// 		}.bind(this),
+		// 		error: function (oError) {}
+		// 	});
+		// },
 		_buscaLogadoSync: function () {
 			sap.ui.core.BusyIndicator.show(0);
 			return new Promise((resolve, reject) => {
 				var globalModel = this.getModel("globalModel");
 				var localModel = this.getModel();
-				var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container //9066004
+				var sUname = window.location.href.includes("localhost") || window.location.href.includes("webide") ? "9067001" : sap.ushell.Container
 					.getUser().getId();
+				debugger;
 				var sObjectPath = localModel.createKey("/Usuario", {
 					Uname: sUname
 				});
@@ -176,30 +176,30 @@ sap.ui.define([
 				}
 			}); // navigate to Supplier application
 		},
-		goToPedidos: function (oEvt) {
+		// goToPedidos: function (oEvt) {
 
-			var oAppnt = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath);
+		// 	var oAppnt = this._planningCalendar.getModel().getProperty(this._oDetailsPopover.oAppointment.getBindingContext().sPath);
 
-			var globalModel = this.getModel("globalModel");
-			var sEkgrp = globalModel.getProperty("/Ekgrp");
-			var sUname = globalModel.getProperty("/Uname");
-			globalModel.setProperty("/Lifnr", oAppnt.lifnr);
-			if (sEkgrp === undefined || sUname === undefined) {
-				this._buscaLogadoSync().then((res) => {
-					this.getRouter().navTo("busca", {
-						Ekgrp: res[0],
-						Uname: res[1],
-						Lifnr: oAppnt.lifnr
-					}, true);
-				})
-			} else {
-				this.getRouter().navTo("busca", {
-					Ekgrp: sEkgrp,
-					Uname: sUname,
-					Lifnr: oAppnt.lifnr
-				}, true);
-			}
-		},
+		// 	var globalModel = this.getModel("globalModel");
+		// 	var sEkgrp = globalModel.getProperty("/Ekgrp");
+		// 	var sUname = globalModel.getProperty("/Uname");
+		// 	globalModel.setProperty("/Lifnr", oAppnt.lifnr);
+		// 	if (sEkgrp === undefined || sUname === undefined) {
+		// 		this._buscaLogadoSync().then((res) => {
+		// 			this.getRouter().navTo("busca", {
+		// 				Ekgrp: res[0],
+		// 				Uname: res[1],
+		// 				Lifnr: oAppnt.lifnr
+		// 			}, true);
+		// 		})
+		// 	} else {
+		// 		this.getRouter().navTo("busca", {
+		// 			Ekgrp: sEkgrp,
+		// 			Uname: sUname,
+		// 			Lifnr: oAppnt.lifnr
+		// 		}, true);
+		// 	}
+		// },
 		onBtnPedidoPress: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
 			var sEkgrp = globalModel.getProperty("/Ekgrp");
@@ -255,55 +255,55 @@ sap.ui.define([
 			// 	}
 			// });
 		},
-		// onBtnCommodPress: function (oEvent) {
-		// 	var globalModel = this.getModel("globalModel");
-		// 	var sEkgrp = globalModel.getProperty("/Ekgrp");
-		// 	var sUname = globalModel.getProperty("/Uname");
-		// 	if (sEkgrp === undefined || sUname === undefined) {
-		// 		this._buscaLogadoSync().then((res) => {
-		// 			this.getRouter().navTo("commod_busca", {
-		// 				Ekgrp: res[0],
-		// 				Uname: res[1]
-		// 			}, true);
-		// 		})
-		// 	} else {
-		// 		this.getRouter().navTo("commod_busca", {
-		// 			Ekgrp: sEkgrp,
-		// 			Uname: sUname
-		// 		}, true);
-		// 	}
-		// },
-		// action: function (oEvent) {
-		// 	var that = this;
-		// 	var actionParameters = JSON.parse(oEvent.getSource().data("wiring").replace(/'/g, "\""));
-		// 	var eventType = oEvent.getId();
-		// 	var aTargets = actionParameters[eventType].targets || [];
-		// 	aTargets.forEach(function (oTarget) {
-		// 		var oControl = that.byId(oTarget.id);
-		// 		if (oControl) {
-		// 			var oParams = {};
-		// 			for (var prop in oTarget.parameters) {
-		// 				oParams[prop] = oEvent.getParameter(oTarget.parameters[prop]);
-		// 			}
-		// 			oControl[oTarget.action](oParams);
-		// 		}
-		// 	});
-		// 	var oNavigation = actionParameters[eventType].navigation;
-		// 	if (oNavigation) {
-		// 		var oParams = {};
-		// 		(oNavigation.keys || []).forEach(function (prop) {
-		// 			oParams[prop.name] = encodeURIComponent(JSON.stringify({
-		// 				value: oEvent.getSource().getBindingContext(oNavigation.model).getProperty(prop.name),
-		// 				type: prop.type
-		// 			}));
-		// 		});
-		// 		if (Object.getOwnPropertyNames(oParams).length !== 0) {
-		// 			this.getOwnerComponent().getRouter().navTo(oNavigation.routeName, oParams);
-		// 		} else {
-		// 			this.getOwnerComponent().getRouter().navTo(oNavigation.routeName);
-		// 		}
-		// 	}
-		// },
+		onBtnCommodPress: function (oEvent) {
+			var globalModel = this.getModel("globalModel");
+			var sEkgrp = globalModel.getProperty("/Ekgrp");
+			var sUname = globalModel.getProperty("/Uname");
+			if (sEkgrp === undefined || sUname === undefined) {
+				this._buscaLogadoSync().then((res) => {
+					this.getRouter().navTo("commod_busca", {
+						Ekgrp: res[0],
+						Uname: res[1]
+					}, true);
+				})
+			} else {
+				this.getRouter().navTo("commod_busca", {
+					Ekgrp: sEkgrp,
+					Uname: sUname
+				}, true);
+			}
+		},
+		action: function (oEvent) {
+			var that = this;
+			var actionParameters = JSON.parse(oEvent.getSource().data("wiring").replace(/'/g, "\""));
+			var eventType = oEvent.getId();
+			var aTargets = actionParameters[eventType].targets || [];
+			aTargets.forEach(function (oTarget) {
+				var oControl = that.byId(oTarget.id);
+				if (oControl) {
+					var oParams = {};
+					for (var prop in oTarget.parameters) {
+						oParams[prop] = oEvent.getParameter(oTarget.parameters[prop]);
+					}
+					oControl[oTarget.action](oParams);
+				}
+			});
+			var oNavigation = actionParameters[eventType].navigation;
+			if (oNavigation) {
+				var oParams = {};
+				(oNavigation.keys || []).forEach(function (prop) {
+					oParams[prop.name] = encodeURIComponent(JSON.stringify({
+						value: oEvent.getSource().getBindingContext(oNavigation.model).getProperty(prop.name),
+						type: prop.type
+					}));
+				});
+				if (Object.getOwnPropertyNames(oParams).length !== 0) {
+					this.getOwnerComponent().getRouter().navTo(oNavigation.routeName, oParams);
+				} else {
+					this.getOwnerComponent().getRouter().navTo(oNavigation.routeName);
+				}
+			}
+		},
 		onExit: function () {
 			if (this._oNewAppointmentDialog) {
 				this._oNewAppointmentDialog.destroy();
