@@ -15,7 +15,7 @@
 				<ColumnListItem id="listItemLojaSum" type="Active" press=".onObjectListItemPress">
 					<cells>
 						<Text text="{Werks}"/>
-						<Text text="{Total}"/>
+						<Text text="{path: 'Total', formatter: '.formatter.fullNumberStr'}"/>
 					</cells>
 				</ColumnListItem>
 			</items>
