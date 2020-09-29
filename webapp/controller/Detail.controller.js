@@ -68,6 +68,171 @@ sap.ui.define([
 				}
 			}, this._faceamentoTableHeader);
 			//FAFN - End
+			this.configTabKeyFocus(this._compraTable);
+		},
+		configTabKeyFocus: function (oTable) {
+			oTable.addEventDelegate({
+				onAfterRendering: () => {
+					let oTableID = oTable.getId();
+
+					$("#" + oTableID).focusin(function (evt) {
+						// remember current focused cell
+						jQuery.sap.delayedCall(100, null, function () {
+							var oBody = $('#' + oTableID).find('tbody');
+							// find the focused input field
+							var oField = oBody.find('.sapMInputFocused')[0];
+							if (oField && !oTable._skipFocusInitialization) {
+								// store ID of focused cell
+								oTable._focusedInput = oField.id;
+								oTable._currentIndex = oTable.getItems().findIndex((item) => {
+									return item.getCells().find((field) => {
+										return field.getId() === oTable._focusedInput
+									});
+								});
+								oTable._rowIndexOfInputFields = 0;
+								for (let itemTable of oTable.getItems()) {
+									oTable._rowIndexOfInputFields = itemTable.getCells().findIndex((field) => {
+										return field.getId() === oTable._focusedInput;
+
+									});
+									if (oTable._rowIndexOfInputFields > 0) {
+										break;
+									}
+								}
+
+							} else {
+								oTable._skipFocusInitialization = false;
+							}
+						});
+					});
+
+					/*					$('#' + oTableID).on('keyup', function (e) {
+											oTable.getItems()[2].getCells()[16].focus()
+											console.log(oTable._focusedInput);
+										});*/
+
+					$('#' + oTableID).on('keydown', function (e) {
+						if (e.key === 'Enter') {
+							oTable._skipFocusInitialization = true;
+
+							if (oTable.getItems().length === (oTable._currentIndex + 1)) {
+								oTable._currentIndex = 0;
+							} else {
+								oTable._currentIndex++;
+							}
+
+							oTable.getItems()[oTable._currentIndex].getCells()[oTable._rowIndexOfInputFields].focus()
+						}
+
+					});
+
+					/*	$('#' + oTableID).on('keyup', function (e) {
+							var oSelectedField = sap.ui.getCore().byId(that._FieldID);
+							var oRow = oSelectedField.getParent();
+							var oCells = oRow.getCells();
+							var aInputs = []; // all input fields per row
+							var firstInput = 0; // first input field in row
+							var lastInput = 0; // last input field in row
+
+							// get index of first and last input fields of table row
+							for (var i = 0; i < oCells.length; i++) {
+								if (oCells[i]._$input) {
+									aInputs.push(i);
+									if (!firstInput) {
+										firstInput = i;
+									}
+									lastInput = i;
+								}
+							}
+
+							var oTargetCell, thisInput, thisRow, targetIndex;
+
+							// on TAB press - navigate one field forward
+							if (e.which == 9 && !e.shiftKey) {
+								// get index of currently focused field
+								thisInput = oCells.indexOf(oCells.filter(function (entry) {
+									return entry.getId() === that._FieldID;
+								})[0]);
+
+								// is field last input in row?
+								if (thisInput === lastInput) {
+									// jump to next row
+									thisRow = oRows.indexOf(oRows.filter(function (entry) {
+										return entry.getId() === oRow.getId();
+									})[0]);
+
+									// is row last visible row on screen?
+									if (thisRow === oTable.getRows().length - 1) {
+										// last visible row - scroll one row down and keep focus
+										oTable._scrollNext();
+										jQuery.sap.delayedCall(100, null, function () {
+											var oTargetCell = oRows[thisRow].getCells()[firstInput];
+											oTargetCell.focus();
+										});
+									} else {
+										// not last visible row - set focus in next row
+										oTargetCell = oRows[thisRow + 1].getCells()[firstInput];
+										oTargetCell.focus();
+									}
+
+								} else {
+									// no row jump - focus next input cell in this row
+									targetIndex = 0;
+									for (i = 0; i < aInputs.length; i++) {
+										if (aInputs[i] === thisInput) {
+											// next entry is target cell
+											targetIndex = aInputs[i + 1];
+										}
+									}
+									oTargetCell = oRow.getCells()[targetIndex];
+									oTargetCell.focus();
+								}
+							}
+							// On SHIFT + TAB press - navigate one field backward
+							if (e.which == 9 && e.shiftKey) {
+								// get index of currently focused field
+								thisInput = oCells.indexOf(oCells.filter(function (entry) {
+									return entry.getId() === that._FieldID;
+								})[0]);
+
+								// is field first input in row?
+								if (thisInput === firstInput) {
+									// jump to previous row
+									thisRow = oRows.indexOf(oRows.filter(function (entry) {
+										return entry.getId() === oRow.getId();
+									})[0]);
+
+									// is row first visible row on screen?
+									if (thisRow === 0) {
+										// first visible row - scroll one row up and keep focus
+										oTable._scrollPrevious();
+										jQuery.sap.delayedCall(100, null, function () {
+											var oTargetCell = oRows[thisRow].getCells()[lastInput];
+											oTargetCell.focus();
+										});
+									} else {
+										// not last visible row - set focus in previous row
+										oTargetCell = oRows[thisRow - 1].getCells()[lastInput];
+										oTargetCell.focus();
+									}
+
+								} else {
+									// no row jump - focus previous input cell in this row
+									targetIndex = 0;
+									for (i = 0; i < aInputs.length; i++) {
+										if (aInputs[i] === thisInput) {
+											// next entry is target cell
+											targetIndex = aInputs[i - 1];
+										}
+									}
+									oTargetCell = oRow.getCells()[targetIndex];
+									oTargetCell.focus();
+								}
+							}
+
+						});*/
+				}
+			}, oTable);
 		},
 		onNavChangeContract: function () {
 			var oCrossAppNavigator = sap.ushell.Container.getService("CrossApplicationNavigation"); // get a handle on the global XAppNav service
@@ -223,16 +388,16 @@ sap.ui.define([
 			let oItems = this.getView().byId(sTable).getBinding("items");
 
 			if (oConfigSort) {
-				
+
 				let oIcon = sap.ui.getCore().byId(oConfigSort.sId);
 				if (oIcon) {
-					if(sTable.includes('compra')){
+					if (sTable.includes('compra')) {
 						this.getView().byId('_i_compra_0').setColor('#808080');
 					}
-					if(sTable.includes('faceamento')){
+					if (sTable.includes('faceamento')) {
 						this.getView().byId('_i_faceamento_0').setColor('#808080');
 					}
-					if(sTable.includes('venda')){
+					if (sTable.includes('venda')) {
 						this.getView().byId('_i_venda_0').setColor('#808080');
 					}
 					oIcon.setColor("#f00000");
