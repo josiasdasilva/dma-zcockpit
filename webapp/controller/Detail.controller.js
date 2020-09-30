@@ -638,7 +638,8 @@ sap.ui.define([
 					payLoad.Lifnr = scompraTable.getItems()[i].getBindingContext().getProperty("Lifnr");
 					payLoad.Matnr = scompraTable.getItems()[i].getBindingContext().getProperty("Matnr");
 					payLoad.Werks = scompraTable.getItems()[i].getBindingContext().getProperty("Werks");
-					payLoad.Requisicao = qtdeRequisicao;
+					//conversao vazio para zero string
+					payLoad.Requisicao = qtdeRequisicao === "" ? "0" : qtdeRequisicao;
 					oModel.update(sPath, payLoad, {
 						groupId: "dma1"
 					});

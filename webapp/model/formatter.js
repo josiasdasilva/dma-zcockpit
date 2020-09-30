@@ -32,6 +32,18 @@ sap.ui.define([], function () {
 			}
 			return number.format(sValue).toString();
 		},
+		zeroToEmpty: function (sValue) {
+			
+			var number = new Intl.NumberFormat("pt-BR", {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			});
+			
+			if (sValue === "0" || sValue === 0) {
+				return "";
+			}
+			return number.format(sValue).toString(); 
+		},
 		toIntReqSugStr: function (sValue) {
 			var number = new Intl.NumberFormat("pt-BR", {
 				minimumFractionDigits: 0,

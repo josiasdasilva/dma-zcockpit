@@ -345,7 +345,10 @@
 															<ObjectNumber number="{path: 'QtppendForn', formatter: '.formatter.toInteger'}" emphasized="false"/>
 															<ObjectNumber number="{path: 'Estdia', formatter: '.formatter.toInteger'}" emphasized="false"/>
 															<ObjectNumber number="{path: 'Sugestao', formatter: '.formatter.toIntReqSugStr'}" emphasized="false" visible="{= ${Sugestao} &gt; 0}"/>
-															<Input id="inputSugestao_copy2" class="inputCompras" width="4em" value="{path: 'Requisicao', type: 'sap.ui.model.type.Integer' }"
+															<!--		<Input id="inputSugestao_copy2" class="inputCompras" width="4em" value="{path: 'Requisicao', type: 'sap.ui.model.type.Integer' }"
+																fieldWidth="100%" type="Number" liveChange="_onLiveChangeInput" change="_onChangeInput" showTableSuggestionValueHelp="false"
+																startSuggestion="0" valueLiveUpdate="true"/>-->
+															<Input id="inputSugestao_copy2" class="inputCompras" width="4em" value="{path: 'Requisicao', formatter: '.formatter.zeroToEmpty' }"
 																fieldWidth="100%" type="Number" liveChange="_onLiveChangeInput" change="_onChangeInput" showTableSuggestionValueHelp="false"
 																startSuggestion="0" valueLiveUpdate="true"/>
 															<Text text="{UnidadeCp}"/>
