@@ -4,10 +4,10 @@
 			selectionChange=".onItemPressed">
 			<headerToolbar></headerToolbar>
 			<columns>
-				<Column width="12em">
+				<Column width="8em" hAlign="Center">
 					<Text text="Loja"/>
 				</Column>
-				<Column width="12em" hAlign="Right">
+				<Column width="8em" hAlign="Right">
 					<Text text="Total"/>
 				</Column>
 			</columns>

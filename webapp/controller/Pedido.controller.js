@@ -69,6 +69,8 @@ sap.ui.define([
 		},
 		closeLojaSumDialog: function () {
 			this._oDialogLojaSum.close();
+			this.updateTable();
+			this.updateTotal();
 		},
 		onOpenDialogLojaSum: function () {
 			let aFilters = [];
@@ -102,7 +104,6 @@ sap.ui.define([
 					MessageToast.show(oBundle.getText("msg_loja_removida_error"), {});
 				}
 			});
-
 		},
 		recoverSortConfig: function () {
 			let oConfigSort = localStorage.getItem('sortConfig') ? JSON.parse(localStorage.getItem('sortConfig')) : null;
@@ -239,23 +240,12 @@ sap.ui.define([
 			var globalModel = this.getModel("globalModel");
 
 			globalModel.setProperty("/colVlrPedido", this._segPedido.getProperty("selectedKey") === "real");
+			globalModel.setProperty("/Ekgrp", oEvent.getParameter("arguments").Ekgrp);
+			globalModel.setProperty("/Lifnr", oEvent.getParameter("arguments").Lifnr);
 
-			var sEkgrp = oEvent.getParameter("arguments").Ekgrp;
-			globalModel.setProperty("/Ekgrp", sEkgrp);
-			var sLifnr = oEvent.getParameter("arguments").Lifnr;
-			globalModel.setProperty("/Lifnr", sLifnr);
-
-			var sObjectPath = localModel.createKey("/Fornecedor", {
-				Ekgrp: sEkgrp,
-				Lifnr: sLifnr
-			});
+			debugger;
+			this.updateTable();
 			this.updateTotal();
-			var tablePedido = this.byId("tablePedido");
-			tablePedido.bindItems({
-				path: sObjectPath + "/PO",
-				template: tablePedido.getBindingInfo("items").template
-			});
-			tablePedido.getBinding("items").refresh();
 			// this.reiniciaIconesSort();
 			this.recoverSortConfig();
 		},
@@ -270,6 +260,22 @@ sap.ui.define([
 		closeDialog: function () {
 			this._getDialog().close();
 			this.getRouter().navTo("home", true);
+		},
+		updateTable: function () {
+			var localModel = this.getModel();
+			var globalModel = this.getModel("globalModel");
+			var sEkgrp = globalModel.getProperty("/Ekgrp");
+			var sLifnr = globalModel.getProperty("/Lifnr");
+
+			var sObjectPath = localModel.createKey("/Fornecedor", {
+				Ekgrp: sEkgrp,
+				Lifnr: sLifnr
+			});
+			this._oTablePedido.bindItems({
+				path: sObjectPath + "/PO",
+				template: this._oTablePedido.getBindingInfo("items").template
+			});
+			this._oTablePedido.getBinding("items").refresh();
 		},
 		updateTotal: function () {
 			var page = this.byId("fullPage");
@@ -349,7 +355,6 @@ sap.ui.define([
 		onResetPedido: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
 			var localModel = this.getModel();
-			var tablePedido = this.byId("tablePedido");
 			var sObjectPath = localModel.createKey("/Fornecedor", {
 				Werks: globalModel.getProperty("/Werks"),
 				Ekgrp: globalModel.getProperty("/Ekgrp"),
@@ -360,7 +365,7 @@ sap.ui.define([
 				success: function (oData2, oResponse) {
 					this.updateTotal();
 					localModel.setRefreshAfterChange(true);
-					tablePedido.getBinding("items").refresh();
+					this._oTablePedido.getBinding("items").refresh();
 				},
 				error: function (oError) {}
 			});

@@ -65,7 +65,6 @@ sap.ui.define([], function () {
 		},
 		dateFormatDdMm: function (a) {
 			if (a !== null) {
-				debugger;
 				var b = new Date(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate());
 				a = b.toLocaleString("pt-BR", {
 					month: "2-digit",
@@ -78,7 +77,6 @@ sap.ui.define([], function () {
 		},
 		dateFormat: function (a) {
 			if (a !== null) {
-				debugger;
 				a = a.toLocaleString("pt-BR", {
 					year: "numeric",
 					month: "2-digit",
