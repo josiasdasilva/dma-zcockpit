@@ -120,8 +120,12 @@ sap.ui.define([
 							} else {
 								oTable._currentIndex++;
 							}
+							let oCurrentField = oTable.getItems()[oTable._currentIndex].getCells()[oTable._rowIndexOfInputFields];
+							oCurrentField.focus();
+							jQuery.sap.delayedCall(100, null, function () {
+								oCurrentField.selectText(0, oCurrentField.getValue().length)
+							});
 
-							oTable.getItems()[oTable._currentIndex].getCells()[oTable._rowIndexOfInputFields].focus()
 						}
 
 					});
@@ -531,6 +535,11 @@ sap.ui.define([
 		_onLiveChangeInput: function (oEvent) {
 			var actualValue = oEvent.getParameter("value");
 			var lastValue = oEvent.getSource()._lastValue;
+			let isNum = /^\d+$/.test(actualValue);
+			if (!isNum && actualValue.length > 0) {
+				oEvent.getSource().setValue(actualValue.replace(/\D/g,''));
+				//actualValue = lastValue;
+			}
 			if (actualValue < 0) {
 				actualValue = "0";
 				oEvent.getSource().setValue(0);
