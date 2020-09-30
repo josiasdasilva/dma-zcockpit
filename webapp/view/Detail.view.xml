@@ -349,7 +349,7 @@
 																fieldWidth="100%" type="Number" liveChange="_onLiveChangeInput" change="_onChangeInput" showTableSuggestionValueHelp="false"
 																startSuggestion="0" valueLiveUpdate="true"/>-->
 															<Input id="inputSugestao_copy2" class="inputCompras" width="4em" value="{path: 'Requisicao', formatter: '.formatter.zeroToEmpty' }"
-																fieldWidth="100%" type="Number" liveChange="_onLiveChangeInput" change="_onChangeInput" showTableSuggestionValueHelp="false"
+																fieldWidth="100%" type="Text" liveChange="_onLiveChangeInput" change="_onChangeInput" showTableSuggestionValueHelp="false"
 																startSuggestion="0" valueLiveUpdate="true"/>
 															<Text text="{UnidadeCp}"/>
 															<ObjectNumber number="{path: 'Umrez', formatter: '.formatter.toInteger'}" emphasized="false"/>
