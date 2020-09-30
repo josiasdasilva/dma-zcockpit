@@ -32,6 +32,18 @@ sap.ui.define([], function () {
 			}
 			return number.format(sValue).toString();
 		},
+		zeroToEmpty: function (sValue) {
+			
+			var number = new Intl.NumberFormat("pt-BR", {
+				minimumFractionDigits: 0,
+				maximumFractionDigits: 0
+			});
+			
+			if (sValue === "0" || sValue === 0) {
+				return "";
+			}
+			return number.format(sValue).toString(); 
+		},
 		toIntReqSugStr: function (sValue) {
 			var number = new Intl.NumberFormat("pt-BR", {
 				minimumFractionDigits: 0,
@@ -65,7 +77,7 @@ sap.ui.define([], function () {
 		},
 		dateFormatDdMm: function (a) {
 			if (a !== null) {
-				debugger;
+				
 				var b = new Date(a.getUTCFullYear(), a.getUTCMonth(), a.getUTCDate());
 				a = b.toLocaleString("pt-BR", {
 					month: "2-digit",
@@ -78,7 +90,7 @@ sap.ui.define([], function () {
 		},
 		dateFormat: function (a) {
 			if (a !== null) {
-				debugger;
+				
 				a = a.toLocaleString("pt-BR", {
 					year: "numeric",
 					month: "2-digit",
