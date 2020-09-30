@@ -537,7 +537,7 @@ sap.ui.define([
 			var lastValue = oEvent.getSource()._lastValue;
 			let isNum = /^\d+$/.test(actualValue);
 			if (!isNum && actualValue.length > 0) {
-				oEvent.getSource().setValue(actualValue.replace(/\D/g,''));
+				oEvent.getSource().setValue(actualValue.replace(/\D/g, ''));
 				//actualValue = lastValue;
 			}
 			if (actualValue < 0) {
@@ -585,13 +585,15 @@ sap.ui.define([
 		},
 		onNavBack: function (oEvent) {
 			//var oViewModel = this.getModel("detailView");
-			var globalModel = this.getModel("globalModel");
-			var sEkgrp = globalModel.getProperty("/Ekgrp");
-			var sLifnr = globalModel.getProperty("/Lifnr");
-			var sAlterado = globalModel.getProperty("/Alterado");
+			let oBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
+			let globalModel = this.getModel("globalModel");
+			let sEkgrp = globalModel.getProperty("/Ekgrp");
+			let sLifnr = globalModel.getProperty("/Lifnr");
+			let sAlterado = globalModel.getProperty("/Alterado");
+
 			if (sAlterado) {
-				MessageBox.confirm(this.getView().getModel("i18n").getResourceBundle().getText("sairDetalhe"), {
-					title: this.getView().getModel("i18n").getResourceBundle().getText("sairDetalheTitulo"),
+				MessageBox.confirm(oBundle.getText("sairDetalhe"), {
+					title: oBundle.getText("sairDetalheTitulo"),
 					actions: [
 						MessageBox.Action.YES,
 						MessageBox.Action.NO,
@@ -636,23 +638,28 @@ sap.ui.define([
 				oModel.setUseBatch(true);
 				oModel.setDeferredGroups(["dma1"]);
 				for (var i = 0; i < scompraTable.getItems().length; i++) {
-					qtdeRequisicao = scompraTable.getItems()[i].getCells()[this._colInput].getValue();
-					//////// 	Enviando todos os dados todas as vezes
-					//					qtdeSugestao = scompraTable.getItems()[i].getAggregation("cells")[18].getProperty("number");
-					//					if (qtdeRequisicao !== qtdeSugestao) {
-					qtdeTotal += parseInt(qtdeRequisicao, 10);
-					var sPath = scompraTable.getItems()[i].getBindingContext().sPath;
-					var payLoad = {};
-					payLoad.Ekgrp = scompraTable.getItems()[i].getBindingContext().getProperty("Ekgrp");
-					payLoad.Lifnr = scompraTable.getItems()[i].getBindingContext().getProperty("Lifnr");
-					payLoad.Matnr = scompraTable.getItems()[i].getBindingContext().getProperty("Matnr");
-					payLoad.Werks = scompraTable.getItems()[i].getBindingContext().getProperty("Werks");
-					//conversao vazio para zero string
-					payLoad.Requisicao = qtdeRequisicao === "" ? "0" : qtdeRequisicao;
-					oModel.update(sPath, payLoad, {
-						groupId: "dma1"
-					});
-					//					}
+					var colRequisicao = scompraTable.getItems()[i].getCells()[this._colInput];
+					qtdeRequisicao = colRequisicao.getValue() === "" ? "0" : colRequisicao.getValue();
+					if (qtdeRequisicao !== colRequisicao.getBindingInfo("value").binding.oValue) {
+						//qtdeRequisicao = colRequisicao.getValue() === "" ? "0" : colRequisicao.getValue();
+						//////// 	Enviando todos os dados todas as vezes
+						//					qtdeSugestao = scompraTable.getItems()[i].getAggregation("cells")[18].getProperty("number");
+						//					if (qtdeRequisicao !== qtdeSugestao) {
+						qtdeTotal += parseInt(qtdeRequisicao, 10);
+						var sPath = scompraTable.getItems()[i].getBindingContext().sPath;
+						var payLoad = {};
+						payLoad.Ekgrp = scompraTable.getItems()[i].getBindingContext().getProperty("Ekgrp");
+						payLoad.Lifnr = scompraTable.getItems()[i].getBindingContext().getProperty("Lifnr");
+						payLoad.Matnr = scompraTable.getItems()[i].getBindingContext().getProperty("Matnr");
+						payLoad.Werks = scompraTable.getItems()[i].getBindingContext().getProperty("Werks");
+						//conversao vazio para zero string
+						payLoad.Requisicao = qtdeRequisicao;
+						oModel.update(sPath, payLoad, {
+							groupId: "dma1"
+						});
+					} else {
+						qtdeTotal += parseInt(colRequisicao.getBindingInfo("value").binding.oValue, 10);
+					}
 				}
 				sap.ui.core.BusyIndicator.show();
 				oModel.submitChanges({

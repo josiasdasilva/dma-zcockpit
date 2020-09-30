@@ -93,15 +93,28 @@ sap.ui.define([
 			oItems.filter(aFilters);
 		},
 		onDeleteLojaSum: function (oEvent) {
-			debugger;
-			let sPath = oEvent.getParameter("listItem").getBindingContextPath();
+			let sBindContext = oEvent.getParameter("listItem").getBindingContext();
 			let oBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-			this.getView().getModel().remove(sPath, {
-				success: (res) => {
-					MessageToast.show(oBundle.getText("msg_loja_removida_success"), {});
-				},
-				error: (err) => {
-					MessageToast.show(oBundle.getText("msg_loja_removida_error"), {});
+
+			MessageBox.confirm(oBundle.getText("eliminaLoja"), {
+				title: oBundle.getText(sBindContext.getProperty("Werks")),
+				actions: [
+					MessageBox.Action.YES,
+					MessageBox.Action.NO
+				],
+				emphasizedAction: MessageBox.Action.YES,
+				initialFocus: MessageBox.Action.YES,
+				onClose: (oAction) => {
+					if (oAction === MessageBox.Action.YES) {
+						this.getView().getModel().remove(sBindContext.sPath, {
+							success: (res) => {
+								MessageToast.show(oBundle.getText("msg_loja_removida_success"), {});
+							},
+							error: (err) => {
+								MessageToast.show(oBundle.getText("msg_loja_removida_error"), {});
+							}
+						});
+					}
 				}
 			});
 		},
@@ -243,7 +256,6 @@ sap.ui.define([
 			globalModel.setProperty("/Ekgrp", oEvent.getParameter("arguments").Ekgrp);
 			globalModel.setProperty("/Lifnr", oEvent.getParameter("arguments").Lifnr);
 
-			debugger;
 			this.updateTable();
 			this.updateTotal();
 			// this.reiniciaIconesSort();

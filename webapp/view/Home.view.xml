@@ -49,7 +49,7 @@
 				<customHeader>
 					<Bar>
 						<contentRight>
-							<Button icon="sap-icon://factory" type="Accept" width="auto" press="onBtnCommodPress" tooltip="Commodites"/>
+							<!--<Button icon="sap-icon://factory" type="Accept" width="auto" press="onBtnCommodPress" tooltip="Commodites"/>-->
 							<Button icon="sap-icon://cart" type="Accept" width="auto" press="onBtnPedidoPress" tooltip="Pedido"/>
 						</contentRight>
 						<contentLeft>
