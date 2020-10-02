@@ -669,6 +669,20 @@ sap.ui.define([
 			// 	oList.getModel().updateBindings(true);
 			// }
 		},
+		setCheckProduto: function (oEvent) {
+			let oList = this.byId("idProdutos");
+			var listItems = oList.getItems();
+			for (let i = 0; i < listItems.length; i++) {
+				listItems[i].setSelected(true);
+			}
+			var oLabel = this.byId("idCountSelected");
+			var oInfoToolbar = this.byId("idInfoToolbar");
+			var aContexts = oList.getSelectedContexts(true);
+			var bSelected = aContexts && aContexts.length > 0;
+			var sText = bSelected ? aContexts.length + " produtos selecionados" : null;
+			oInfoToolbar.setVisible(bSelected);
+			oLabel.setText(sText);
+		},
 		clearSelectedProduto: function (oEvent) {
 			var oList = this.byId("idProdutos");
 			this.byId("buscaProduto").setValue("");

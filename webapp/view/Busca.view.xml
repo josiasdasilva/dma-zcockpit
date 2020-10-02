@@ -213,13 +213,13 @@
 										<content>
 											<Title text="Produto" width="100%" id="__title0_copy3"/>
 											<ToolbarSeparator id="__separator1"/>
+											<Button width="auto" id="produtoCheckAll" icon="sap-icon://accept" press="setCheckProduto"/>
 											<Button width="auto" id="produtoDelete" icon="sap-icon://delete" press="clearSelectedProduto"/>
 										</content>
 									</Toolbar>
 								</headerToolbar>
 								<infoToolbar>
-									<OverflowToolbar xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns:semantic="sap.m.semantic" xmlns:core="sap.ui.core" xmlns="sap.m"
-										id="idInfoToolbar" visible="false">
+									<OverflowToolbar id="idInfoToolbar" visible="false">
 										<content>
 											<Label width="100%" id="idCountSelected"/>
 										</content>
