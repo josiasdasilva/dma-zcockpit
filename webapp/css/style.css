@@ -15,6 +15,11 @@ html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
     margin-left: 0px;
 }
 
+.selecetMaterial{
+	box-shadow: 0 0 12px black;
+	background-color: azure !important;
+}
+
 .flexBoxConfig {
     padding: 0 10px 0 10px;
 }

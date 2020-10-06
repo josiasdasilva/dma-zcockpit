@@ -336,6 +336,11 @@ sap.ui.define([
 			cabec.setCondensed(!cabec.getCondensed());
 		},
 		toDetail: function (oEvent) {
+			//highlight kinha pressionada
+			this.indexPressedItem = oEvent.getSource().getParent().getItems().findIndex((item) => {
+				return item.sId === oEvent.mParameters.id
+			});
+
 			var globalModel = this.getModel("globalModel");
 			var sMatnr = oEvent.getSource().getAggregation("cells")[0].getTitle();
 			globalModel.setProperty("/Matnr", sMatnr);
@@ -347,6 +352,20 @@ sap.ui.define([
 				Matnr: sMatnr,
 				Werks: globalModel.getProperty("/Werks")
 			}, true);
+		},
+		onUpdateFinished: function (oEvt) {
+			debugger;
+			if (!oEvt.getSource().sId.includes('tablePedido')) {
+				return;
+			}
+			for (let index = 0; index < oEvt.getSource().getItems().length; index++) {
+				const element = oEvt.getSource().getItems()[index];
+				element.removeStyleClass('selecetMaterial');
+				if (this.indexPressedItem && this.indexPressedItem === index) {
+					element.addStyleClass('selecetMaterial');
+				}
+
+			}
 		},
 		onDeletePress: function (oEvent) {
 			var oTable = oEvent.getSource(),

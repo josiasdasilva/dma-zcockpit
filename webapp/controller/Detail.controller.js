@@ -112,6 +112,7 @@ sap.ui.define([
 										});*/
 
 					$('#' + oTableID).on('keydown', function (e) {
+						
 						if (e.key === 'Enter') {
 							oTable._skipFocusInitialization = true;
 
@@ -119,6 +120,22 @@ sap.ui.define([
 								oTable._currentIndex = 0;
 							} else {
 								oTable._currentIndex++;
+							}
+							let oCurrentField = oTable.getItems()[oTable._currentIndex].getCells()[oTable._rowIndexOfInputFields];
+							oCurrentField.focus();
+							jQuery.sap.delayedCall(100, null, function () {
+								oCurrentField.selectText(0, oCurrentField.getValue().length)
+							});
+
+						}
+
+						if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+							oTable._skipFocusInitialization = true;
+
+							if (oTable.getItems().length === (oTable._currentIndex + 1)) {
+								oTable._currentIndex = 0;
+							} else {
+								e.key === 'ArrowDown' ? oTable._currentIndex++ : oTable._currentIndex--;
 							}
 							let oCurrentField = oTable.getItems()[oTable._currentIndex].getCells()[oTable._rowIndexOfInputFields];
 							oCurrentField.focus();
