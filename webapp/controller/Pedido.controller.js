@@ -354,7 +354,7 @@ sap.ui.define([
 			}, true);
 		},
 		onUpdateFinished: function (oEvt) {
-			debugger;
+	
 			if (!oEvt.getSource().sId.includes('tablePedido')) {
 				return;
 			}
