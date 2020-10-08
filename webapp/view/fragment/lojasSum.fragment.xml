@@ -8,6 +8,15 @@
 					<Text text="Loja"/>
 				</Column>
 				<Column width="8em" hAlign="Right">
+					<Text text="CX"/>
+				</Column>
+				<Column width="8em" hAlign="Right">
+					<Text text="KG"/>
+				</Column>
+				<Column width="8em" hAlign="Right">
+					<Text text="FD"/>
+				</Column>
+				<Column width="8em" hAlign="Right">
 					<Text text="Total"/>
 				</Column>
 			</columns>
@@ -15,7 +24,10 @@
 				<ColumnListItem id="listItemLojaSum" type="Active" press=".onObjectListItemPress">
 					<cells>
 						<Text text="{Werks}"/>
-						<Text text="{path: 'Total', formatter: '.formatter.fullNumberStr'}"/>
+						<Text text="{path: 'CX', formatter: '.formatter.zeroToEmpty'}"/>
+						<Text text="{path: 'KG', formatter: '.formatter.zeroToEmpty'}"/>
+						<Text text="{path: 'FD', formatter: '.formatter.zeroToEmpty'}"/>
+						<Text text="{path: 'Total', formatter: '.formatter.zeroToEmpty'}"/>
 					</cells>
 				</ColumnListItem>
 			</items>

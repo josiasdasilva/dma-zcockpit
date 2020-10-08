@@ -95,7 +95,8 @@ sap.ui.define([
 		onDeleteLojaSum: function (oEvent) {
 			let sBindContext = oEvent.getParameter("listItem").getBindingContext();
 			let oBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
-
+			let oTable = sap.ui.getCore().byId('idLojasSum--idLojaSumTabela');
+			
 			MessageBox.confirm(oBundle.getText("eliminaLoja"), {
 				title: oBundle.getText(sBindContext.getProperty("Werks")),
 				actions: [
@@ -106,11 +107,14 @@ sap.ui.define([
 				initialFocus: MessageBox.Action.YES,
 				onClose: (oAction) => {
 					if (oAction === MessageBox.Action.YES) {
+						oTable.setBusy(true);
 						this.getView().getModel().remove(sBindContext.sPath, {
 							success: (res) => {
+								oTable.setBusy(false);
 								MessageToast.show(oBundle.getText("msg_loja_removida_success"), {});
 							},
 							error: (err) => {
+								oTable.setBusy(false);
 								MessageToast.show(oBundle.getText("msg_loja_removida_error"), {});
 							}
 						});
