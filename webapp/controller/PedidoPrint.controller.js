@@ -42,7 +42,6 @@ sap.ui.define([
 			var sObjectPath = localModel.createKey("/PrnPedido", {
 				Ebeln: sEbeln
 			});
-			debugger;
 			var sURL = sObjectPath + "/$value";
 			window.open(sURL);
 			// localModel.read(sObjectPath + "/$value", {

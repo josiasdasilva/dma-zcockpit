@@ -376,7 +376,7 @@
 		<headerContent>
 			<Button text="{i18n>xped.finalizapedido}" press="onCriaPedido" type="Accept"/>
 			<Button text="{i18n>xped.limpasugestao}" press="onResetPedido" type="Reject" visible="false"/>
-			<Button icon="sap-icon://print" press="toPrint" id="button5_copy"/>
+			<Button icon="sap-icon://print" press="toPrint"/>
 		</headerContent>
 	</Page>
 </mvc:View>

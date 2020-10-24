@@ -1,0 +1,33 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
+	<Popover title="Destinatários" class="sapUiResponsivePadding--header sapUiResponsivePadding--footer" placement="Bottom" initialFocus="email">
+		<VBox width="100%" direction="Column">
+			<items>
+				<FlexBox width="100%" id="box0">
+					<items>
+						<CheckBox text="Comprador" id="ckbComprador" selected="true"/>
+						<Input value="comprador@grupodma.com.br" id="emailComprador"/>
+					</items>
+				</FlexBox>
+				<FlexBox width="100%" id="box0_copy">
+					<items>
+						<CheckBox text="Fornecedor" selected="false" id="ckbFornecedor"/>
+						<Input value="fornecedor@empresa.com.br" id="emailFornecedor"/>
+					</items>
+				</FlexBox>
+				<FlexBox width="100%" id="box0_copy2">
+					<items>
+						<CheckBox text="Lojas" selected="false" id="ckbLojas"/>
+					</items>
+				</FlexBox>
+			</items>
+		</VBox>
+		<footer>
+			<OverflowToolbar>
+				<ToolbarSpacer/>
+				<Button id="email" text="e-Mail" press="_handlePedCriadoEmail" icon="sap-icon://email"/>
+				<!--<Button text="Fecha" press="_handlePedCriadoClose" type="Reject"/>-->
+				<!--<Button id="email" text="Email" press="handleEmailPress"/>-->
+			</OverflowToolbar>
+		</footer>
+	</Popover>
+</core:FragmentDefinition>

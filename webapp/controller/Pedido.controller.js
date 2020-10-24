@@ -96,7 +96,7 @@ sap.ui.define([
 			let sBindContext = oEvent.getParameter("listItem").getBindingContext();
 			let oBundle = this.getOwnerComponent().getModel("i18n").getResourceBundle();
 			let oTable = sap.ui.getCore().byId('idLojasSum--idLojaSumTabela');
-			
+
 			MessageBox.confirm(oBundle.getText("eliminaLoja"), {
 				title: oBundle.getText(sBindContext.getProperty("Werks")),
 				actions: [
@@ -265,18 +265,18 @@ sap.ui.define([
 			// this.reiniciaIconesSort();
 			this.recoverSortConfig();
 		},
-		_getDialog: function () {
-			// create a fragment with dialog, and pass the selected data
-			if (!this.dialog) {
-				// This fragment can be instantiated from a controller as follows:
-				this.dialog = sap.ui.xmlfragment("idPedCriado", "dma.zcockpit.view.fragment.ped_criado", this);
-			}
-			return this.dialog;
-		},
-		closeDialog: function () {
-			this._getDialog().close();
-			this.getRouter().navTo("home", true);
-		},
+		// _getDialog: function () {
+		// 	// create a fragment with dialog, and pass the selected data
+		// 	if (!this.dialog) {
+		// 		// This fragment can be instantiated from a controller as follows:
+		// 		this.dialog = sap.ui.xmlfragment("idPedCriado", "dma.zcockpit.view.fragment.ped_criado", this);
+		// 	}
+		// 	return this.dialog;
+		// },
+		// closeDialog: function () {
+		// 	this._getDialog().close();
+		// 	this.getRouter().navTo("home", true);
+		// },
 		updateTable: function () {
 			var localModel = this.getModel();
 			var globalModel = this.getModel("globalModel");
@@ -358,7 +358,7 @@ sap.ui.define([
 			}, true);
 		},
 		onUpdateFinished: function (oEvt) {
-	
+
 			if (!oEvt.getSource().sId.includes('tablePedido')) {
 				return;
 			}
@@ -499,7 +499,85 @@ sap.ui.define([
 			var sURL = localModel.sServiceUrl + sObjectPath + "/$value";
 			window.open(sURL, '_blank');
 		},
-		_handlePedCriadoEmail: function (oEvent) {},
+		_handlePedCriadoEmail: function (oEvent) {
+			var globalModel = this.getModel("globalModel");
+			var localModel = this.getModel();
+			var aFilters = [];
+
+			var tbl_items = this._PedCriadoDialog.getContent()[0].getItems();
+			var sEbeln = "";
+			for (var i = 0; i < tbl_items.length; i++) {
+				if (i !== 0) {
+					sEbeln = sEbeln + ",";
+				}
+				sEbeln = sEbeln + tbl_items[i].getAggregation('cells')[0].getProperty('text');
+			}
+			aFilters.push(new sap.ui.model.Filter(
+				"Ebeln", sap.ui.model.FilterOperator.EQ,
+				sEbeln
+			));
+			aFilters.push(new sap.ui.model.Filter(
+				"emailComprador", sap.ui.model.FilterOperator.EQ,
+				sap.ui.getCore().byId("idPopoverEmail--emailComprador").getValue()
+			));
+			aFilters.push(new sap.ui.model.Filter(
+				"ckbComprador", sap.ui.model.FilterOperator.EQ,
+				sap.ui.getCore().byId("idPopoverEmail--ckbComprador").getSelected()
+			));
+			aFilters.push(new sap.ui.model.Filter(
+				"emailFornecedor", sap.ui.model.FilterOperator.EQ,
+				sap.ui.getCore().byId("idPopoverEmail--emailFornecedor").getValue()
+			));
+			aFilters.push(new sap.ui.model.Filter(
+				"ckbFornecedor", sap.ui.model.FilterOperator.EQ,
+				sap.ui.getCore().byId("idPopoverEmail--ckbFornecedor").getSelected()
+			));
+			aFilters.push(new sap.ui.model.Filter(
+				"ckbLojas", sap.ui.model.FilterOperator.EQ,
+				sap.ui.getCore().byId("idPopoverEmail--ckbLojas").getSelected()
+			));
+			sap.ui.core.BusyIndicator.show();
+			localModel.read("/MailPedidoSend", {
+				method: "GET",
+				filters: aFilters,
+				success: function (oData2, oResponse) {
+					sap.ui.core.BusyIndicator.hide();
+					sap.m.MessageBox.success("Email(s) enviado(s) com sucesso", {
+						title: "Email",
+						actions: [MessageBox.Action.OK],
+						initialFocus: MessageBox.Action.OK,
+						styleClass: sResponsivePaddingClasses
+					});
+				},
+				error: function (oError) {}
+			});
+		},
+		_openPedCriadoEmail: function (oEvent) {
+			var oButton = oEvent.getSource();
+			if (!this._popoverEmail) {
+				this._popoverEmail = sap.ui.xmlfragment("idPopoverEmail", "dma.zcockpit.view.fragment.popoverEmail", this);
+				this.getView().addDependent(this._popoverEmail);
+			}
+
+			var globalModel = this.getModel("globalModel");
+			var localModel = this.getModel();
+			var sObjectPath = localModel.createKey("/MailPedidoGet", {
+				Ekgrp: globalModel.getProperty("/Ekgrp"),
+				Lifnr: globalModel.getProperty("/Lifnr")
+			});
+
+			localModel.read(sObjectPath, {
+				method: "GET",
+				success: function (oData2, oResponse) {
+					//cabec.setNumber({ path: oData2.Total, formatter: '.format.currencyValue' });
+					sap.ui.getCore().byId("idPopoverEmail--emailComprador").setValue(oData2.Comprador);
+					sap.ui.getCore().byId("idPopoverEmail--emailFornecedor").setValue(oData2.Fornecedor);
+				},
+				error: function (oError) {}
+			});
+
+			this._popoverEmail.openBy(oButton);
+		},
 		_handlePedCriadoClose: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
 			this.getRouter().navTo("busca", {

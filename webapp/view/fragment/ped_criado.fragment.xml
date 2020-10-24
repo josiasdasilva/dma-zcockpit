@@ -1,31 +1,38 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core">
 	<Dialog title="Pedido(s) criado com sucesso">
-		<Table noDataText="No Products Found" items="{path:'/PedCriado'}" mode="None" width="auto">
-			<columns>
-				<Column hAlign="Center" width="10em">
-					<header>
-						<Label text="Pedido"/>
-					</header>
-				</Column>
-				<Column hAlign="Center" width="10em">
-					<header>
-						<Label text="Loja"/>
-					</header>
-				</Column>
-			</columns>
-			<items>
-				<ColumnListItem type="Active">
-					<cells>
-						<Text text="{PedEbeln}"/>
-						<Text text="{Werks}"/>
-					</cells>
-				</ColumnListItem>
-			</items>
-		</Table>
+		<Table xmlns:core="sap.ui.core" xmlns="sap.m" noDataText="No Products Found" items="{path:'/PedCriado'}" mode="None" width="auto" id="table1">
+		    <columns>
+		        <Column hAlign="Center" width="10em" id="column2">
+		            <header>
+		                <Label text="Pedido" id="label5"/>
+		                
+		            </header>
+		            
+		        </Column>
+		        <Column hAlign="Center" width="10em" id="column3">
+		            <header>
+		                <Label text="Loja" id="label6"/>
+		                
+		            </header>
+		            
+		        </Column>
+		        </columns>
+		    <items>
+		        <ColumnListItem type="Active" id="item1___table1_0_copy_table1_0">
+		            <cells>
+		                <Text text="{PedEbeln}" id="text7___table1_0_copy_table1_0"/>
+		                <Text text="{Werks}" id="text8___table1_0_copy_table1_0"/>
+		                </cells>
+		            
+		        </ColumnListItem>
+		        
+		    </items>
+		    </Table>
 		<buttons>
 			<Button text="Imprime" press="_handlePedCriadoPrint" icon="sap-icon://print"/>
-			<Button text="e-Mail" press="_handlePedCriadoEmail" icon="sap-icon://email" visible="false"/>
+			<Button text="e-Mail" press="_openPedCriadoEmail" icon="sap-icon://email"/> 
 			<Button text="Fecha" press="_handlePedCriadoClose" type="Reject"/>
 		</buttons>
+		<content/>
 	</Dialog>
 </core:FragmentDefinition>
