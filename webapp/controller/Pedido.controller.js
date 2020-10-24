@@ -315,7 +315,9 @@ sap.ui.define([
 		},
 		onNavBack: function (oEvent) {
 			var globalModel = this.getModel("globalModel");
-
+			
+			delete this.indexPressedItem;
+			
 			MessageBox.confirm(this.getView().getModel("i18n").getResourceBundle().getText("sairPedido"), {
 				title: this.getView().getModel("i18n").getResourceBundle().getText("sairPedidoTitulo"),
 				actions: [
