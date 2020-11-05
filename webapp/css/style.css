@@ -77,6 +77,11 @@ html.sap-desktop .sapMShellAppWidthLimited .sapMShellCentralBox {
     height: 47vh !important;
 }
 
+.scroll-venda-faceamento {
+  /*  height: 55vh !important;*/
+    height: 51vh !important;
+}
+
 .panel_produto {
     height: 87vh !important
 }

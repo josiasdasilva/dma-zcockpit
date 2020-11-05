@@ -620,7 +620,7 @@
 									</Table>
 								</l:fixContent>
 								<l:flexContent>
-									<ScrollContainer height="32em" vertical="true" focusable="true">
+									<ScrollContainer height="32em" vertical="true" focusable="true" class="scroll-venda-faceamento">
 										<!--<ScrollContainer vertical="true" focusable="true" height="32em">-->
 										<Table noDataText="Sem dados para exibir" id="vendaTable" items="{/POVenda}" class="tableTelaPedido" growing="true" growingThreshold="200"
 											growingScrollToLoad="true">
@@ -942,7 +942,7 @@
 									</Column>
 								</columns>
 							</Table>
-							<ScrollContainer vertical="true" focusable="true" height="32em">
+							<ScrollContainer vertical="true" focusable="true" height="32em" class="scroll-venda-faceamento">
 								<Table noDataText="Sem dados para exibir" id="faceamentoTable" items="{/POFaceamento}" class="tableTelaPedido" growingThreshold="200"
 									growingScrollToLoad="true" growing="true">
 									<items>
